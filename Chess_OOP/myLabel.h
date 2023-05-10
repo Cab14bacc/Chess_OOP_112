@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 
+//declear a class MyLabel can accept click signal
 class MyLabel : public QLabel
 {
     Q_OBJECT

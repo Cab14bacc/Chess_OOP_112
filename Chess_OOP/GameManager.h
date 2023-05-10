@@ -9,11 +9,12 @@ class GameManager
 {
 public:
     GameManager();
-    Player white;
+    Player White;
     Player Black;
     void startGame();
     void whiteMove();
     void blackMove();
+    bool ifgameover();
 };
 
 #endif // GAMEMANAGER_H

@@ -1,4 +1,4 @@
-
+#include "GameManager.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <sstream>
@@ -6,14 +6,17 @@
 
 using namespace std;
 
+//global value
+GameManager game;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
 
     ui->setupUi(this);
-    setBoard();
-    initIcon();
+    setBoard();//set labels and put color on it
+    initIcon();//just to set images
 }
 
 MainWindow::~MainWindow()
@@ -21,6 +24,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//set label and put color on it
 void MainWindow::setBoard()
 {
     for(int i = 0; i < 8; i++)
@@ -50,14 +54,13 @@ void MainWindow::setBoard()
     }
 }
 
+//if label clicled, call this function
 void MainWindow::labelClicked()
 {
 
 }
 
-// Intent:split objectName to get string curRow,curCol
-// Pre:input a QString
-// Post:save curRow in Words[0], curCol in Words[1]
+// can ignore this temporary
 void MainWindow::split(string Words[], QString Name)
 {
     string strName = Name.toStdString();
@@ -70,6 +73,7 @@ void MainWindow::split(string Words[], QString Name)
     }
 }
 
+//if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
     QString row;
@@ -152,8 +156,10 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconWRook);
+    game.startGame();
 }
 
+//just to set images
 void MainWindow::initIcon()
 {
     iconWKing = new QPixmap("./images/WKing.png");

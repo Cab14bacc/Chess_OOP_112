@@ -9,5 +9,6 @@ public:
     int y;
     void setPlayer(char play);
     void setPos(int posX,int posY);
+    void move();
 };
 #endif // ROOK_H

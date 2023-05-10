@@ -2,7 +2,8 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-class Bishop{
+class Bishop
+{
 public:
     char player;//while:w, black:b
     int x;

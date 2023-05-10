@@ -1,4 +1,4 @@
-
+#include "myLabel.h"
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -19,8 +19,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void setBoard();
+
+private slots:
+
 private:
     Ui::MainWindow *ui;
+    QList<MyLabel*> labelList;
+    MyLabel *label;
 };
 
 #endif // MAINWINDOW_H

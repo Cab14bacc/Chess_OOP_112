@@ -1,7 +1,8 @@
 
 #ifndef BOARD_H
 #define BOARD_H
-class Board{
+class Board
+{
 public:
     bool ifHavePiece;//if there a chess piece
     int wTarget;//how many white piece can attack

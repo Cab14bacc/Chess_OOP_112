@@ -1,7 +1,8 @@
 
 #ifndef ROOK_H
 #define ROOK_H
-class Rook{
+class Rook
+{
 public:
     char player;//while:w, black:b
     int x;

@@ -26,6 +26,7 @@ HEADERS += \
     Queen.h \
     Rook.h \
     mainwindow.h \
+    myLabel.h \
     viewmanager.h
 
 FORMS += \

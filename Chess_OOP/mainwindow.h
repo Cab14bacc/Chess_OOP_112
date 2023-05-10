@@ -4,7 +4,7 @@
 
 #include <QMainWindow>
 
-
+using namespace std;;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,12 +21,31 @@ public:
 
     void setBoard();
 
+    void split(string Words[], QString Name);
+
+    void initIcon();
+
 private slots:
+    void labelClicked();
+
+    void on_newGame_clicked();
 
 private:
     Ui::MainWindow *ui;
     QList<MyLabel*> labelList;
     MyLabel *label;
+    QPixmap *iconWKing;
+    QPixmap *iconWQueen;
+    QPixmap *iconWBishop;
+    QPixmap *iconWKnight;
+    QPixmap *iconWRook;
+    QPixmap *iconWPawn;
+    QPixmap *iconBKing;
+    QPixmap *iconBQueen;
+    QPixmap *iconBBishop;
+    QPixmap *iconBKnight;
+    QPixmap *iconBRook;
+    QPixmap *iconBPawn;
 };
 
 #endif // MAINWINDOW_H

@@ -11,14 +11,14 @@ class MyLabel : public QLabel
     using QLabel::QLabel;
 
 signals:
-    void clicked();
+    void signalclicked();
 
 protected:
     void mousePressEvent(QMouseEvent* event)
     {
         if(event->button() == Qt::LeftButton)
         {
-            emit clicked();
+            emit signalclicked();
         }
     }
 };

@@ -16,8 +16,15 @@ SOURCES += \
     viewmanager.cpp
 
 HEADERS += \
+    Bishop.h \
+    Board.h \
     GameManager.h \
+    King.h \
+    Knight.h \
+    Pawn.h \
     Player.h \
+    Queen.h \
+    Rook.h \
     mainwindow.h \
     viewmanager.h
 

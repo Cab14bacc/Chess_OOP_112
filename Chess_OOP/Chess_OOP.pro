@@ -10,7 +10,10 @@ CONFIG += c++17
 
 SOURCES += \
     GameManager.cpp \
+    Pawn.cpp \
     Player.cpp \
+    Queen.cpp \
+    Rook.cpp \
     main.cpp \
     mainwindow.cpp \
     viewmanager.cpp

@@ -57,7 +57,7 @@ void MainWindow::setBoard()
 //if label clicled, call this function
 void MainWindow::labelClicked()
 {
-
+    game.playerMove();
 }
 
 // can ignore this temporary

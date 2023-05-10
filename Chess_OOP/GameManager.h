@@ -8,12 +8,12 @@
 class GameManager
 {
 public:
+    char playerTurn;
     GameManager();
     Player White;
     Player Black;
     void startGame();
-    void whiteMove();
-    void blackMove();
+    void playerMove();
     bool ifgameover();
 };
 

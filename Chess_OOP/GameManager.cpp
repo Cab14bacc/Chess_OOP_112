@@ -3,25 +3,17 @@
 
 GameManager::GameManager()
 {
+    playerTurn = 'w';
     White.setPlayer('w');
     Black.setPlayer('b');
 }
 
 void GameManager::startGame()
 {
-    while(ifgameover())
-    {
-        whiteMove();
-        blackMove();
-    }
-}
-
-void GameManager::whiteMove()
-{
 
 }
 
-void GameManager::blackMove()
+void GameManager::playerMove()
 {
 
 }

@@ -1,7 +1,7 @@
 //新增項目
 GameManager裡新增char selectChessPlayer(被選中的棋子是哪方的)、string selectChessType(選中棋子類型)、int selectChessIndex(選中棋子在vector中的位置)
 
-Board裡新增bool canMove(紀錄能否移動)
+viewManager裡新增bool canMove(紀錄能否移動)
 
 mainwindow新增void update(更新GUI顯示)
 
@@ -38,7 +38,7 @@ void playerMove(int row, int col)//根據傳入位置與選中棋子資訊移動
 
 bool ifGameOver()//判斷遊戲是否結束(目前在判斷算法還有障礙，這邊就先只判斷雙方國王是否還在場上)
 
-Board:
+viewManager:
 
 void computeTarget()//計算每格棋盤可被幾個棋子攻擊。
 

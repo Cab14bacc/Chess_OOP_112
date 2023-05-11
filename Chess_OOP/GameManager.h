@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Board.h"
+#include "viewmanager.h"
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
@@ -13,7 +13,7 @@ public:
     int clickTimes;
     Player White;
     Player Black;
-    Board board[8][8];
+    ViewManager board[8][8];
     char selectChessPlayer;
     string selectChessType;
     int selectChessIndex;

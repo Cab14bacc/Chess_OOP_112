@@ -1,6 +1,6 @@
 #include "Board.h"
 
-Board::Board()
+ViewManager::ViewManager()
 {
     ifHavePiece = false;
     wTarget = 0;
@@ -11,7 +11,7 @@ Board::Board()
     canMove = false;
 }
 
-void Board::computeTarget()
+void ViewManager::computeTarget()
 {
 
 }

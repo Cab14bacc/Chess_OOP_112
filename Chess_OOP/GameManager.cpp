@@ -5,28 +5,23 @@ GameManager::GameManager()
 {
     White.setPlayer('w');
     Black.setPlayer('b');
+    clickTimes = 1;
+    selectChessPlayer = '0';
+    selectChessType = "0";
+    selectChessIndex = 0;
 }
 
-void GameManager::startGame()
-{
-    while(ifgameover())
-    {
-        whiteMove();
-        blackMove();
-    }
-}
-
-void GameManager::whiteMove()
+void GameManager::showCanMove(int row, int col)
 {
 
 }
 
-void GameManager::blackMove()
+void GameManager::playerMove(int row, int col)
 {
 
 }
 
-bool GameManager::ifgameover()
+bool GameManager::ifGameOver()
 {
     return true;
 }

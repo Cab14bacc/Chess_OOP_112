@@ -57,18 +57,28 @@ void MainWindow::setBoard()
 //if label clicled, call this function
 void MainWindow::labelClicked()
 {
+    MyLabel *lab = qobject_cast<MyLabel*>(sender());
+    QString Name = lab->objectName();
+    string words[2];
+    split(words,Name);
+    int curRow = stoi(words[0]);
+    int curCol = stoi(words[1]);
 
-<<<<<<< HEAD
-=======
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
+        update();
     }
     else
     {
         game.playerMove(curRow, curCol);
+        update();
     }
->>>>>>> parent of 3116fd4 (新增update、computeTarget)
+}
+
+void MainWindow::update()
+{
+
 }
 
 // can ignore this temporary
@@ -167,7 +177,6 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconWRook);
-    game.startGame();
 }
 
 //just to set images

@@ -14,6 +14,7 @@ public:
     Player White;
     Player Black;
     ViewManager board[8][8];
+    int clickTimes;
     char selectChessPlayer;
     string selectChessType;
     int selectChessIndex;

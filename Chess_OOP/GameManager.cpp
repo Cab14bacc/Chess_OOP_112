@@ -5,6 +5,7 @@ GameManager::GameManager()
 {
     White.setPlayer('w');
     Black.setPlayer('b');
+    clickTimes = 1;
     selectChessPlayer = '0';
     selectChessType = "0";
     selectChessIndex = 0;

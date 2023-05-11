@@ -8,6 +8,5 @@ public:
     int x;
     int y;
     int index;
-    void move();
 };
 #endif // QUEEN_H

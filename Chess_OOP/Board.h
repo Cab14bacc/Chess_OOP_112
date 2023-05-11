@@ -18,6 +18,9 @@ public:
     string chessType;
     int index;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 3116fd4 (新增update、computeTarget)
+=======
 >>>>>>> parent of 3116fd4 (新增update、computeTarget)
 =======
 >>>>>>> parent of 3116fd4 (新增update、computeTarget)

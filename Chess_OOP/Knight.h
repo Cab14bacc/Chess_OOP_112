@@ -1,7 +1,7 @@
 
-#ifndef PAWN_H
-#define PAWN_H
-class Pawn
+#ifndef KNIGHT_H
+#define KNIGHT_H
+class Knight
 {
 public:
     char player;//while:w, black:b
@@ -9,4 +9,4 @@ public:
     int y;
     int index;
 };
-#endif // PAWN_H
+#endif // KNIGHT_H

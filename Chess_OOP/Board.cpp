@@ -1,5 +1,5 @@
-#include "Board.h"
 
+<<<<<<< HEAD
 ViewManager::ViewManager()
 {
     ifHavePiece = false;
@@ -15,3 +15,5 @@ void ViewManager::computeTarget()
 {
 
 }
+=======
+>>>>>>> 31dbd3d3940833b5f08818f48a2476d4e8aca63c

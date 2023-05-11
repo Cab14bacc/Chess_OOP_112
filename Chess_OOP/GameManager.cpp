@@ -3,26 +3,30 @@
 
 GameManager::GameManager()
 {
-    playerTurn = 'w';
-    clickTimes = 1;
     White.setPlayer('w');
     Black.setPlayer('b');
-    selectChessPlayer = '0';
-    selectChessType = "0";
-    selectChessIndex = 0;
 }
 
-void GameManager::showCanMove(int row, int col)
+void GameManager::startGame()
+{
+    while(ifgameover())
+    {
+        whiteMove();
+        blackMove();
+    }
+}
+
+void GameManager::whiteMove()
 {
 
 }
 
-void GameManager::playerMove(int row, int col)
+void GameManager::blackMove()
 {
 
 }
 
-bool GameManager::ifGameOver()
+bool GameManager::ifgameover()
 {
     return true;
 }

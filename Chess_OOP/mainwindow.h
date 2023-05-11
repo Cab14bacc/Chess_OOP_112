@@ -25,8 +25,6 @@ public:
 
     void initIcon();
 
-    void update();
-
 private slots:
     void labelClicked();
 

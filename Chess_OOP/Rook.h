@@ -8,5 +8,6 @@ public:
     int x;
     int y;
     int index;
+    void move();
 };
 #endif // ROOK_H

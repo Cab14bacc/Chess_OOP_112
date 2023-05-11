@@ -17,6 +17,9 @@ public:
     char player;
     string chessType;
     int index;
+<<<<<<< HEAD
+>>>>>>> parent of 3116fd4 (新增update、computeTarget)
+=======
 >>>>>>> parent of 3116fd4 (新增update、computeTarget)
 };
 

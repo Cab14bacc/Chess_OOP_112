@@ -9,10 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Bishop.cpp \
     GameManager.cpp \
-    King.cpp \
-    Knight.cpp \
     Pawn.cpp \
     Player.cpp \
     Queen.cpp \
@@ -22,10 +19,7 @@ SOURCES += \
     viewmanager.cpp
 
 HEADERS += \
-    Bishop.h \
     GameManager.h \
-    King.h \
-    Knight.h \
     Pawn.h \
     Player.h \
     Queen.h \

@@ -45,6 +45,7 @@ void MainWindow::setBoard()
             label->setFixedSize(60,60);
             label->setText("");
 
+            //Fill the label with color
             if((i + j) % 2 == 0)
             {
                 label->setStyleSheet("QLabel{background-color:rgb(224,224,198);}");
@@ -121,6 +122,10 @@ void MainWindow::on_newGame_clicked()
         newPawn->y = 1;
         newPawn->index = i;
         game.Black.pawns.push_back(*newPawn);
+        board[1][i].chessType = "Pawn";
+        board[1][i].ifHavePiece = true;
+        board[1][i].player = 'b';
+        board[1][i].index = i;
         //set White Pawn
         row = QString::number(6);
         col = QString::number(i);
@@ -132,6 +137,10 @@ void MainWindow::on_newGame_clicked()
         newPawn->y = 1;
         newPawn->index = i;
         game.White.pawns.push_back(*newPawn);
+        board[1][i].chessType = "Pawn";
+        board[1][i].ifHavePiece = true;
+        board[1][i].player = 'w';
+        board[1][i].index = i;
     }
 
     //set Black Rook
@@ -145,6 +154,10 @@ void MainWindow::on_newGame_clicked()
     newRook->y = 0;
     newRook->index = 0;
     game.Black.rooks.push_back(*newRook);
+    board[0][0].chessType = "Rook";
+    board[0][0].ifHavePiece = true;
+    board[0][0].player = 'b';
+    board[0][0].index = 0;
     row = QString::number(0);
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -155,6 +168,10 @@ void MainWindow::on_newGame_clicked()
     newRook->y = 0;
     newRook->index = 1;
     game.Black.rooks.push_back(*newRook);
+    board[0][7].chessType = "Rook";
+    board[0][7].ifHavePiece = true;
+    board[0][7].player = 'b';
+    board[0][7].index = 1;
 
     //set Black Knight
     row = QString::number(0);
@@ -167,6 +184,10 @@ void MainWindow::on_newGame_clicked()
     newKnight->y = 0;
     newKnight->index = 0;
     game.Black.knights.push_back(*newKnight);
+    board[0][1].chessType = "Knight";
+    board[0][1].ifHavePiece = true;
+    board[0][1].player = 'b';
+    board[0][1].index = 0;
     row = QString::number(0);
     col = QString::number(6);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -177,6 +198,10 @@ void MainWindow::on_newGame_clicked()
     newKnight->y = 0;
     newKnight->index = 1;
     game.Black.knights.push_back(*newKnight);
+    board[0][6].chessType = "Knight";
+    board[0][6].ifHavePiece = true;
+    board[0][6].player = 'b';
+    board[0][6].index = 1;
 
     //set Black Bishop
     row = QString::number(0);
@@ -189,6 +214,10 @@ void MainWindow::on_newGame_clicked()
     newBishop->y = 0;
     newBishop->index = 0;
     game.Black.bishops.push_back(*newBishop);
+    board[0][2].chessType = "Bishop";
+    board[0][2].ifHavePiece = true;
+    board[0][2].player = 'b';
+    board[0][2].index = 0;
     row = QString::number(0);
     col = QString::number(5);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -199,6 +228,10 @@ void MainWindow::on_newGame_clicked()
     newBishop->y = 0;
     newBishop->index = 1;
     game.Black.bishops.push_back(*newBishop);
+    board[0][5].chessType = "Bishop";
+    board[0][5].ifHavePiece = true;
+    board[0][5].player = 'b';
+    board[0][5].index = 1;
 
     //set Black Queen
     row = QString::number(0);
@@ -211,6 +244,10 @@ void MainWindow::on_newGame_clicked()
     newQueen->y = 0;
     newQueen->index = 0;
     game.Black.queens.push_back(*newQueen);
+    board[0][3].chessType = "Queen";
+    board[0][3].ifHavePiece = true;
+    board[0][3].player = 'b';
+    board[0][3].index = 0;
 
     //set Black King
     row = QString::number(0);
@@ -220,6 +257,10 @@ void MainWindow::on_newGame_clicked()
     game.Black.king.player = 'b';
     game.Black.king.x = 4;
     game.Black.king.y = 0;
+    board[0][4].chessType = "King";
+    board[0][4].ifHavePiece = true;
+    board[0][4].player = 'b';
+    board[0][4].index = 0;
 
     //set White Rook
     row = QString::number(7);
@@ -232,6 +273,10 @@ void MainWindow::on_newGame_clicked()
     newRook->y = 7;
     newRook->index = 0;
     game.White.rooks.push_back(*newRook);
+    board[7][0].chessType = "Rook";
+    board[7][0].ifHavePiece = true;
+    board[7][0].player = 'w';
+    board[7][0].index = 0;
     row = QString::number(7);
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -242,6 +287,10 @@ void MainWindow::on_newGame_clicked()
     newRook->y = 7;
     newRook->index = 1;
     game.White.rooks.push_back(*newRook);
+    board[7][7].chessType = "Rook";
+    board[7][7].ifHavePiece = true;
+    board[7][7].player = 'w';
+    board[7][7].index = 1;
 
     //set White Knight
     row = QString::number(7);
@@ -254,6 +303,10 @@ void MainWindow::on_newGame_clicked()
     newKnight->y = 7;
     newKnight->index = 0;
     game.White.knights.push_back(*newKnight);
+    board[7][1].chessType = "Knight";
+    board[7][1].ifHavePiece = true;
+    board[7][1].player = 'w';
+    board[7][1].index = 0;
     row = QString::number(7);
     col = QString::number(6);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -264,6 +317,10 @@ void MainWindow::on_newGame_clicked()
     newKnight->y = 7;
     newKnight->index = 1;
     game.White.knights.push_back(*newKnight);
+    board[7][6].chessType = "Knight";
+    board[7][6].ifHavePiece = true;
+    board[7][6].player = 'w';
+    board[7][6].index = 1;
 
     //set White Bishop
     row = QString::number(7);
@@ -276,6 +333,10 @@ void MainWindow::on_newGame_clicked()
     newBishop->y = 7;
     newBishop->index = 0;
     game.White.bishops.push_back(*newBishop);
+    board[7][2].chessType = "Bishop";
+    board[7][2].ifHavePiece = true;
+    board[7][2].player = 'w';
+    board[7][2].index = 0;
     row = QString::number(7);
     col = QString::number(5);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -286,6 +347,10 @@ void MainWindow::on_newGame_clicked()
     newBishop->y = 7;
     newBishop->index = 1;
     game.White.bishops.push_back(*newBishop);
+    board[7][5].chessType = "Bishop";
+    board[7][5].ifHavePiece = true;
+    board[7][5].player = 'w';
+    board[7][5].index = 1;
 
     //set White Queen
     row = QString::number(7);
@@ -298,6 +363,10 @@ void MainWindow::on_newGame_clicked()
     newQueen->y = 7;
     newQueen->index = 0;
     game.White.queens.push_back(*newQueen);
+    board[7][3].chessType = "Queen";
+    board[7][3].ifHavePiece = true;
+    board[7][3].player = 'w';
+    board[7][3].index = 0;
 
     //set White King
     row = QString::number(7);
@@ -307,6 +376,10 @@ void MainWindow::on_newGame_clicked()
     game.White.king.player = 'w';
     game.White.king.x = 4;
     game.White.king.y = 7;
+    board[7][4].chessType = "King";
+    board[7][4].ifHavePiece = true;
+    board[7][4].player = 'w';
+    board[7][4].index = 0;
 }
 
 //just to set images

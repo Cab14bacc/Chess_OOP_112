@@ -11,7 +11,7 @@ mainwindow新增void update(更新GUI顯示)
 2.玩家點下new game，執行mainwindow裡的on_newGame_clicked()(設置圖案到GUI、設置所有棋子與棋盤資訊)
 
 主要遊戲迴圈
-3.玩家點擊GUI，執行mainwindow裡的labelClicked()(傳入哪個位置(x,y)被點擊。根據目前的clickTimes選擇執行showCanMove()(顯示棋子能移動的位置)或是playerMove()(移動棋子))
+3.玩家點擊GUI，執行mainwindow裡的labelClicked()(傳入哪個位置(row,col)被點擊。根據目前的clickTimes選擇執行showCanMove()(顯示棋子能移動的位置)或是playerMove()(移動棋子))
 
 4.clickTimes等於1，執行showCanMove。算出棋子可移動board位置、更新GameManager裡選中棋子資訊。
 

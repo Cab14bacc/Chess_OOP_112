@@ -9,11 +9,12 @@ class GameManager
 {
 public:
     char playerTurn;
+    int clickTimes;
     GameManager();
     Player White;
     Player Black;
-    void startGame();
-    void playerMove();
+    void canMove(int row, int col);
+    void playerMove(int row, int col);
     bool ifgameover();
 };
 

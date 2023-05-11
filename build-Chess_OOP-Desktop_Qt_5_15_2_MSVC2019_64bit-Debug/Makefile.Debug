@@ -451,11 +451,31 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 debug\GameManager.obj: ..\Chess_OOP\GameManager.cpp ..\Chess_OOP\GameManager.h \
-		..\Chess_OOP\Player.h
+		..\Chess_OOP\Player.h \
+		..\Chess_OOP\Pawn.h \
+		..\Chess_OOP\Rook.h \
+		..\Chess_OOP\Knight.h \
+		..\Chess_OOP\Bishop.h \
+		..\Chess_OOP\Queen.h \
+		..\Chess_OOP\King.h
 
-debug\Player.obj: ..\Chess_OOP\Player.cpp ..\Chess_OOP\Player.h
+debug\Player.obj: ..\Chess_OOP\Player.cpp ..\Chess_OOP\Player.h \
+		..\Chess_OOP\Pawn.h \
+		..\Chess_OOP\Rook.h \
+		..\Chess_OOP\Knight.h \
+		..\Chess_OOP\Bishop.h \
+		..\Chess_OOP\Queen.h \
+		..\Chess_OOP\King.h
 
-debug\main.obj: ..\Chess_OOP\main.cpp ..\Chess_OOP\mainwindow.h \
+debug\main.obj: ..\Chess_OOP\main.cpp ..\Chess_OOP\GameManager.h \
+		..\Chess_OOP\Player.h \
+		..\Chess_OOP\Pawn.h \
+		..\Chess_OOP\Rook.h \
+		..\Chess_OOP\Knight.h \
+		..\Chess_OOP\Bishop.h \
+		..\Chess_OOP\Queen.h \
+		..\Chess_OOP\King.h \
+		..\Chess_OOP\mainwindow.h \
 		..\Chess_OOP\myLabel.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QWidget \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qwidget.h \
@@ -576,7 +596,15 @@ debug\main.obj: ..\Chess_OOP\main.cpp ..\Chess_OOP\mainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtGui\qguiapplication.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtGui\qinputmethod.h
 
-debug\mainwindow.obj: ..\Chess_OOP\mainwindow.cpp ..\Chess_OOP\mainwindow.h \
+debug\mainwindow.obj: ..\Chess_OOP\mainwindow.cpp ..\Chess_OOP\GameManager.h \
+		..\Chess_OOP\Player.h \
+		..\Chess_OOP\Pawn.h \
+		..\Chess_OOP\Rook.h \
+		..\Chess_OOP\Knight.h \
+		..\Chess_OOP\Bishop.h \
+		..\Chess_OOP\Queen.h \
+		..\Chess_OOP\King.h \
+		..\Chess_OOP\mainwindow.h \
 		..\Chess_OOP\myLabel.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QWidget \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qwidget.h \

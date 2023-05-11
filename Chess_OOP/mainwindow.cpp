@@ -57,10 +57,24 @@ void MainWindow::setBoard()
 //if label clicled, call this function
 void MainWindow::labelClicked()
 {
-    game.playerMove();
+    MyLabel *lab = qobject_cast<MyLabel*>(sender());
+    QString Name = lab->objectName();
+    string words[2];
+    split(words,Name);//split objectName
+    int curRow = stoi(words[0]);
+    int curCol = stoi(words[1]);
+
+    if(game.clickTimes == 1)
+    {
+        game.canMove(curRow, curCol);
+    }
+    else
+    {
+        game.playerMove(curRow, curCol);
+    }
 }
 
-// can ignore this temporary
+// split objectName
 void MainWindow::split(string Words[], QString Name)
 {
     string strName = Name.toStdString();
@@ -156,7 +170,6 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconWRook);
-    game.startGame();
 }
 
 //just to set images

@@ -4,16 +4,17 @@
 GameManager::GameManager()
 {
     playerTurn = 'w';
+    clickTimes = 1;
     White.setPlayer('w');
     Black.setPlayer('b');
 }
 
-void GameManager::startGame()
+void GameManager::showCanMove(int row, int col)
 {
 
 }
 
-void GameManager::playerMove()
+void GameManager::playerMove(int row, int col)
 {
 
 }

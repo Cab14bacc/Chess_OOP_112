@@ -8,5 +8,10 @@ Board::Board()
     player = '0';
     chessType = "0";
     index = 0;
+    canMove = false;
 }
 
+void Board::computeTarget()
+{
+
+}

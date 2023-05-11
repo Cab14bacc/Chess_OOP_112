@@ -14,6 +14,8 @@ public:
     char player;
     string chessType;
     int index;
+    bool canMove;
+    void computeTarget();
 };
 
 #endif // BOARD_H

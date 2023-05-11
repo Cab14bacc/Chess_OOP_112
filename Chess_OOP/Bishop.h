@@ -9,7 +9,6 @@ public:
     int x;
     int y;
     int index;
-    void move();
 };
 
 #endif // BISHOP_H

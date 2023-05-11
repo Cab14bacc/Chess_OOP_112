@@ -76,10 +76,12 @@ void MainWindow::labelClicked()
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
+        update();
     }
     else
     {
         game.playerMove(curRow, curCol);
+        update();
     }
 }
 
@@ -94,6 +96,12 @@ void MainWindow::split(string Words[], QString Name)
         Words[N] = temp;
         N++;
     }
+}
+
+//update GUI
+void MainWindow::update()
+{
+
 }
 
 //if new game button clicked, put images and call gamestart function

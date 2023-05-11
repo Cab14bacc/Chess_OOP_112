@@ -8,6 +8,5 @@ public:
     int x;
     int y;
     int index;
-    void move();
 };
 #endif // PAWN_H

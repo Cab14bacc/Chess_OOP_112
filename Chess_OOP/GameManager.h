@@ -14,10 +14,13 @@ public:
     Player White;
     Player Black;
     Board board[8][8];
+    char selectChessPlayer;
+    string selectChessType;
+    int selectChessIndex;
     GameManager();
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
-    bool ifgameover();
+    bool ifGameOver();
 };
 
 #endif // GAMEMANAGER_H

@@ -13,7 +13,7 @@ public:
     GameManager();
     Player White;
     Player Black;
-    void canMove(int row, int col);
+    void showCanMove(int row, int col);
     void playerMove(int row, int col);
     bool ifgameover();
 };

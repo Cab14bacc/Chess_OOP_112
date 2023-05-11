@@ -58,6 +58,17 @@ void MainWindow::setBoard()
 void MainWindow::labelClicked()
 {
 
+<<<<<<< HEAD
+=======
+    if(game.clickTimes == 1)
+    {
+        game.showCanMove(curRow, curCol);
+    }
+    else
+    {
+        game.playerMove(curRow, curCol);
+    }
+>>>>>>> parent of 3116fd4 (新增update、computeTarget)
 }
 
 // can ignore this temporary

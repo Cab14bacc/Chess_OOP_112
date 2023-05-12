@@ -72,6 +72,7 @@ void MainWindow::labelClicked()
     else
     {
         game.playerMove(curRow, curCol);
+        game.clickTimes = 1;
         update();
     }
 }

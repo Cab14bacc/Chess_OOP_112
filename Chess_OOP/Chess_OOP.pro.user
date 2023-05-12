@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<!-- Written by QtCreator 10.0.0, 2023-05-10T22:37:55. -->
-=======
-<!-- Written by QtCreator 10.0.0, 2023-05-10T22:41:17. -->
->>>>>>> parent of 3116fd4 (新增update、computeTarget)
-=======
-<!-- Written by QtCreator 10.0.0, 2023-05-10T22:41:17. -->
->>>>>>> parent of 3116fd4 (新增update、computeTarget)
-=======
-<!-- Written by QtCreator 10.0.0, 2023-05-10T22:41:17. -->
->>>>>>> parent of 3116fd4 (新增update、computeTarget)
+<!-- Written by QtCreator 10.0.0, 2023-05-12T12:03:56. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -248,12 +236,14 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/leo61/OneDrive/Documents/GitHub/Chess_OOP_112/Chess_OOP/Chess_OOP.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/leo61/OneDrive/Documents/GitHub/Chess_OOP_112/Chess_OOP/Chess_OOP.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/leo61/OneDrive/Documents/GitHub/Chess_OOP_112/build-Chess_OOP-Desktop_Qt_5_15_2_MSVC2019_64bit-Debug</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

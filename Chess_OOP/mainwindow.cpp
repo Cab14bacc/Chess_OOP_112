@@ -67,6 +67,7 @@ void MainWindow::labelClicked()
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
+        game.clickTimes = 2;
         update();
     }
     else

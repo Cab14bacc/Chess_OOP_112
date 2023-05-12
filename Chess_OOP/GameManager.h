@@ -21,6 +21,7 @@ public:
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
     bool ifGameOver();
+    void eraseChessPiece(string chessType, char player,int index);
 };
 
 #endif // GAMEMANAGER_H

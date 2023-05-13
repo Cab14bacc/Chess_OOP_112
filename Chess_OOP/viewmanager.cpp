@@ -11,7 +11,3 @@ ViewManager::ViewManager()
     canMove = false;
 }
 
-void ViewManager::computeTarget()
-{
-
-}

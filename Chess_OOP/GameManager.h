@@ -21,6 +21,7 @@ public:
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
     bool ifGameOver();
+    void computeTarget();
 };
 
 #endif // GAMEMANAGER_H

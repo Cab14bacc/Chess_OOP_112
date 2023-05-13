@@ -15,7 +15,6 @@ public:
     string chessType;
     int index;
     bool canMove;
-    void computeTarget();
 };
 
 #endif // VIEWMANAGER_H

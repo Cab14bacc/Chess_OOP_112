@@ -266,3 +266,987 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
     }
 
 }
+
+void check(int i,int j,ViewManager board[][8]);
+
+void GameManager::computeTarget()
+{
+    for (int i = 0;i<8;i++)
+    {
+        for (int j = 0;j < 8;j++)
+        {
+            if (board[i][j].ifHavePiece)
+            {
+                check(i,j,board);
+            }
+        }
+    }
+}
+
+void check(int i,int j,ViewManager board[][8])
+{
+    if(board[i][j].chessType == "Pawn")
+    {
+        if(board[i][j].player == 'w')
+        {
+            if (j+1<8&&i-1>0)
+            {
+                if (board[i-1][j+1].player!='w')
+                {
+                    board[i-1][j+1].wTarget++;
+                }
+            }
+            if (j-1>0&&i-1>0)
+            {
+                if (board[i-1][j-1].player!='w')
+                {
+                    board[i-1][j-1].wTarget++;
+                }
+            }
+        }
+        else if(board[i][j].player == 'b')
+        {
+            if (j+1<8&&i+1<8)
+            {
+                if (board[i+1][j+1].player!='b')
+                {
+                    board[i+1][j+1].bTarget++;
+                }
+            }
+            if (j-1>0&&i+1<8)
+            {
+                if (board[i+1][j-1].player!='b')
+                {
+                    board[i+1][j-1].bTarget++;
+                }
+            }
+        }
+    }
+    else if(board[i][j].chessType == "Knight")
+    {
+        if(board[i][j].player == 'w')
+        {
+            if (j+2<8&&i+1<8)
+            {
+                if (board[i+1][j+2].player!='w')
+                {
+                    board[i+1][j+2].wTarget++;
+                }
+            }
+            if (j+1<8&&i+2<8)
+            {
+                if (board[i+2][j+1].player!='w')
+                {
+                    board[i+2][j+1].wTarget++;
+                }
+            }
+            if (j-2>0&&i+1<8)
+            {
+                if (board[i+1][j-2].player!='w')
+                {
+                    board[i+1][j-2].wTarget++;
+                }
+            }
+            if (j-1>0&&i+2<8)
+            {
+                if (board[i+2][j-1].player!='w')
+                {
+                    board[i+2][j-1].wTarget++;
+                }
+            }
+            if (j+2<8&&i-1>0)
+            {
+                if (board[i-1][j+2].player!='w')
+                {
+                    board[i-1][j+2].wTarget++;
+                }
+            }
+            if (j+1<8&&i-2>0)
+            {
+                if (board[i-2][j+1].player!='w')
+                {
+                    board[i-2][j+1].wTarget++;
+                }
+            }
+            if (j-2>0&&i-1>0)
+            {
+                if (board[i-1][j-2].player!='w')
+                {
+                    board[i-1][j-2].wTarget++;
+                }
+            }
+            if (j-1>0&&i-2>0)
+            {
+                if (board[i-2][j-1].player!='w')
+                {
+                    board[i-2][j-1].wTarget++;
+                }
+            }
+        }
+        else if(board[i][j].player == 'b')
+        {
+            if (j+2<8&&i+1<8)
+            {
+                if (board[i+1][j+2].player!='b')
+                {
+                    board[i+1][j+2].bTarget++;
+                }
+            }
+            if (j+1<8&&i+2<8)
+            {
+                if (board[i+2][j+1].player!='b')
+                {
+                    board[i+2][j+1].bTarget++;
+                }
+            }
+            if (j-2>0&&i+1<8)
+            {
+                if (board[i+1][j-2].player!='b')
+                {
+                    board[i+1][j-2].bTarget++;
+                }
+            }
+            if (j-1>0&&i+2<8)
+            {
+                if (board[i+2][j-1].player!='b')
+                {
+                    board[i+2][j-1].bTarget++;
+                }
+            }
+            if (j+2<8&&i-1>0)
+            {
+                if (board[i-1][j+2].player!='b')
+                {
+                    board[i-1][j+2].bTarget++;
+                }
+            }
+            if (j+1<8&&i-2>0)
+            {
+                if (board[i-2][j+1].player!='b')
+                {
+                    board[i-2][j+1].bTarget++;
+                }
+            }
+            if (j-2>0&&i-1>0)
+            {
+                if (board[i-1][j-2].player!='b')
+                {
+                    board[i-1][j-2].bTarget++;
+                }
+            }
+            if (j-1>0&&i-2>0)
+            {
+                if (board[i-2][j-1].player!='b')
+                {
+                    board[i-2][j-1].bTarget++;
+                }
+            }
+        }
+    }
+    else if(board[i][j].chessType == "Rook")
+    {
+        if(board[i][j].player == 'w')
+        {
+            if(i+1<8)
+            {
+                for (int k = i+1;k<8;k++)
+                {
+                    if (board[k][j].player=='b')
+                    {
+                        board[k][j].wTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].wTarget++;
+                    }
+                    else if(board[k][j].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(i-1>=0)
+            {
+                for (int k = i-1;k>=0;k--)
+                {
+                    if (board[k][j].player=='b')
+                    {
+                        board[k][j].wTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].wTarget++;
+                    }
+                    else if(board[k][j].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j+1<8)
+            {
+                for (int k = j+1;k<8;k++)
+                {
+                    if (board[i][k].player=='b')
+                    {
+                        board[i][k].wTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].wTarget++;
+                    }
+                    else if(board[i][k].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j-1>=0)
+            {
+                for (int k = j-1;k>=0;k--)
+                {
+                    if (board[i][k].player=='b')
+                    {
+                        board[i][k].wTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].wTarget++;
+                    }
+                    else if(board[i][k].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        else if(board[i][j].player == 'b')
+        {
+            if(i+1<8)
+            {
+                for (int k = i+1;k<8;k++)
+                {
+                    if (board[k][j].player=='w')
+                    {
+                        board[k][j].bTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].bTarget++;
+                    }
+                    else if(board[k][j].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(i-1>=0)
+            {
+                for (int k = i-1;k>=0;k--)
+                {
+                    if (board[k][j].player=='w')
+                    {
+                        board[k][j].bTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].bTarget++;
+                    }
+                    else if(board[k][j].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j+1<8)
+            {
+                for (int k = j+1;k<8;k++)
+                {
+                    if (board[i][k].player=='w')
+                    {
+                        board[i][k].bTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].bTarget++;
+                    }
+                    else if(board[i][k].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j-1>=0)
+            {
+                for (int k = j-1;k>=0;k--)
+                {
+                    if (board[i][k].player=='w')
+                    {
+                        board[i][k].bTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].bTarget++;
+                    }
+                    else if(board[i][k].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if(board[i][j].chessType == "Bishop")
+    {
+        if (board[i][j].player == 'w')
+        {
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j+k<8)
+                {
+                    if (board[i+k][j+k].player=='b')
+                    {
+                        board[i+k][j+k].wTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j+k].player=='0')
+                    {
+                        board[i+k][j+k].wTarget++;
+                    }
+                    else if(board[i+k][j+k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j-k>=0)
+                {
+                    if (board[i+k][j-k].player=='b')
+                    {
+                        board[i+k][j-k].wTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j-k].player=='0')
+                    {
+                        board[i+k][j-k].wTarget++;
+                    }
+                    else if(board[i+k][j-k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j+k<8)
+                {
+                    if (board[i-k][j+k].player=='b')
+                    {
+                        board[i-k][j+k].wTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j+k].player=='0')
+                    {
+                        board[i-k][j+k].wTarget++;
+                    }
+                    else if(board[i-k][j+k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j-k>=0)
+                {
+                    if (board[i-k][j-k].player=='b')
+                    {
+                        board[i-k][j-k].wTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j-k].player=='0')
+                    {
+                        board[i-k][j-k].wTarget++;
+                    }
+                    else if(board[i-k][j-k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        else if (board[i][j].player == 'b')
+        {
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j+k<8)
+                {
+                    if (board[i+k][j+k].player=='w')
+                    {
+                        board[i+k][j+k].bTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j+k].player=='0')
+                    {
+                        board[i+k][j+k].bTarget++;
+                    }
+                    else if(board[i+k][j+k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j-k>=0)
+                {
+                    if (board[i+k][j-k].player=='w')
+                    {
+                        board[i+k][j-k].bTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j-k].player=='0')
+                    {
+                        board[i+k][j-k].bTarget++;
+                    }
+                    else if(board[i+k][j-k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j+k<8)
+                {
+                    if (board[i-k][j+k].player=='w')
+                    {
+                        board[i-k][j+k].bTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j+k].player=='0')
+                    {
+                        board[i-k][j+k].bTarget++;
+                    }
+                    else if(board[i-k][j+k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j-k>=0)
+                {
+                    if (board[i-k][j-k].player=='w')
+                    {
+                        board[i-k][j-k].bTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j-k].player=='0')
+                    {
+                        board[i-k][j-k].bTarget++;
+                    }
+                    else if(board[i-k][j-k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+    else if(board[i][j].chessType == "Queen")
+    {
+        if (board[i][j].player == 'w')
+        {
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j+k<8)
+                {
+                    if (board[i+k][j+k].player=='b')
+                    {
+                        board[i+k][j+k].wTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j+k].player=='0')
+                    {
+                        board[i+k][j+k].wTarget++;
+                    }
+                    else if(board[i+k][j+k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j-k>=0)
+                {
+                    if (board[i+k][j-k].player=='b')
+                    {
+                        board[i+k][j-k].wTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j-k].player=='0')
+                    {
+                        board[i+k][j-k].wTarget++;
+                    }
+                    else if(board[i+k][j-k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j+k<8)
+                {
+                    if (board[i-k][j+k].player=='b')
+                    {
+                        board[i-k][j+k].wTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j+k].player=='0')
+                    {
+                        board[i-k][j+k].wTarget++;
+                    }
+                    else if(board[i-k][j+k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j-k>=0)
+                {
+                    if (board[i-k][j-k].player=='b')
+                    {
+                        board[i-k][j-k].wTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j-k].player=='0')
+                    {
+                        board[i-k][j-k].wTarget++;
+                    }
+                    else if(board[i-k][j-k].player=='w')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if(i+1<8)
+            {
+                for (int k = i+1;k<8;k++)
+                {
+                    if (board[k][j].player=='b')
+                    {
+                        board[k][j].wTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].wTarget++;
+                    }
+                    else if(board[k][j].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(i-1>=0)
+            {
+                for (int k = i-1;k>=0;k--)
+                {
+                    if (board[k][j].player=='b')
+                    {
+                        board[k][j].wTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].wTarget++;
+                    }
+                    else if(board[k][j].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j+1<8)
+            {
+                for (int k = j+1;k<8;k++)
+                {
+                    if (board[i][k].player=='b')
+                    {
+                        board[i][k].wTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].wTarget++;
+                    }
+                    else if(board[i][k].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j-1>=0)
+            {
+                for (int k = j-1;k>=0;k--)
+                {
+                    if (board[i][k].player=='b')
+                    {
+                        board[i][k].wTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].wTarget++;
+                    }
+                    else if(board[i][k].player=='w')
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        else if (board[i][j].player == 'b')
+        {
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j+k<8)
+                {
+                    if (board[i+k][j+k].player=='w')
+                    {
+                        board[i+k][j+k].bTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j+k].player=='0')
+                    {
+                        board[i+k][j+k].bTarget++;
+                    }
+                    else if(board[i+k][j+k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i+k<8&&j-k>=0)
+                {
+                    if (board[i+k][j-k].player=='w')
+                    {
+                        board[i+k][j-k].bTarget++;
+                        break;
+                    }
+                    else if(board[i+k][j-k].player=='0')
+                    {
+                        board[i+k][j-k].bTarget++;
+                    }
+                    else if(board[i+k][j-k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j+k<8)
+                {
+                    if (board[i-k][j+k].player=='w')
+                    {
+                        board[i-k][j+k].bTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j+k].player=='0')
+                    {
+                        board[i-k][j+k].bTarget++;
+                    }
+                    else if(board[i-k][j+k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            for (int k = 1;k<8;k++)
+            {
+                if (i-k>=0&&j-k>=0)
+                {
+                    if (board[i-k][j-k].player=='w')
+                    {
+                        board[i-k][j-k].bTarget++;
+                        break;
+                    }
+                    else if(board[i-k][j-k].player=='0')
+                    {
+                        board[i-k][j-k].bTarget++;
+                    }
+                    else if(board[i-k][j-k].player=='b')
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if(i+1<8)
+            {
+                for (int k = i+1;k<8;k++)
+                {
+                    if (board[k][j].player=='w')
+                    {
+                        board[k][j].bTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].bTarget++;
+                    }
+                    else if(board[k][j].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(i-1>=0)
+            {
+                for (int k = i-1;k>=0;k--)
+                {
+                    if (board[k][j].player=='w')
+                    {
+                        board[k][j].bTarget++;
+                        break;
+                    }else if(board[k][j].player=='0')
+                    {
+                        board[k][j].bTarget++;
+                    }
+                    else if(board[k][j].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j+1<8)
+            {
+                for (int k = j+1;k<8;k++)
+                {
+                    if (board[i][k].player=='w')
+                    {
+                        board[i][k].bTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].bTarget++;
+                    }
+                    else if(board[i][k].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+            if(j-1>=0)
+            {
+                for (int k = j-1;k>=0;k--)
+                {
+                    if (board[i][k].player=='w')
+                    {
+                        board[i][k].bTarget++;
+                        break;
+                    }else if(board[i][k].player=='0')
+                    {
+                        board[i][k].bTarget++;
+                    }
+                    else if(board[i][k].player=='b')
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    else if(board[i][j].chessType == "King")
+    {
+        if (board[i][j].player == 'w')
+        {
+            if(i+1<8)
+            {
+                if(board[i+1][j].player != 'w')
+                {
+                    board[i+1][j].wTarget++;
+                }
+            }
+            if(i-1>=0)
+            {
+                if(board[i-1][j].player != 'w')
+                {
+                    board[i-1][j].wTarget++;
+                }
+            }
+            if(j+1<8)
+            {
+                if(board[i][j+1].player != 'w')
+                {
+                    board[i][j+1].wTarget++;
+                }
+            }
+            if(j-1>=0)
+            {
+                if(board[i][j-1].player != 'w')
+                {
+                    board[i][j-1].wTarget++;
+                }
+            }
+            if(i+1<8&&j+1<8)
+            {
+                if(board[i+1][j+1].player != 'w')
+                {
+                    board[i+1][j+1].wTarget++;
+                }
+            }
+            if(i-1>=0&&j+1<8)
+            {
+                if(board[i-1][j+1].player != 'w')
+                {
+                    board[i-1][j+1].wTarget++;
+                }
+            }
+            if(i+1<8&&j-1>=0)
+            {
+                if(board[i+1][j-1].player != 'w')
+                {
+                    board[i+1][j-1].wTarget++;
+                }
+            }
+            if(i-1>=0&&j-1>=0)
+            {
+                if(board[i-1][j-1].player != 'w')
+                {
+                    board[i-1][j-1].wTarget++;
+                }
+            }
+        }
+        else if (board[i][j].player == 'b')
+        {
+            if(i+1<8)
+            {
+                if(board[i+1][j].player != 'b')
+                {
+                    board[i+1][j].wTarget++;
+                }
+            }
+            if(i-1>=0)
+            {
+                if(board[i-1][j].player != 'b')
+                {
+                    board[i-1][j].wTarget++;
+                }
+            }
+            if(j+1<8)
+            {
+                if(board[i][j+1].player != 'b')
+                {
+                    board[i][j+1].wTarget++;
+                }
+            }
+            if(j-1>=0)
+            {
+                if(board[i][j-1].player != 'b')
+                {
+                    board[i][j-1].wTarget++;
+                }
+            }
+            if(i+1<8&&j+1<8)
+            {
+                if(board[i+1][j+1].player != 'b')
+                {
+                    board[i+1][j+1].wTarget++;
+                }
+            }
+            if(i-1>=0&&j+1<8)
+            {
+                if(board[i-1][j+1].player != 'b')
+                {
+                    board[i-1][j+1].wTarget++;
+                }
+            }
+            if(i+1<8&&j-1>=0)
+            {
+                if(board[i+1][j-1].player != 'b')
+                {
+                    board[i+1][j-1].wTarget++;
+                }
+            }
+            if(i-1>=0&&j-1>=0)
+            {
+                if(board[i-1][j-1].player != 'b')
+                {
+                    board[i-1][j-1].wTarget++;
+                }
+            }
+        }
+    }
+}

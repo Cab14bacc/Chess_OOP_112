@@ -26,6 +26,7 @@ public:
     bool ifPosInBoard(int row, int col);
     int boardChessCondition(int row, int col);//return 1:white chess、2:black、3:no chess on the board
     void eraseChessPiece(string chessType, char player,int index);
+    void computeTarget();
 };
 
 #endif // GAMEMANAGER_H

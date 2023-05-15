@@ -716,6 +716,30 @@ void GameManager::showCanMove(int row, int col)
                 //down left
                 if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != whiteChess && board[row - 1][col - 1].bTarget == 0)
                     board[row - 1][col - 1].canMove = true;
+
+                //left castle
+                if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false)
+                {
+                    if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
+                    {
+                        if(board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
+                        {
+                            board[7][0].canMove = true;
+                        }
+                    }
+                }
+
+                //right castle
+                if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false)
+                {
+                    if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
+                    {
+                        if(board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
+                        {
+                            board[7][7].canMove = true;
+                        }
+                    }
+                }
             }
             else//selectChessPlayer = 'b'
             {
@@ -750,6 +774,30 @@ void GameManager::showCanMove(int row, int col)
                 //down left
                 if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
                     board[row - 1][col - 1].canMove = true;
+
+                //left castle
+                if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false)
+                {
+                    if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
+                    {
+                        if(board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
+                        {
+                            board[0][0].canMove = true;
+                        }
+                    }
+                }
+
+                //right castle
+                if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false)
+                {
+                    if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
+                    {
+                        if(board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
+                        {
+                            board[0][7].canMove = true;
+                        }
+                    }
+                }
             }
         }
     }

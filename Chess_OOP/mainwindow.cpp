@@ -496,8 +496,8 @@ void MainWindow::printInformation()
                 cout << "c";
             }
             cout << "in"<<game.board[i][j].index;
-            //cout << "bt"<<game.board[i][j].bTarget;
-            //cout << "wt"<<game.board[i][j].wTarget;
+            cout << "bt"<<game.board[i][j].bTarget;
+            cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 

@@ -938,28 +938,18 @@ void GameManager::playerMove(int row, int col)
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].player = '0';
 
+                White.pawns[selectChessIndex].y = row - 1;
+                White.pawns[selectChessIndex].x = col;
 
-                if(col == White.pawns[selectChessIndex].x - 1)
-                {
-                    White.pawns[selectChessIndex].y = row - 1;
-                    White.pawns[selectChessIndex].x = col - 1;
-                    board[row - 1][col - 1].chessType = selectChessType;
-                    board[row - 1][col - 1].index = selectChessIndex;
-                    board[row - 1][col - 1].ifHavePiece = true;
-                    board[row - 1][col - 1].player = selectChessPlayer;
+                board[row - 1][col].chessType = selectChessType;
+                board[row - 1][col].index = selectChessIndex;
+                board[row - 1][col].ifHavePiece = true;
+                board[row - 1][col].player = selectChessPlayer;
 
-                }
-                else if(col == White.pawns[selectChessIndex].x + 1)
-                {
-                    White.pawns[selectChessIndex].y = row - 1;
-                    White.pawns[selectChessIndex].x = col + 1;
-
-                    board[row - 1][col + 1].chessType = selectChessType;
-                    board[row - 1][col + 1].index = selectChessIndex;
-                    board[row - 1][col + 1].ifHavePiece = true;
-                    board[row - 1][col + 1].player = selectChessPlayer;
-                }
-
+                board[row][col].chessType = "0";
+                board[row][col].index = 0;
+                board[row][col].ifHavePiece = false;
+                board[row][col].player = '0';
             }
             else
             {
@@ -1101,26 +1091,18 @@ void GameManager::playerMove(int row, int col)
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].player = '0';
 
+                Black.pawns[selectChessIndex].y = row + 1;
+                Black.pawns[selectChessIndex].x = col;
 
-                if(col == Black.pawns[selectChessIndex].x - 1)
-                {
-                    Black.pawns[selectChessIndex].y = row + 1;
-                    Black.pawns[selectChessIndex].x = col - 1;
-                    board[row + 1][col - 1].chessType = selectChessType;
-                    board[row + 1][col - 1].index = selectChessIndex;
-                    board[row + 1][col - 1].ifHavePiece = true;
-                    board[row + 1][col - 1].player = selectChessPlayer;
+                board[row + 1][col].chessType = selectChessType;
+                board[row + 1][col].index = selectChessIndex;
+                board[row + 1][col].ifHavePiece = true;
+                board[row + 1][col].player = selectChessPlayer;
 
-                }
-                else if(col == Black.pawns[selectChessIndex].x + 1)
-                {
-                    Black.pawns[selectChessIndex].y = row + 1;
-                    Black.pawns[selectChessIndex].x = col + 1;
-                    board[row + 1][col + 1].chessType = selectChessType;
-                    board[row + 1][col + 1].index = selectChessIndex;
-                    board[row + 1][col + 1].ifHavePiece = true;
-                    board[row + 1][col + 1].player = selectChessPlayer;
-                }
+                board[row][col].chessType = "0";
+                board[row][col].index = 0;
+                board[row][col].ifHavePiece = false;
+                board[row][col].player = '0';
 
             }
             else

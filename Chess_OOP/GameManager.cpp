@@ -1313,14 +1313,14 @@ void check(int i,int j,ViewManager board[][8])
     {
         if(board[i][j].player == 'w')
         {
-            if (j+1<8&&i-1>0)
+            if (j+1<8&&i-1>=0)
             {
                 if (board[i-1][j+1].player!='w')
                 {
                     board[i-1][j+1].wTarget++;
                 }
             }
-            if (j-1>0&&i-1>0)
+            if (j-1>=0&&i-1>=0)
             {
                 if (board[i-1][j-1].player!='w')
                 {
@@ -1337,7 +1337,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+1][j+1].bTarget++;
                 }
             }
-            if (j-1>0&&i+1<8)
+            if (j-1>=0&&i+1<8)
             {
                 if (board[i+1][j-1].player!='b')
                 {

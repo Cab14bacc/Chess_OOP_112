@@ -647,5 +647,5 @@ void MainWindow::showResultWindow(int whoWin)
     layout->addWidget(quitBtn);
 
     dialog->setLayout(layout);
-    dialog->exec();
+    dialog->exec();//display
 }

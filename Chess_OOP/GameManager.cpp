@@ -275,6 +275,14 @@ void GameManager::computeTarget()
     {
         for (int j = 0;j < 8;j++)
         {
+            board[i][j].wTarget = 0;
+            board[i][j].bTarget = 0;
+        }
+    }
+    for (int i = 0;i<8;i++)
+    {
+        for (int j = 0;j < 8;j++)
+        {
             if (board[i][j].ifHavePiece)
             {
                 check(i,j,board);

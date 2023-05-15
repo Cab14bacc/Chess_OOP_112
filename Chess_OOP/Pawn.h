@@ -8,5 +8,7 @@ public:
     int x;
     int y;
     int index;
+    bool ifmove2Step = false;
+    bool inNextTurn = false;
 };
 #endif // PAWN_H

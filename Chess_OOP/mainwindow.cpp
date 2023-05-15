@@ -446,6 +446,7 @@ void MainWindow::on_newGame_clicked()
 
     game.computeTarget();
     game.recordCurBoard();
+    game.steps.push_back(game.curBoard);
     printInformation();
 }
 
@@ -505,3 +506,15 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 }
+
+void MainWindow::on_undo_clicked()
+{
+
+}
+
+
+void MainWindow::on_redo_clicked()
+{
+
+}
+

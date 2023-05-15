@@ -1188,6 +1188,8 @@ void GameManager::playerMove(int row, int col)
 
     recordCurBoard();
     curstep++;
+    steps.resize(curstep);
+    steps[curstep - 1] = curBoard;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -2331,5 +2333,4 @@ void GameManager::recordCurBoard()
     }
 
     curBoard.playerTurn = playerTurn;
-    steps.push_back(curBoard);
 }

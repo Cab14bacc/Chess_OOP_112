@@ -1003,6 +1003,7 @@ void GameManager::playerMove(int row, int col)
             board[row][col].canMove = false;
         }
     }
+    playerTurn = selectChessPlayer == 'w' ? 'b':'w';
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)

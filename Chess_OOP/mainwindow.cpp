@@ -588,3 +588,8 @@ void MainWindow::updateTimer()
         //set black lose
     }
 }
+
+void MainWindow::setSound()
+{
+    startSound = new QSound("./sounds/OpenCell.wav",this);
+}

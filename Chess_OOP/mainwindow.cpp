@@ -631,7 +631,8 @@ void MainWindow::showResultWindow(int whoWin)
 
     QPushButton *replayBtn = new QPushButton("Replay", dialog);
     connect(replayBtn, &QPushButton::clicked, [=](){
-        dialog->close();
+        dialog->close();//close window
+        //function to execute
         on_newGame_clicked();
     });
 
@@ -639,7 +640,8 @@ void MainWindow::showResultWindow(int whoWin)
 
     QPushButton *quitBtn = new QPushButton("Quit", dialog);
     connect(quitBtn, &QPushButton::clicked, [=](){
-        dialog->close();
+        dialog->close();//close window
+        //function to execute
         qApp->quit();
     });
     layout->addWidget(quitBtn);

@@ -29,7 +29,7 @@ void GameManager::showCanMove(int row, int col)
             {
                 if(row == 6)
                 {
-                    if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false)
+                    if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false && board[row - 1][col].ifHavePiece == false)
                     {
                         board[row - 2][col].canMove = true;
                     }
@@ -54,7 +54,7 @@ void GameManager::showCanMove(int row, int col)
             {
                 if(row == 1)
                 {
-                    if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false)
+                    if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false && board[row + 1][col].ifHavePiece == false)
                     {
                         board[row + 2][col].canMove = true;
                     }
@@ -79,7 +79,7 @@ void GameManager::showCanMove(int row, int col)
         else if(selectChessType == "Rook")
         {
             //up
-            for(int i = 1;i<8;i++)
+            for(int i = 1; i < 8;i++)
             {
                 if(!ifPosInBoard(row + i, col))
                     break;
@@ -886,7 +886,7 @@ void GameManager::playerMove(int row, int col)
             board[row][col].player = selectChessPlayer;
         }
 
-
+        playerTurn = 'b';//change playerTurn
     }
     else if(selectChessPlayer == 'b')
     {
@@ -997,6 +997,8 @@ void GameManager::playerMove(int row, int col)
             board[row][col].player = selectChessPlayer;
 
         }
+
+        playerTurn = 'w';//change playerTurn
     }
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {

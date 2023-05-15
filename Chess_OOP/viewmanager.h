@@ -15,7 +15,6 @@ public:
     string chessType;
     int index;
     bool canMove;
-
 };
 
 #endif // VIEWMANAGER_H

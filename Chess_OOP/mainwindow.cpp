@@ -171,11 +171,21 @@ void MainWindow::split(string Words[], QString Name)
 void MainWindow::on_newGame_clicked()
 {
     game.playerTurn = 'w';
+    game.Black.pawns.clear();
+    game.Black.rooks.clear();
+    game.Black.knights.clear();
+    game.Black.bishops.clear();
+    game.Black.queens.clear();
+    game.White.pawns.clear();
+    game.White.rooks.clear();
+    game.White.knights.clear();
+    game.White.bishops.clear();
+    game.White.queens.clear();
+
     for(int i =0;i<8;i++)
     {
         for(int j=0;j<8;j++)
         {
-            game.board[i][j].canMove = false;
             game.board[i][j].ifHavePiece = false;
             game.board[i][j].wTarget = 0;
             game.board[i][j].bTarget = 0;
@@ -191,7 +201,7 @@ void MainWindow::on_newGame_clicked()
     QString row;
     QString col;
     MyLabel *lab;
-    King *newKing = new King;
+    King *newKing;
     Queen *newQueen = new Queen;
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
@@ -200,6 +210,7 @@ void MainWindow::on_newGame_clicked()
 
     for(int i = 0; i < 8; i++)
     {
+        //newPawn = new Pawn;
         row = QString::number(1);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -211,6 +222,7 @@ void MainWindow::on_newGame_clicked()
         game.board[1][i].chessType = "Pawn";
         game.board[1][i].ifHavePiece = true;
         game.board[1][i].index = i;
+        //newPawn = new Pawn;
         row = QString::number(6);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -225,6 +237,7 @@ void MainWindow::on_newGame_clicked()
     }
 
     //set black rook
+    //newRook = new Rook;
     row = QString::number(0);
     col = QString::number(0);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -236,6 +249,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][0].chessType = "Rook";
     game.board[0][0].ifHavePiece = true;
     game.board[0][0].index = 0;
+    //newRook = new Rook;
     row = QString::number(0);
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -249,6 +263,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][7].index = 1;
 
     //set black Knight
+    //newKnight = new Knight;
     row = QString::number(0);
     col = QString::number(1);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -260,6 +275,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][1].chessType = "Knight";
     game.board[0][1].ifHavePiece = true;
     game.board[0][1].index = 0;
+    //newKnight = new Knight;
     row = QString::number(0);
     col = QString::number(6);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -273,6 +289,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][6].index = 1;
 
     //set black Bishop
+    //newBishop = new Bishop;
     row = QString::number(0);
     col = QString::number(2);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -284,6 +301,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][2].chessType = "Bishop";
     game.board[0][2].ifHavePiece = true;
     game.board[0][2].index = 0;
+    //newBishop = new Bishop;
     row = QString::number(0);
     col = QString::number(5);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -297,6 +315,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][5].index = 1;
 
     //set black Queen
+    //newQueen = new Queen;
     row = QString::number(0);
     col = QString::number(3);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -322,6 +341,7 @@ void MainWindow::on_newGame_clicked()
     game.board[0][4].index = 0;
 
     //set white Rook
+    //newRook = new Rook;
     row = QString::number(7);
     col = QString::number(0);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -333,19 +353,21 @@ void MainWindow::on_newGame_clicked()
     game.board[7][0].chessType = "Rook";
     game.board[7][0].ifHavePiece = true;
     game.board[7][0].index = 0;
+    //newRook = new Rook;
     row = QString::number(7);
     col = QString::number(7);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconWRook);
-    game.White.rooks.push_back(*newRook);
     newRook->x = 7;
     newRook->y = 7;
+    game.White.rooks.push_back(*newRook);
     game.board[7][7].player = 'w';
     game.board[7][7].chessType = "Rook";
     game.board[7][7].ifHavePiece = true;
     game.board[7][7].index = 1;
 
     //set white Knight
+    //newKnight = new Knight;
     row = QString::number(7);
     col = QString::number(1);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -357,6 +379,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][1].chessType = "Knight";
     game.board[7][1].ifHavePiece = true;
     game.board[7][1].index = 0;
+    //newKnight = new Knight;
     row = QString::number(7);
     col = QString::number(6);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -370,6 +393,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][6].index = 1;
 
     //set white Bishop
+    //newBishop = new Bishop;
     row = QString::number(7);
     col = QString::number(2);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -381,6 +405,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][2].chessType = "Bishop";
     game.board[7][2].ifHavePiece = true;
     game.board[7][2].index = 0;
+    //newBishop = new Bishop;
     row = QString::number(7);
     col = QString::number(5);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -394,6 +419,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][5].index = 1;
 
     //set white Queen
+    //newQueen = new Queen;
     row = QString::number(7);
     col = QString::number(3);
     lab = this->findChild<MyLabel*>(row + " " + col);
@@ -468,8 +494,9 @@ void MainWindow::printInformation()
             {
                 cout << "c";
             }
-            cout << "bt"<<game.board[i][j].bTarget;
-            cout << "wt"<<game.board[i][j].wTarget;
+            cout << "in"<<game.board[i][j].index;
+            //cout << "bt"<<game.board[i][j].bTarget;
+            //cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 

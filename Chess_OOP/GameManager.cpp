@@ -851,6 +851,7 @@ void GameManager::playerMove(int row, int col)
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].player = '0';
                 White.rooks[selectChessIndex].y = row;
                 White.rooks[selectChessIndex].x = col;
+                White.rooks[selectChessIndex].ifmove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -963,6 +964,7 @@ void GameManager::playerMove(int row, int col)
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].player = '0';
                 Black.rooks[selectChessIndex].y = row;
                 Black.rooks[selectChessIndex].x = col;
+                Black.rooks[selectChessIndex].ifmove = true;
             }
             else if(selectChessType == "Bishop")
             {

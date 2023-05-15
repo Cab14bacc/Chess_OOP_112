@@ -5,6 +5,8 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QSound>
+#define whiteWin 1
+#define blackWin 2
 
 using namespace std;;
 
@@ -36,6 +38,8 @@ public:
     void setTime();
 
     void setSound();
+
+    void showResultWindow(int whoWin);
 
 private slots:
     void labelClicked();

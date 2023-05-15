@@ -488,18 +488,18 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
-            cout << i<<j;
+            //cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
-                cout << game.board[i][j].player;
-                cout << game.board[i][j].chessType;
+                //cout << game.board[i][j].player;
+                //cout << game.board[i][j].chessType;
             }
 
             if(game.board[i][j].canMove)
             {
-                cout << "c";
+                //cout << "c";
             }
-            cout << "in"<<game.board[i][j].index;
+            //cout << "in"<<game.board[i][j].index;
             cout << "bt"<<game.board[i][j].bTarget;
             cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";

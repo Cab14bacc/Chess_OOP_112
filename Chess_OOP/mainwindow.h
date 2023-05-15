@@ -27,6 +27,8 @@ public:
 
     void update();
 
+    void printInformation();
+
 private slots:
     void labelClicked();
 

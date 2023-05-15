@@ -1,5 +1,7 @@
-
+#include <iostream>
 #include "GameManager.h"
+
+using namespace std;
 
 GameManager::GameManager()
 {
@@ -25,6 +27,14 @@ void GameManager::showCanMove(int row, int col)
         {
             if(selectChessPlayer == 'w')
             {
+                if(row == 6)
+                {
+                    if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false)
+                    {
+                        board[row - 2][col].canMove = true;
+                    }
+                }
+
                 if(ifPosInBoard(row - 1, col) && board[row - 1][col].ifHavePiece == false)
                 {
                     board[row - 1][col].canMove = true;
@@ -42,6 +52,14 @@ void GameManager::showCanMove(int row, int col)
             }
             else//selectChessPlayer = 'b'
             {
+                if(row == 1)
+                {
+                    if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false)
+                    {
+                        board[row + 2][col].canMove = true;
+                    }
+                }
+
                 if(ifPosInBoard(row + 1, col) && board[row + 1][col].ifHavePiece == false)
                 {
                     board[row + 1][col].canMove = true;
@@ -741,6 +759,13 @@ void GameManager::playerMove(int row, int col)
 {
     if(board[row][col].canMove != true)
     {
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                board[i][j].canMove = false;
+            }
+        }
         return;
     }
 
@@ -795,6 +820,7 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[White.king.y][White.king.x].ifHavePiece = false;//set original position ifHavePiece = false
                 White.king.y = row;
                 White.king.x = col;
                 board[row][col].chessType = selectChessType;
@@ -908,6 +934,7 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[Black.king.y][Black.king.x].ifHavePiece = false;
                 Black.king.y = row;
                 Black.king.x = col;
                 board[row][col].chessType = selectChessType;
@@ -982,26 +1009,25 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
 {
     if(player == 'w')
     {
-
         if(chessType == "Pawn")
         {
-            White.pawns.erase(White.pawns.begin()+index);
+            White.pawns.erase(White.pawns.begin() + index);
         }
         else if(chessType == "Rook")
         {
-            White.rooks.erase(White.rooks.begin()+index);
+            White.rooks.erase(White.rooks.begin() + index);
         }
         else if(chessType == "Bishop")
         {
-            White.bishops.erase(White.bishops.begin()+index);
+            White.bishops.erase(White.bishops.begin() + index);
         }
         else if(chessType == "Knight")
         {
-            White.knights.erase(White.knights.begin()+index);
+            White.knights.erase(White.knights.begin() + index);
         }
         else if(chessType == "Queen")
         {
-            White.queens.erase(White.queens.begin()+index);
+            White.queens.erase(White.queens.begin() + index);
         }
         //        else if(chessType == "King")
         //        {
@@ -1045,7 +1071,7 @@ bool GameManager::ifGameOver()
 
 bool GameManager::ifPosInBoard(int row, int col)
 {
-    if(row > 0 && row < 8 && col > 0 && col < 8)
+    if(row >= 0 && row < 8 && col >= 0 && col < 8)
     {
         return true;
     }

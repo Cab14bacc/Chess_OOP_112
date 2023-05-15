@@ -886,7 +886,7 @@ void GameManager::playerMove(int row, int col)
             board[row][col].player = selectChessPlayer;
         }
 
-
+        playerTurn = 'b';//change playerTurn
     }
     else if(selectChessPlayer == 'b')
     {
@@ -997,6 +997,8 @@ void GameManager::playerMove(int row, int col)
             board[row][col].player = selectChessPlayer;
 
         }
+
+        playerTurn = 'w';//change playerTurn
     }
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {

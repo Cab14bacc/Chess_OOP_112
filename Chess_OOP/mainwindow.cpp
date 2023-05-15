@@ -23,6 +23,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setBoard();//set labels and put color on it
     initIcon();//just to set images
+    setSound();
+    startSound->play();//plat BGM
+    startSound->setLoops(-1);//repeat play
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +66,7 @@ void MainWindow::setBoard()
 //if label clicled, call this function
 void MainWindow::labelClicked()
 {
+    clickSound->play();
     MyLabel *lab = qobject_cast<MyLabel*>(sender());
     QString Name = lab->objectName();
     string words[2];
@@ -170,6 +174,7 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
+    clickSound->play();
     setTime();
     game.playerTurn = 'w';
     game.Black.pawns.clear();
@@ -513,6 +518,8 @@ void MainWindow::printInformation()
 
 void MainWindow::on_undo_clicked()
 {
+    clickSound->play();
+
     if(game.curStep != 0)
     {
         game.curStep--;
@@ -524,6 +531,8 @@ void MainWindow::on_undo_clicked()
 
 void MainWindow::on_redo_clicked()
 {
+    clickSound->play();
+
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;
@@ -546,6 +555,7 @@ void MainWindow::loadBoard()
             game.board[i][j].chessType = game.steps[game.curStep].curBoard[i][j].chessType;
             game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
             game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
+            game.playerTurn = game.steps[game.curStep].playerTurn;
         }
     }
 }
@@ -591,5 +601,6 @@ void MainWindow::updateTimer()
 
 void MainWindow::setSound()
 {
-    startSound = new QSound("./sounds/OpenCell.wav",this);
+    startSound = new QSound("./sounds/RoadtoDazir.wav",this);
+    clickSound = new QSound("./sounds/OpenCell.wav",this);
 }

@@ -4,6 +4,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QSound>
 
 using namespace std;;
 
@@ -33,6 +34,8 @@ public:
     void loadBoard();
 
     void setTime();
+
+    void setSound();
 
 private slots:
     void labelClicked();
@@ -65,6 +68,8 @@ private:
     QTimer *blackTimer = new QTimer;
     int whiteCounter;
     int blackCounter;
+    QSound *startSound;
+    QSound *clickSound;
 };
 
 #endif // MAINWINDOW_H

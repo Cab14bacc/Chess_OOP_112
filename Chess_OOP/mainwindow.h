@@ -29,6 +29,8 @@ public:
 
     void printInformation();
 
+    void loadBoard();
+
 private slots:
     void labelClicked();
 

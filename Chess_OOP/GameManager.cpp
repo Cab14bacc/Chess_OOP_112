@@ -5,6 +5,7 @@ using namespace std;
 
 GameManager::GameManager()
 {
+    curStep = 0;
     White.setPlayer('w');
     Black.setPlayer('b');
     clickTimes = 1;
@@ -1187,9 +1188,9 @@ void GameManager::playerMove(int row, int col)
     }
 
     recordCurBoard();
-    curstep++;
-    steps.resize(curstep);
-    steps[curstep - 1] = curBoard;
+    curStep++;
+    steps.resize(curStep + 1);
+    steps[curStep] = curBoard;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -2271,64 +2272,18 @@ void check(int i,int j,ViewManager board[][8])
 
 void GameManager::recordCurBoard()
 {
+
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
         {
-            if(board[i][j].player == 'w')
-            {
-                if(board[i][j].chessType == "Pawn")
-                {
-                    curBoard.curBoard[i][j] = 'P';
-                }
-                else if(board[i][j].chessType == "Rook")
-                {
-                    curBoard.curBoard[i][j] = 'R';
-                }
-                else if(board[i][j].chessType == "Knight")
-                {
-                    curBoard.curBoard[i][j] = 'K';
-                }
-                else if(board[i][j].chessType == "Bishop")
-                {
-                    curBoard.curBoard[i][j] = 'B';
-                }
-                else if(board[i][j].chessType == "Queen")
-                {
-                    curBoard.curBoard[i][j] = 'Q';
-                }
-                else if(board[i][j].chessType == "King")
-                {
-                    curBoard.curBoard[i][j] = 'K';
-                }
-            }
-            else//board[i][j].player == 'b'
-            {
-                if(board[i][j].chessType == "Pawn")
-                {
-                    curBoard.curBoard[i][j] = 'p';
-                }
-                else if(board[i][j].chessType == "Rook")
-                {
-                    curBoard.curBoard[i][j] = 'r';
-                }
-                else if(board[i][j].chessType == "Knight")
-                {
-                    curBoard.curBoard[i][j] = 'k';
-                }
-                else if(board[i][j].chessType == "Bishop")
-                {
-                    curBoard.curBoard[i][j] = 'b';
-                }
-                else if(board[i][j].chessType == "Queen")
-                {
-                    curBoard.curBoard[i][j] = 'q';
-                }
-                else if(board[i][j].chessType == "King")
-                {
-                    curBoard.curBoard[i][j] = 'k';
-                }
-            }
+            curBoard.curBoard[i][j].ifHavePiece = board[i][j].ifHavePiece;
+            curBoard.curBoard[i][j].wTarget = board[i][j].wTarget;
+            curBoard.curBoard[i][j].bTarget = board[i][j].bTarget;
+            curBoard.curBoard[i][j].player = board[i][j].player;
+            curBoard.curBoard[i][j].chessType = board[i][j].chessType;
+            curBoard.curBoard[i][j].index = board[i][j].index;
+            curBoard.curBoard[i][j].canMove = board[i][j].canMove;
         }
     }
 

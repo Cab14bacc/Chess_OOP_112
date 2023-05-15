@@ -16,7 +16,7 @@ class GameManager
 {
 public:
     GameManager();
-    int curstep = 0;
+    int curStep;
     CurBoard curBoard;
     vector <CurBoard> steps;
     Player White;

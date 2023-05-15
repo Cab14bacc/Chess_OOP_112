@@ -1,11 +1,11 @@
-
+#include "viewmanager.h"
 #ifndef CURBOARD_H
 #define CURBOARD_H
 class CurBoard
 {
 public:
-    char curBoard[8][8];
-    char playerTurn;
+    ViewManager curBoard[8][8];
+    char playerTurn = 'w';
 };
 
 #endif // CURBOARD_H

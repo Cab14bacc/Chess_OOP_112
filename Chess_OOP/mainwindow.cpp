@@ -181,6 +181,8 @@ void MainWindow::on_newGame_clicked()
     game.White.knights.clear();
     game.White.bishops.clear();
     game.White.queens.clear();
+    game.curStep = 0;
+    game.steps.clear();
 
     for(int i =0;i<8;i++)
     {
@@ -505,16 +507,45 @@ void MainWindow::printInformation()
 
         cout << "\n";
     }
+
+    cout << game.curStep<<" "<<game.steps.size();
 }
 
 void MainWindow::on_undo_clicked()
 {
-
+    if(game.curStep != 0)
+    {
+        game.curStep--;
+        loadBoard();
+        update();
+        printInformation();
+    }
 }
-
 
 void MainWindow::on_redo_clicked()
 {
-
+    if(game.curStep != game.steps.size() - 1)
+    {
+        game.curStep++;
+        loadBoard();
+        update();
+        printInformation();
+    }
 }
 
+void MainWindow::loadBoard()
+{
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
+            game.board[i][j].wTarget = game.steps[game.curStep].curBoard[i][j].wTarget;
+            game.board[i][j].bTarget = game.steps[game.curStep].curBoard[i][j].bTarget;
+            game.board[i][j].player = game.steps[game.curStep].curBoard[i][j].player;
+            game.board[i][j].chessType = game.steps[game.curStep].curBoard[i][j].chessType;
+            game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
+            game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
+        }
+    }
+}

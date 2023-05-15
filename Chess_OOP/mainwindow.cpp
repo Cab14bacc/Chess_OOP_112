@@ -334,7 +334,7 @@ void MainWindow::on_newGame_clicked()
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconBKing);
     game.Black.king.x = 4;
-    game.Black.king.x = 0;
+    game.Black.king.y = 0;
     game.board[0][4].player = 'b';
     game.board[0][4].chessType = "King";
     game.board[0][4].ifHavePiece = true;
@@ -444,6 +444,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][4].ifHavePiece = true;
     game.board[7][4].index = 1;
 
+    game.computeTarget();
     printInformation();
 }
 

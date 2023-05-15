@@ -170,6 +170,24 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
+    game.playerTurn = 'w';
+    for(int i =0;i<8;i++)
+    {
+        for(int j=0;j<8;j++)
+        {
+            game.board[i][j].canMove = false;
+            game.board[i][j].ifHavePiece = false;
+            game.board[i][j].wTarget = 0;
+            game.board[i][j].bTarget = 0;
+            game.board[i][j].player = '0';
+            game.board[i][j].chessType = "0";
+            game.board[i][j].index = 0;
+            game.board[i][j].canMove = false;
+        }
+    }
+
+    update();
+
     QString row;
     QString col;
     MyLabel *lab;

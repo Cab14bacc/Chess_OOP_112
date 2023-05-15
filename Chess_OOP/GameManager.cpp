@@ -29,7 +29,7 @@ void GameManager::showCanMove(int row, int col)
             {
                 if(row == 6)
                 {
-                    if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false)
+                    if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false && board[row - 1][col].ifHavePiece == false)
                     {
                         board[row - 2][col].canMove = true;
                     }
@@ -54,7 +54,7 @@ void GameManager::showCanMove(int row, int col)
             {
                 if(row == 1)
                 {
-                    if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false)
+                    if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false && board[row + 1][col].ifHavePiece == false)
                     {
                         board[row + 2][col].canMove = true;
                     }

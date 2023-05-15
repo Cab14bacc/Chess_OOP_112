@@ -8,6 +8,6 @@ public:
     int x;
     int y;
     int index;
-    bool ifmove = false;
+    bool ifMove = false;
 };
 #endif // ROOK_H

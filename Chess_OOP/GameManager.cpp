@@ -778,6 +778,8 @@ void GameManager::playerMove(int row, int col)
     {
         if(selectChessType == "King")
         {
+            White.king.ifMove = true;
+
             if(board[row][col].chessType == "Rook" && board[row][col].player == 'w')
             {
 
@@ -851,7 +853,7 @@ void GameManager::playerMove(int row, int col)
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].player = '0';
                 White.rooks[selectChessIndex].y = row;
                 White.rooks[selectChessIndex].x = col;
-                White.rooks[selectChessIndex].ifmove = true;
+                White.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -893,6 +895,8 @@ void GameManager::playerMove(int row, int col)
     {
         if(selectChessType == "King")
         {
+            Black.king.ifMove = true;
+
             if(board[row][col].chessType == "Rook" && board[row][col].player == 'b')
             {
 
@@ -964,7 +968,7 @@ void GameManager::playerMove(int row, int col)
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].player = '0';
                 Black.rooks[selectChessIndex].y = row;
                 Black.rooks[selectChessIndex].x = col;
-                Black.rooks[selectChessIndex].ifmove = true;
+                Black.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {

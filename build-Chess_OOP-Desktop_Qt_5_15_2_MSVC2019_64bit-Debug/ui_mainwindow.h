@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -29,6 +30,8 @@ public:
     QPushButton *newGame;
     QPushButton *undo;
     QPushButton *redo;
+    QLabel *blackTime;
+    QLabel *whiteTime;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -62,6 +65,16 @@ public:
         redo->setObjectName(QString::fromUtf8("redo"));
         redo->setGeometry(QRect(630, 330, 171, 51));
         redo->setFont(font1);
+        blackTime = new QLabel(centralwidget);
+        blackTime->setObjectName(QString::fromUtf8("blackTime"));
+        blackTime->setGeometry(QRect(610, 20, 181, 51));
+        QFont font2;
+        font2.setPointSize(16);
+        blackTime->setFont(font2);
+        whiteTime = new QLabel(centralwidget);
+        whiteTime->setObjectName(QString::fromUtf8("whiteTime"));
+        whiteTime->setGeometry(QRect(600, 480, 191, 51));
+        whiteTime->setFont(font2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -82,6 +95,8 @@ public:
         newGame->setText(QCoreApplication::translate("MainWindow", "New Game", nullptr));
         undo->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
         redo->setText(QCoreApplication::translate("MainWindow", "Redo", nullptr));
+        blackTime->setText(QString());
+        whiteTime->setText(QString());
     } // retranslateUi
 
 };

@@ -170,6 +170,7 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
+    setTime();
     game.playerTurn = 'w';
     game.Black.pawns.clear();
     game.Black.rooks.clear();
@@ -203,7 +204,6 @@ void MainWindow::on_newGame_clicked()
     QString row;
     QString col;
     MyLabel *lab;
-    King *newKing;
     Queen *newQueen = new Queen;
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
@@ -547,5 +547,44 @@ void MainWindow::loadBoard()
             game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
             game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
         }
+    }
+}
+
+void MainWindow::setTime()
+{
+    connect(whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    whiteTimer->start(1000);
+    connect(blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    blackTimer->start(1000);
+    whiteCounter = 10 * 60;
+    blackCounter = 10 * 60;
+    ui->whiteTime->setAlignment(Qt::AlignCenter);
+    ui->blackTime->setAlignment(Qt::AlignCenter);
+    ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
+    ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
+}
+
+void MainWindow::updateTimer()
+{
+    if(game.playerTurn == 'w')
+    {
+        whiteCounter--;
+        ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
+    }
+    else//game.playerTurn == 'b'
+    {
+        blackCounter--;
+        ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
+    }
+
+    if(whiteCounter == 0)
+    {
+        whiteTimer->stop();
+        //set white lose
+    }
+    else//blackCounter == 0
+    {
+        blackTimer->stop();
+        //set black lose
     }
 }

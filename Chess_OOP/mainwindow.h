@@ -3,6 +3,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 
 using namespace std;;
 
@@ -31,6 +32,8 @@ public:
 
     void loadBoard();
 
+    void setTime();
+
 private slots:
     void labelClicked();
 
@@ -39,6 +42,8 @@ private slots:
     void on_undo_clicked();
 
     void on_redo_clicked();
+
+    void updateTimer();
 
 private:
     Ui::MainWindow *ui;
@@ -56,6 +61,10 @@ private:
     QPixmap *iconBKnight;
     QPixmap *iconBRook;
     QPixmap *iconBPawn;
+    QTimer *whiteTimer = new QTimer;
+    QTimer *blackTimer = new QTimer;
+    int whiteCounter;
+    int blackCounter;
 };
 
 #endif // MAINWINDOW_H

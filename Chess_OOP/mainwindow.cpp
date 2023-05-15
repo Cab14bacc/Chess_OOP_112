@@ -445,6 +445,7 @@ void MainWindow::on_newGame_clicked()
     game.board[7][4].index = 1;
 
     game.computeTarget();
+    game.recordCurBoard();
     printInformation();
 }
 

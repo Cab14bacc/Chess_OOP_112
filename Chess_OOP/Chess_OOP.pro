@@ -19,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     Bishop.h \
+    CurBoard.h \
     GameManager.h \
     King.h \
     Knight.h \

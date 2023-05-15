@@ -768,7 +768,7 @@ void GameManager::showCanMove(int row, int col)
                 {
                     if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
                     {
-                        if(board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
+                        if(board[7][4].bTarget == 0 && board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
                         {
                             board[7][0].canMove = true;
                         }
@@ -780,7 +780,7 @@ void GameManager::showCanMove(int row, int col)
                 {
                     if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
                     {
-                        if(board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
+                        if(board[7][4].bTarget == 0 && board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
                         {
                             board[7][7].canMove = true;
                         }
@@ -826,7 +826,7 @@ void GameManager::showCanMove(int row, int col)
                 {
                     if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
                     {
-                        if(board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
+                        if(board[0][4].wTarget == 0 && board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
                         {
                             board[0][0].canMove = true;
                         }
@@ -838,7 +838,7 @@ void GameManager::showCanMove(int row, int col)
                 {
                     if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
                     {
-                        if(board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
+                        if(board[0][4].wTarget == 0 && board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
                         {
                             board[0][7].canMove = true;
                         }
@@ -1186,6 +1186,8 @@ void GameManager::playerMove(int row, int col)
         }
     }
 
+    recordCurBoard();
+    curstep++;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -2263,4 +2265,71 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+}
+
+void GameManager::recordCurBoard()
+{
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(board[i][j].player == 'w')
+            {
+                if(board[i][j].chessType == "Pawn")
+                {
+                    curBoard.curBoard[i][j] = 'P';
+                }
+                else if(board[i][j].chessType == "Rook")
+                {
+                    curBoard.curBoard[i][j] = 'R';
+                }
+                else if(board[i][j].chessType == "Knight")
+                {
+                    curBoard.curBoard[i][j] = 'K';
+                }
+                else if(board[i][j].chessType == "Bishop")
+                {
+                    curBoard.curBoard[i][j] = 'B';
+                }
+                else if(board[i][j].chessType == "Queen")
+                {
+                    curBoard.curBoard[i][j] = 'Q';
+                }
+                else if(board[i][j].chessType == "King")
+                {
+                    curBoard.curBoard[i][j] = 'K';
+                }
+            }
+            else//board[i][j].player == 'b'
+            {
+                if(board[i][j].chessType == "Pawn")
+                {
+                    curBoard.curBoard[i][j] = 'p';
+                }
+                else if(board[i][j].chessType == "Rook")
+                {
+                    curBoard.curBoard[i][j] = 'r';
+                }
+                else if(board[i][j].chessType == "Knight")
+                {
+                    curBoard.curBoard[i][j] = 'k';
+                }
+                else if(board[i][j].chessType == "Bishop")
+                {
+                    curBoard.curBoard[i][j] = 'b';
+                }
+                else if(board[i][j].chessType == "Queen")
+                {
+                    curBoard.curBoard[i][j] = 'q';
+                }
+                else if(board[i][j].chessType == "King")
+                {
+                    curBoard.curBoard[i][j] = 'k';
+                }
+            }
+        }
+    }
+
+    curBoard.playerTurn = playerTurn;
+    steps.push_back(curBoard);
 }

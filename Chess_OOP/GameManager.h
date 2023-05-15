@@ -1,5 +1,9 @@
 #include "Player.h"
 #include "viewmanager.h"
+#include "CurBoard.h"
+#include <vector>
+
+using namespace std;
 
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
@@ -12,6 +16,9 @@ class GameManager
 {
 public:
     GameManager();
+    int curstep = 0;
+    CurBoard curBoard;
+    vector <CurBoard> steps;
     Player White;
     Player Black;
     ViewManager board[8][8];
@@ -27,6 +34,7 @@ public:
     int boardChessCondition(int row, int col);//return 1:white chess、2:black、3:no chess on the board
     void eraseChessPiece(string chessType, char player,int index);
     void computeTarget();
+    void recordCurBoard();
 };
 
 #endif // GAMEMANAGER_H

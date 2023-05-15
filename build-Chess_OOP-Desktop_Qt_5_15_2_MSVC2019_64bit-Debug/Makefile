@@ -260,12 +260,16 @@ Makefile: ..\Chess_OOP\Chess_OOP.pro C:\QT\5.15.2\msvc2019_64\mkspecs\win32-msvc
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\yacc.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\lex.prf \
 		..\Chess_OOP\Chess_OOP.pro \
+		C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimedia.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgets.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Gui.prl \
+		C:\QT\5.15.2\msvc2019_64\lib\Qt5Network.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Core.prl \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf \
+		C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimediad.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgetsd.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Guid.prl \
+		C:\QT\5.15.2\msvc2019_64\lib\Qt5Networkd.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Cored.prl
 	$(QMAKE) -o Makefile ..\Chess_OOP\Chess_OOP.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf:
@@ -444,12 +448,16 @@ C:\QT\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\yacc.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\lex.prf:
 ..\Chess_OOP\Chess_OOP.pro:
+C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimedia.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgets.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Gui.prl:
+C:\QT\5.15.2\msvc2019_64\lib\Qt5Network.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Core.prl:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf:
+C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimediad.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgetsd.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Guid.prl:
+C:\QT\5.15.2\msvc2019_64\lib\Qt5Networkd.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Cored.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\Chess_OOP\Chess_OOP.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"

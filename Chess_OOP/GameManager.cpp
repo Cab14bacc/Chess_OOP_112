@@ -79,7 +79,7 @@ void GameManager::showCanMove(int row, int col)
         else if(selectChessType == "Rook")
         {
             //up
-            for(int i = 1;i<8;i++)
+            for(int i = 1; i < 8;i++)
             {
                 if(!ifPosInBoard(row + i, col))
                     break;

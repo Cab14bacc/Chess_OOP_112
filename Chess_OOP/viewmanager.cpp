@@ -10,4 +10,3 @@ ViewManager::ViewManager()
     index = 0;
     canMove = false;
 }
-

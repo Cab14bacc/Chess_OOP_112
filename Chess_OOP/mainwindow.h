@@ -27,10 +27,18 @@ public:
 
     void update();
 
+    void printInformation();
+
+    void loadBoard();
+
 private slots:
     void labelClicked();
 
     void on_newGame_clicked();
+
+    void on_undo_clicked();
+
+    void on_redo_clicked();
 
 private:
     Ui::MainWindow *ui;

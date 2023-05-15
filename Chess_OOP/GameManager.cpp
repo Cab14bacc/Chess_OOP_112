@@ -817,17 +817,11 @@ void GameManager::playerMove(int row, int col)
         return;
     }
 
-    if(board[row][col].ifHavePiece && board[row][col].player != selectChessPlayer)
-    {
-        eraseChessPiece(board[row][col].chessType,board[row][col].player,board[row][col].index);
-    }
 
     if(selectChessPlayer == 'w')
     {
         if(selectChessType == "King")
         {
-            White.king.ifMove = true;
-
             if(board[row][col].chessType == "Rook" && board[row][col].player == 'w')
             {
 
@@ -878,22 +872,61 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].ifHavePiece = true;
                 board[row][col].player = selectChessPlayer;
             }
-            //452452
 
         }
-        else
+        else if(selectChessType == "Pawn")
         {
-            if(selectChessType == "Pawn")
+            if(board[row][col].chessType == "Pawn" && row == White.pawns[selectChessIndex].y)
             {
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].index = 0;
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].chessType = "0";
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].player = '0';
+
+
+                if(col == White.pawns[selectChessIndex].x - 1)
+                {
+                    White.pawns[selectChessIndex].y = row - 1;
+                    White.pawns[selectChessIndex].x = col - 1;
+                    board[row - 1][col - 1].chessType = selectChessType;
+                    board[row - 1][col - 1].index = selectChessIndex;
+                    board[row - 1][col - 1].ifHavePiece = true;
+                    board[row - 1][col - 1].player = selectChessPlayer;
+
+                }
+                else if(col == White.pawns[selectChessIndex].x + 1)
+                {
+                    White.pawns[selectChessIndex].y = row - 1;
+                    White.pawns[selectChessIndex].x = col + 1;
+
+                    board[row - 1][col + 1].chessType = selectChessType;
+                    board[row - 1][col + 1].index = selectChessIndex;
+                    board[row - 1][col + 1].ifHavePiece = true;
+                    board[row - 1][col + 1].player = selectChessPlayer;
+                }
+
+            }
+            else
+            {
+                board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].index = 0;
+                board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].chessType = "0";
+                board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].ifHavePiece = false;
+                board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].player = '0';
+
                 White.pawns[selectChessIndex].y = row;
                 White.pawns[selectChessIndex].x = col;
 
+                board[row][col].chessType = selectChessType;
+                board[row][col].index = selectChessIndex;
+                board[row][col].ifHavePiece = true;
+                board[row][col].player = selectChessPlayer;
             }
-            else if(selectChessType == "Rook")
+
+        }
+        else
+        {
+
+            if(selectChessType == "Rook")
             {
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].index = 0;
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].chessType = "0";
@@ -901,7 +934,6 @@ void GameManager::playerMove(int row, int col)
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].player = '0';
                 White.rooks[selectChessIndex].y = row;
                 White.rooks[selectChessIndex].x = col;
-                White.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -943,8 +975,6 @@ void GameManager::playerMove(int row, int col)
     {
         if(selectChessType == "King")
         {
-            Black.king.ifMove = true;
-
             if(board[row][col].chessType == "Rook" && board[row][col].player == 'b')
             {
 
@@ -997,18 +1027,58 @@ void GameManager::playerMove(int row, int col)
             }
 
         }
-        else
+        else if(selectChessType == "Pawn")
         {
-            if(selectChessType == "Pawn")
+            if(board[row][col].chessType == "Pawn" && row == Black.pawns[selectChessIndex].y)
             {
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].index = 0;
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].chessType = "0";
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].player = '0';
+
+
+                if(col == Black.pawns[selectChessIndex].x - 1)
+                {
+                    Black.pawns[selectChessIndex].y = row + 1;
+                    Black.pawns[selectChessIndex].x = col - 1;
+                    board[row + 1][col - 1].chessType = selectChessType;
+                    board[row + 1][col - 1].index = selectChessIndex;
+                    board[row + 1][col - 1].ifHavePiece = true;
+                    board[row + 1][col - 1].player = selectChessPlayer;
+
+                }
+                else if(col == Black.pawns[selectChessIndex].x + 1)
+                {
+                    Black.pawns[selectChessIndex].y = row + 1;
+                    Black.pawns[selectChessIndex].x = col + 1;
+                    board[row + 1][col + 1].chessType = selectChessType;
+                    board[row + 1][col + 1].index = selectChessIndex;
+                    board[row + 1][col + 1].ifHavePiece = true;
+                    board[row + 1][col + 1].player = selectChessPlayer;
+                }
+
+            }
+            else
+            {
+                board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].index = 0;
+                board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].chessType = "0";
+                board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].ifHavePiece = false;
+                board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].player = '0';
+
                 Black.pawns[selectChessIndex].y = row;
                 Black.pawns[selectChessIndex].x = col;
+
+                board[row][col].chessType = selectChessType;
+                board[row][col].index = selectChessIndex;
+                board[row][col].ifHavePiece = true;
+                board[row][col].player = selectChessPlayer;
             }
-            else if(selectChessType == "Rook")
+
+        }
+        else
+        {
+
+            if(selectChessType == "Rook")
             {
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].index = 0;
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].chessType = "0";
@@ -1016,7 +1086,6 @@ void GameManager::playerMove(int row, int col)
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].player = '0';
                 Black.rooks[selectChessIndex].y = row;
                 Black.rooks[selectChessIndex].x = col;
-                Black.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -1059,6 +1128,7 @@ void GameManager::playerMove(int row, int col)
             board[row][col].canMove = false;
         }
     }
+
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)

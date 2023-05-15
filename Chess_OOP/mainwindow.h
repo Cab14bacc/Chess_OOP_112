@@ -34,6 +34,10 @@ private slots:
 
     void on_newGame_clicked();
 
+    void on_undo_clicked();
+
+    void on_redo_clicked();
+
 private:
     Ui::MainWindow *ui;
     QList<MyLabel*> labelList;

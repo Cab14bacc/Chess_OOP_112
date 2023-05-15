@@ -175,7 +175,6 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
-    showResultWindow(1);
     clickSound->play();
     setTime();
     game.playerTurn = 'w';
@@ -618,7 +617,7 @@ void MainWindow::showResultWindow(int whoWin)
     }
     else//whoWin == blackWin
     {
-        label->setText("Black Lose!");
+        label->setText("Black Win!");
     }
 
     QFont ft;

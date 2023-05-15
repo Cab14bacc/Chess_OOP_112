@@ -27,6 +27,7 @@ void GameManager::showCanMove(int row, int col)
         {
             if(selectChessPlayer == 'w')
             {
+                //first step
                 if(row == 6)
                 {
                     if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false && board[row - 1][col].ifHavePiece == false)
@@ -49,9 +50,32 @@ void GameManager::showCanMove(int row, int col)
                 {
                     board[row - 1][col + 1].canMove = true;
                 }
+
+                //En passant
+                if(row == 3)
+                {
+                    //left En passant
+                    if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == blackChess && board[row][col - 1].chessType == "Pawn")
+                    {
+                        if(Black.pawns[board[row][col - 1].index].ifmove2Step == true && Black.pawns[board[row][col - 1].index].inNextTurn == true)
+                        {
+                            board[row][col - 1].canMove = true;
+                        }
+                    }
+
+                    //right En passant
+                    if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == blackChess && board[row][col + 1].chessType == "Pawn")
+                    {
+                        if(Black.pawns[board[row][col + 1].index].ifmove2Step == true && Black.pawns[board[row][col + 1].index].inNextTurn == true)
+                        {
+                            board[row][col + 1].canMove = true;
+                        }
+                    }
+                }
             }
             else//selectChessPlayer = 'b'
             {
+                //first step
                 if(row == 1)
                 {
                     if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false && board[row + 1][col].ifHavePiece == false)
@@ -73,6 +97,28 @@ void GameManager::showCanMove(int row, int col)
                 if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) == whiteChess)
                 {
                     board[row + 1][col + 1].canMove = true;
+                }
+
+                //En passant
+                if(row == 4)
+                {
+                    //left En passant
+                    if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == whiteChess && board[row][col - 1].chessType == "Pawn")
+                    {
+                        if(White.pawns[board[row][col - 1].index].ifmove2Step == true && White.pawns[board[row][col - 1].index].inNextTurn == true)
+                        {
+                            board[row][col - 1].canMove = true;
+                        }
+                    }
+
+                    //right En passant
+                    if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == whiteChess && board[row][col + 1].chessType == "Pawn")
+                    {
+                        if(White.pawns[board[row][col + 1].index].ifmove2Step == true && White.pawns[board[row][col + 1].index].inNextTurn == true)
+                        {
+                            board[row][col + 1].canMove = true;
+                        }
+                    }
                 }
             }
         }
@@ -817,6 +863,15 @@ void GameManager::playerMove(int row, int col)
         return;
     }
 
+    for(int i = 0;i<White.pawns.size();i++)
+    {
+        White.pawns[i].inNextTurn = false;
+    }
+
+    for(int i = 0;i<Black.pawns.size();i++)
+    {
+        Black.pawns[i].inNextTurn = false;
+    }
 
     if(selectChessPlayer == 'w')
     {
@@ -912,6 +967,16 @@ void GameManager::playerMove(int row, int col)
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].chessType = "0";
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].player = '0';
+
+                if(White.pawns[selectChessIndex].y - row == 2)
+                {
+                    White.pawns[selectChessIndex].ifmove2Step = true;
+                    White.pawns[selectChessIndex].inNextTurn = true;
+                }
+                else
+                {
+                    White.pawns[selectChessIndex].ifmove2Step = false;
+                }
 
                 White.pawns[selectChessIndex].y = row;
                 White.pawns[selectChessIndex].x = col;
@@ -1064,6 +1129,16 @@ void GameManager::playerMove(int row, int col)
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].chessType = "0";
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].ifHavePiece = false;
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].player = '0';
+
+                if(row - Black.pawns[selectChessIndex].y == 2)
+                {
+                    Black.pawns[selectChessIndex].ifmove2Step = true;
+                    Black.pawns[selectChessIndex].inNextTurn = true;
+                }
+                else
+                {
+                    Black.pawns[selectChessIndex].ifmove2Step = false;
+                }
 
                 Black.pawns[selectChessIndex].y = row;
                 Black.pawns[selectChessIndex].x = col;

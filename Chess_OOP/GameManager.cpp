@@ -1287,6 +1287,7 @@ void check(int i,int j,ViewManager board[][8]);
 
 void GameManager::computeTarget()
 {
+    //reset wTargets and bTarget
     for (int i = 0;i<8;i++)
     {
         for (int k = 0;k<8;k++)
@@ -1295,6 +1296,7 @@ void GameManager::computeTarget()
             board[i][k].bTarget = 0;
         }
     }
+    //if there has piece, than count where can it attack, and record it to wTargets and bTarget
     for (int i = 0;i<8;i++)
     {
         for (int j = 0;j < 8;j++)
@@ -1309,12 +1311,16 @@ void GameManager::computeTarget()
 
 void check(int i,int j,ViewManager board[][8])
 {
+    //if the input board's piece type is Pawn.
     if(board[i][j].chessType == "Pawn")
     {
+        //check which side it is.
         if(board[i][j].player == 'w')
         {
+            //check up left and up right
             if (j+1<8&&i-1>=0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j+1].player!='w')
                 {
                     board[i-1][j+1].wTarget++;
@@ -1322,6 +1328,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>=0&&i-1>=0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j-1].player!='w')
                 {
                     board[i-1][j-1].wTarget++;
@@ -1330,8 +1337,10 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if(board[i][j].player == 'b')
         {
+            //check up left and up right
             if (j+1<8&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j+1].player!='b')
                 {
                     board[i+1][j+1].bTarget++;
@@ -1339,6 +1348,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>=0&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j-1].player!='b')
                 {
                     board[i+1][j-1].bTarget++;
@@ -1346,12 +1356,16 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+    //if the input board's piece type is Knight.
     else if(board[i][j].chessType == "Knight")
     {
+        //check which side it is.
         if(board[i][j].player == 'w')
         {
+            //check the eight directions that knight can move to.
             if (j+2<8&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j+2].player!='w')
                 {
                     board[i+1][j+2].wTarget++;
@@ -1359,6 +1373,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+1<8&&i+2<8)
             {
+                //if the destination is not teammate
                 if (board[i+2][j+1].player!='w')
                 {
                     board[i+2][j+1].wTarget++;
@@ -1366,6 +1381,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-2>0&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j-2].player!='w')
                 {
                     board[i+1][j-2].wTarget++;
@@ -1373,6 +1389,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>0&&i+2<8)
             {
+                //if the destination is not teammate
                 if (board[i+2][j-1].player!='w')
                 {
                     board[i+2][j-1].wTarget++;
@@ -1380,6 +1397,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+2<8&&i-1>0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j+2].player!='w')
                 {
                     board[i-1][j+2].wTarget++;
@@ -1387,6 +1405,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+1<8&&i-2>0)
             {
+                //if the destination is not teammate
                 if (board[i-2][j+1].player!='w')
                 {
                     board[i-2][j+1].wTarget++;
@@ -1394,6 +1413,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-2>0&&i-1>0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j-2].player!='w')
                 {
                     board[i-1][j-2].wTarget++;
@@ -1401,6 +1421,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>0&&i-2>0)
             {
+                //if the destination is not teammate
                 if (board[i-2][j-1].player!='w')
                 {
                     board[i-2][j-1].wTarget++;
@@ -1409,8 +1430,10 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if(board[i][j].player == 'b')
         {
+            //check the eight directions that knight can move to.
             if (j+2<8&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j+2].player!='b')
                 {
                     board[i+1][j+2].bTarget++;
@@ -1418,6 +1441,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+1<8&&i+2<8)
             {
+                //if the destination is not teammate
                 if (board[i+2][j+1].player!='b')
                 {
                     board[i+2][j+1].bTarget++;
@@ -1425,6 +1449,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-2>0&&i+1<8)
             {
+                //if the destination is not teammate
                 if (board[i+1][j-2].player!='b')
                 {
                     board[i+1][j-2].bTarget++;
@@ -1432,6 +1457,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>0&&i+2<8)
             {
+                //if the destination is not teammate
                 if (board[i+2][j-1].player!='b')
                 {
                     board[i+2][j-1].bTarget++;
@@ -1439,6 +1465,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+2<8&&i-1>0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j+2].player!='b')
                 {
                     board[i-1][j+2].bTarget++;
@@ -1446,6 +1473,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j+1<8&&i-2>0)
             {
+                //if the destination is not teammate
                 if (board[i-2][j+1].player!='b')
                 {
                     board[i-2][j+1].bTarget++;
@@ -1453,6 +1481,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-2>0&&i-1>0)
             {
+                //if the destination is not teammate
                 if (board[i-1][j-2].player!='b')
                 {
                     board[i-1][j-2].bTarget++;
@@ -1460,6 +1489,7 @@ void check(int i,int j,ViewManager board[][8])
             }
             if (j-1>0&&i-2>0)
             {
+                //if the destination is not teammate
                 if (board[i-2][j-1].player!='b')
                 {
                     board[i-2][j-1].bTarget++;
@@ -1467,14 +1497,19 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+    //if the input board's piece type is Rook.
     else if(board[i][j].chessType == "Rook")
     {
+         //check which side it is.
         if(board[i][j].player == 'w')
         {
+            //check down side.
             if(i+1<8)
             {
+                //run to the edge of board
                 for (int k = i+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
@@ -1489,10 +1524,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check up side.
             if(i-1>=0)
             {
+                //run to the edge of board
                 for (int k = i-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
@@ -1507,10 +1546,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check right side.
             if(j+1<8)
             {
+                //run to the edge of board
                 for (int k = j+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
@@ -1525,10 +1568,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check left side.
             if(j-1>=0)
             {
+                //run to the edge of board
                 for (int k = j-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
@@ -1546,10 +1593,13 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if(board[i][j].player == 'b')
         {
+            //check down side.
             if(i+1<8)
             {
+                //run to the edge of board
                 for (int k = i+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
@@ -1564,10 +1614,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check up side.
             if(i-1>=0)
             {
+                //run to the edge of board
                 for (int k = i-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
@@ -1582,10 +1636,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check right side.
             if(j+1<8)
             {
+                //run to the edge of board
                 for (int k = j+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
@@ -1600,10 +1658,14 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+
+            //check left side.
             if(j-1>=0)
             {
+                //run to the edge of board
                 for (int k = j-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
@@ -1620,14 +1682,19 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+    //if the input board's piece type is Bishop.
     else if(board[i][j].chessType == "Bishop")
     {
+        //check which side it is.
         if (board[i][j].player == 'w')
         {
+            //run to down edge or right edge.
             for (int k = 1;k<8;k++)
             {
+
                 if (i+k<8&&j+k<8)
                 {
+                     //if touch target or teammate, stop checking
                     if (board[i+k][j+k].player=='b')
                     {
                         board[i+k][j+k].wTarget++;
@@ -1647,10 +1714,13 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+
+            //run to down edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i+k<8&&j-k>=0)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j-k].player=='b')
                     {
                         board[i+k][j-k].wTarget++;
@@ -1670,10 +1740,13 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+
+            //run to up edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j+k<8)
                 {
+                     //if touch target or teammate, stop checking
                     if (board[i-k][j+k].player=='b')
                     {
                         board[i-k][j+k].wTarget++;
@@ -1693,10 +1766,14 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+
+            //run to up edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j-k>=0)
                 {
+
+                     //if touch target or teammate, stop checking
                     if (board[i-k][j-k].player=='b')
                     {
                         board[i-k][j-k].wTarget++;
@@ -1719,10 +1796,12 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if (board[i][j].player == 'b')
         {
+            //run to down edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i+k<8&&j+k<8)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j+k].player=='w')
                     {
                         board[i+k][j+k].bTarget++;
@@ -1742,10 +1821,12 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to down edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i+k<8&&j-k>=0)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j-k].player=='w')
                     {
                         board[i+k][j-k].bTarget++;
@@ -1765,10 +1846,13 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+
+            //run to up edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j+k<8)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j+k].player=='w')
                     {
                         board[i-k][j+k].bTarget++;
@@ -1788,10 +1872,13 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+
+            //run to up edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j-k>=0)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j-k].player=='w')
                     {
                         board[i-k][j-k].bTarget++;
@@ -1813,12 +1900,16 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+    //if the input board's piece type is Queen.
     else if(board[i][j].chessType == "Queen")
     {
+        //check which side it is.
         if (board[i][j].player == 'w')
         {
+            //run to down edge or right edge.
             for (int k = 1;k<8;k++)
             {
+                //if touch target or teammate, stop checking
                 if (i+k<8&&j+k<8)
                 {
                     if (board[i+k][j+k].player=='b')
@@ -1840,8 +1931,10 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to down edge or left edge.
             for (int k = 1;k<8;k++)
             {
+                //if touch target or teammate, stop checking
                 if (i+k<8&&j-k>=0)
                 {
                     if (board[i+k][j-k].player=='b')
@@ -1863,10 +1956,12 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to up edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j+k<8)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j+k].player=='b')
                     {
                         board[i-k][j+k].wTarget++;
@@ -1886,8 +1981,10 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to up edge or left edge.
             for (int k = 1;k<8;k++)
             {
+                //if touch target or teammate, stop checking
                 if (i-k>=0&&j-k>=0)
                 {
                     if (board[i-k][j-k].player=='b')
@@ -1910,10 +2007,12 @@ void check(int i,int j,ViewManager board[][8])
                 }
             }
 
+            //check down side.
             if(i+1<8)
             {
                 for (int k = i+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
@@ -1928,10 +2027,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check up side.
             if(i-1>=0)
             {
                 for (int k = i-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
@@ -1946,10 +2047,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check right side.
             if(j+1<8)
             {
                 for (int k = j+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
@@ -1964,10 +2067,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check left side.
             if(j-1>=0)
             {
                 for (int k = j-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
@@ -1985,10 +2090,12 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if (board[i][j].player == 'b')
         {
+            //run to down edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i+k<8&&j+k<8)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j+k].player=='w')
                     {
                         board[i+k][j+k].bTarget++;
@@ -2008,10 +2115,12 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to down edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i+k<8&&j-k>=0)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j-k].player=='w')
                     {
                         board[i+k][j-k].bTarget++;
@@ -2031,10 +2140,12 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to up edge or right edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j+k<8)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j+k].player=='w')
                     {
                         board[i-k][j+k].bTarget++;
@@ -2054,10 +2165,12 @@ void check(int i,int j,ViewManager board[][8])
                     break;
                 }
             }
+            //run to up edge or left edge.
             for (int k = 1;k<8;k++)
             {
                 if (i-k>=0&&j-k>=0)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j-k].player=='w')
                     {
                         board[i-k][j-k].bTarget++;
@@ -2078,10 +2191,12 @@ void check(int i,int j,ViewManager board[][8])
                 }
             }
 
+            //check down side.
             if(i+1<8)
             {
                 for (int k = i+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
@@ -2096,10 +2211,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check up side.
             if(i-1>=0)
             {
                 for (int k = i-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
@@ -2114,10 +2231,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check right side.
             if(j+1<8)
             {
                 for (int k = j+1;k<8;k++)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
@@ -2132,10 +2251,12 @@ void check(int i,int j,ViewManager board[][8])
                     }
                 }
             }
+            //check left side.
             if(j-1>=0)
             {
                 for (int k = j-1;k>=0;k--)
                 {
+                    //if touch target or teammate, stop checking
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
@@ -2152,10 +2273,13 @@ void check(int i,int j,ViewManager board[][8])
             }
         }
     }
+    //if the input board's piece type is King.
     else if(board[i][j].chessType == "King")
     {
+         //check which side it is.
         if (board[i][j].player == 'w')
         {
+            //check the 8 possible postions
             if(i+1<8)
             {
                 if(board[i+1][j].player != 'w')
@@ -2215,6 +2339,7 @@ void check(int i,int j,ViewManager board[][8])
         }
         else if (board[i][j].player == 'b')
         {
+            //check the 8 possible postions
             if(i+1<8)
             {
                 if(board[i+1][j].player != 'b')

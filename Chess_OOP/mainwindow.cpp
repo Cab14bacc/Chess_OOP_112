@@ -402,6 +402,7 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
+            cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
                 cout << game.board[i][j].player;
@@ -412,7 +413,9 @@ void MainWindow::printInformation()
             {
                 cout << "c";
             }
-            cout << i<<j<<" ";
+            cout << "bt"<<game.board[i][j].bTarget;
+            cout << "wt"<<game.board[i][j].wTarget;
+            cout <<" ";
         }
         cout << "\n";
     }

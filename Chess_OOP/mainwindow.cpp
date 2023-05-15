@@ -9,6 +9,7 @@
 #include "Knight.h"
 #include "Rook.h"
 #include "Pawn.h"
+#include <QDialog>
 
 using namespace std;
 
@@ -174,6 +175,7 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
+    showResultWindow(1);
     clickSound->play();
     setTime();
     game.playerTurn = 'w';
@@ -603,4 +605,46 @@ void MainWindow::setSound()
 {
     startSound = new QSound("./sounds/RoadtoDazir.wav",this);
     clickSound = new QSound("./sounds/OpenCell.wav",this);
+}
+
+void MainWindow::showResultWindow(int whoWin)
+{
+    QDialog *dialog = new QDialog(this);
+    QLabel *label = new QLabel(dialog);
+
+    if (whoWin == whiteWin)
+    {
+        label->setText("White Win!");
+    }
+    else//whoWin == blackWin
+    {
+        label->setText("Black Lose!");
+    }
+
+    QFont ft;
+    ft.setPointSize(16);
+    label->setFont(ft);
+    label->setAlignment(Qt::AlignCenter);
+    dialog->setWindowTitle("Game Result");
+    dialog->setFixedSize(200, 150);
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(label);
+
+    QPushButton *replayBtn = new QPushButton("Replay", dialog);
+    connect(replayBtn, &QPushButton::clicked, [=](){
+        dialog->close();
+        on_newGame_clicked();
+    });
+
+    layout->addWidget(replayBtn);
+
+    QPushButton *quitBtn = new QPushButton("Quit", dialog);
+    connect(quitBtn, &QPushButton::clicked, [=](){
+        dialog->close();
+        qApp->quit();
+    });
+    layout->addWidget(quitBtn);
+
+    dialog->setLayout(layout);
+    dialog->exec();
 }

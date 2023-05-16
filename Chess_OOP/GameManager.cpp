@@ -2656,7 +2656,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i+1][j].player != 'b')
                 {
-                    board[i+1][j].wTarget++;
+                    board[i+1][j].bTarget++;
                     //check if attack king
                     if (board[i+1][j].chessType=="King")
                     {
@@ -2668,7 +2668,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i-1][j].player != 'b')
                 {
-                    board[i-1][j].wTarget++;
+                    board[i-1][j].bTarget++;
                     //check if attack king
                     if (board[i-1][j].chessType=="King")
                     {
@@ -2680,7 +2680,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i][j+1].player != 'b')
                 {
-                    board[i][j+1].wTarget++;
+                    board[i][j+1].bTarget++;
                     //check if attack king
                     if (board[i][j+1].chessType=="King")
                     {
@@ -2692,7 +2692,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i][j-1].player != 'b')
                 {
-                    board[i][j-1].wTarget++;
+                    board[i][j-1].bTarget++;
                     //check if attack king
                     if (board[i][j-1].chessType=="King")
                     {
@@ -2704,7 +2704,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i+1][j+1].player != 'b')
                 {
-                    board[i+1][j+1].wTarget++;
+                    board[i+1][j+1].bTarget++;
                     //check if attack king
                     if (board[i+1][j+1].chessType=="King")
                     {
@@ -2716,7 +2716,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i-1][j+1].player != 'b')
                 {
-                    board[i-1][j+1].wTarget++;
+                    board[i-1][j+1].bTarget++;
                     //check if attack king
                     if (board[i-1][j+1].chessType=="King")
                     {
@@ -2729,7 +2729,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i+1][j-1].player != 'b')
                 {
-                    board[i+1][j-1].wTarget++;
+                    board[i+1][j-1].bTarget++;
                     //check if attack king
                     if (board[i+1][j-1].chessType=="King")
                     {
@@ -2741,7 +2741,7 @@ int check(int i,int j,ViewManager board[][8])
             {
                 if(board[i-1][j-1].player != 'b')
                 {
-                    board[i-1][j-1].wTarget++;
+                    board[i-1][j-1].bTarget++;
                     //check if attack king
                     if (board[i-1][j-1].chessType=="King")
                     {

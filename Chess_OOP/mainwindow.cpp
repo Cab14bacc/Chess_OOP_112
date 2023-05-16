@@ -99,7 +99,7 @@ void MainWindow::labelClicked()
         {
             showResultWindow(whiteWin);
         }
-        else if(game.ifDraw || game.noEat == 100)
+        else if(game.ifDraw || game.noEat == 100 || (game.playerTurn == 'w' && !game.ifWhiteCanMove) || (game.playerTurn == 'b' && !game.ifBlackCanMove))
         {
             showResultWindow(draw);
         }
@@ -216,11 +216,12 @@ void MainWindow::on_newGame_clicked()
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
     Rook *newRook = new Rook;
+    newRook->ifMove = false;
     Pawn *newPawn = new Pawn;
 
     for(int i = 0; i < 8; i++)
     {
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(1);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -232,7 +233,7 @@ void MainWindow::on_newGame_clicked()
         game.board[1][i].chessType = "Pawn";
         game.board[1][i].ifHavePiece = true;
         game.board[1][i].index = i;
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(6);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -343,6 +344,7 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(4);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconBKing);
+    game.Black.king.ifMove = false;
     game.Black.king.x = 4;
     game.Black.king.y = 0;
     game.board[0][4].player = 'b';
@@ -449,6 +451,7 @@ void MainWindow::on_newGame_clicked()
     lab->setPixmap(*iconWKing);
     game.White.king.x = 4;
     game.White.king.y = 7;
+    game.White.king.ifMove = false;
     game.board[7][4].player = 'w';
     game.board[7][4].chessType = "King";
     game.board[7][4].ifHavePiece = true;
@@ -509,9 +512,9 @@ void MainWindow::printInformation()
             {
                 //cout << "c";
             }
-            cout << "in"<<game.board[i][j].index;
-            //cout << "bt"<<game.board[i][j].bTarget;
-            //cout << "wt"<<game.board[i][j].wTarget;
+            //cout << "in"<<game.board[i][j].index;
+            cout << "bt"<<game.board[i][j].bTarget;
+            cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 
@@ -520,8 +523,55 @@ void MainWindow::printInformation()
 
     //cout << game.curStep<<" "<<game.steps.size()<<endl;
     //cout << game.fen<<endl;
-    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
-    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    //cout << "noEat:" << game.noEat<<endl;
+
+    if(game.ifWhiteCanMove)
+    {
+        cout << "ifWhiteCanMove: true";
+    }
+    else
+    {
+        cout << "ifWhiteCanMove: false";
+    }
+    cout << endl;
+    if(game.ifBlackCanMove)
+    {
+        cout << "ifBlackCanMove: true";
+    }
+    else
+    {
+        cout << "ifBlackCanMove: false";
+    }
+    cout << endl;
+    if(game.ifDraw)
+    {
+        cout <<"ifDraw: true";
+    }
+    else
+    {
+        cout << "ifDraw: false";
+    }
+    cout << endl;
+    if(game.White.king.ifMove)
+    {
+        cout << "White.king.ifMove = true";
+    }
+    else
+    {
+        cout << "White.king.ifMove = false";
+    }
+    cout << endl;
+    if(game.Black.king.ifMove)
+    {
+        cout << "Black.king.ifMove = true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove = false";
+    }
+    cout << endl;
 }
 
 void MainWindow::on_undo_clicked()

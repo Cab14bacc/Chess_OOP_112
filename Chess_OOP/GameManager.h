@@ -54,7 +54,8 @@ public:
     void computeTarget();
     void recordCurBoard();
     int judgeWinOrLose();
-    void judgeIfPlayerCanMove();
+    bool ifPosCanMove(int row, int col);
+    void judgeIfPlayerCanMove(char player);
     void transBoardToFen();
     void IfBoardRepeat3Times(string curFen);
     void ifInsufficientChess(char player);

@@ -780,7 +780,7 @@ void GameManager::showCanMove(int row, int col)
                     board[row - 1][col - 1].canMove = true;
 
                 //left castle
-                if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false)
+                if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false && board[7][0].chessType == "Rook" && board[7][0].player == 'w')
                 {
                     if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
                     {
@@ -792,7 +792,7 @@ void GameManager::showCanMove(int row, int col)
                 }
 
                 //right castle
-                if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false)
+                if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false && board[7][7].chessType == "Rook" && board[7][7].player == 'w')
                 {
                     if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
                     {
@@ -806,39 +806,39 @@ void GameManager::showCanMove(int row, int col)
             else//selectChessPlayer = 'b'
             {
                 //up
-                if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].bTarget == 0)
+                if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].wTarget == 0)
                     board[row + 1][col].canMove = true;
 
                 //down
-                if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].bTarget == 0)
+                if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].wTarget == 0)
                     board[row - 1][col].canMove = true;
 
                 //right
-                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].bTarget == 0)
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].wTarget == 0)
                     board[row][col + 1].canMove = true;
 
                 //left
-                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].bTarget == 0)
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].wTarget == 0)
                     board[row][col - 1].canMove = true;
 
                 //up right
-                if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].bTarget == 0)
+                if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].wTarget == 0)
                     board[row + 1][col + 1].canMove = true;
 
                 //up left
-                if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].bTarget == 0)
+                if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].wTarget == 0)
                     board[row + 1][col - 1].canMove = true;
 
                 //down right
-                if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].bTarget == 0)
+                if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].wTarget == 0)
                     board[row - 1][col + 1].canMove = true;
 
                 //down left
-                if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
+                if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].wTarget == 0)
                     board[row - 1][col - 1].canMove = true;
 
                 //left castle
-                if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false)
+                if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false && board[0][0].chessType == "Rook" && board[0][0].player == 'b')
                 {
                     if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
                     {
@@ -850,7 +850,7 @@ void GameManager::showCanMove(int row, int col)
                 }
 
                 //right castle
-                if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false)
+                if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false && board[0][7].chessType == "Rook" && board[0][7].player == 'b')
                 {
                     if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
                     {
@@ -951,6 +951,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].player = selectChessPlayer;
             }
 
+            White.king.ifMove = true;
         }
         else if(selectChessType == "Pawn")
         {
@@ -1012,6 +1013,7 @@ void GameManager::playerMove(int row, int col)
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].player = '0';
                 White.rooks[selectChessIndex].y = row;
                 White.rooks[selectChessIndex].x = col;
+                White.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -1104,6 +1106,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].player = selectChessPlayer;
             }
 
+            Black.king.ifMove = true;
         }
         else if(selectChessType == "Pawn")
         {
@@ -1166,6 +1169,7 @@ void GameManager::playerMove(int row, int col)
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].player = '0';
                 Black.rooks[selectChessIndex].y = row;
                 Black.rooks[selectChessIndex].x = col;
+                Black.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -1217,6 +1221,9 @@ void GameManager::playerMove(int row, int col)
     fens.resize(curStep + 1);
     fens[curStep] = fen;
     IfBoardRepeat3Times(fen);
+    ifWhiteCanMove = false;
+    ifBlackCanMove = false;
+    judgeIfPlayerCanMove(playerTurn);
 
     if(wPawn == 0 && wRook == 0 && wKnight == 0 && wBishop == 0 && wQueen == 0)
         ifInsufficientChess('w');
@@ -2516,9 +2523,870 @@ int GameManager::judgeWinOrLose()
     return gameContinue;
 }
 
-void GameManager::judgeIfPlayerCanMove()
+void GameManager::judgeIfPlayerCanMove(char player)
 {
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(board[i][j].ifHavePiece)
+            {
+                if(board[i][j].player == 'w' && player == 'w' && ifWhiteCanMove == false)
+                {
+                    ifWhiteCanMove = ifPosCanMove(i, j);
+                }
+                else if(board[i][j].player == 'b' && player == 'b' && ifBlackCanMove == false)
+                {
+                    ifBlackCanMove = ifPosCanMove(i, j);
+                }
+            }
+        }
+    }
+}
 
+bool GameManager::ifPosCanMove(int row, int col)
+{
+    if(board[row][col].chessType == "Pawn")
+    {
+        if(board[row][col].player == 'w')
+        {
+            //first step
+            if(row == 6)
+            {
+                if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false && board[row - 1][col].ifHavePiece == false)
+                {
+                    return true;
+                }
+            }
+
+            if(ifPosInBoard(row - 1, col) && board[row - 1][col].ifHavePiece == false)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) == blackChess)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) == blackChess)
+            {
+                return true;
+            }
+
+            //En passant
+            if(row == 3)
+            {
+                //left En passant
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == blackChess && board[row][col - 1].chessType == "Pawn")
+                {
+                    if(Black.pawns[board[row][col - 1].index].ifmove2Step == true && Black.pawns[board[row][col - 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+
+                //right En passant
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == blackChess && board[row][col + 1].chessType == "Pawn")
+                {
+                    if(Black.pawns[board[row][col + 1].index].ifmove2Step == true && Black.pawns[board[row][col + 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        else//board[row][col].player = 'b'
+        {
+            //first step
+            if(row == 1)
+            {
+                if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false && board[row + 1][col].ifHavePiece == false)
+                {
+                    return true;
+                }
+            }
+
+            if(ifPosInBoard(row + 1, col) && board[row + 1][col].ifHavePiece == false)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) == whiteChess)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) == whiteChess)
+            {
+                return true;
+            }
+
+            //En passant
+            if(row == 4)
+            {
+                //left En passant
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == whiteChess && board[row][col - 1].chessType == "Pawn")
+                {
+                    if(White.pawns[board[row][col - 1].index].ifmove2Step == true && White.pawns[board[row][col - 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+
+                //right En passant
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == whiteChess && board[row][col + 1].chessType == "Pawn")
+                {
+                    if(White.pawns[board[row][col + 1].index].ifmove2Step == true && White.pawns[board[row][col + 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+    else if(board[row][col].chessType == "Rook")
+    {
+        //up
+        for(int i = 1; i < 8;i++)
+        {
+            if(!ifPosInBoard(row + i, col))
+                break;
+
+            if(boardChessCondition(row + i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col))
+                break;
+
+            if(boardChessCondition(row - i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col + i))
+                break;
+
+            if(boardChessCondition(row, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col - i))
+                break;
+
+            if(boardChessCondition(row, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "Knight")
+    {
+        if(board[row][col].player == 'w')
+        {
+            if(ifPosInBoard(row + 2, col + 1) && boardChessCondition(row + 2, col + 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 2, col - 1) && boardChessCondition(row + 2, col - 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col + 1) && boardChessCondition(row - 2, col + 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col - 1) && boardChessCondition(row - 2, col - 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col + 2) && boardChessCondition(row + 1, col + 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col - 2) && boardChessCondition(row + 1, col - 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col + 2) && boardChessCondition(row - 1, col + 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col - 2) && boardChessCondition(row - 1, col - 2) != whiteChess)
+                return true;
+
+            return false;
+        }
+        else//board[row][col].player == 'b'
+        {
+            if(ifPosInBoard(row + 2, col + 1) && boardChessCondition(row + 2, col + 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 2, col - 1) && boardChessCondition(row + 2, col - 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col + 1) && boardChessCondition(row - 2, col + 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col - 1) && boardChessCondition(row - 2, col - 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col + 2) && boardChessCondition(row + 1, col + 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col - 2) && boardChessCondition(row + 1, col - 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col + 2) && boardChessCondition(row - 1, col + 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col - 2) && boardChessCondition(row - 1, col - 2) != blackChess)
+                return true;
+
+            return false;
+        }
+    }
+    else if(board[row][col].chessType == "Bishop")
+    {
+        //right up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col + i))
+                break;
+
+            if(boardChessCondition(row + i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col + i))
+                break;
+
+            if(boardChessCondition(row - i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col - i))
+                break;
+
+            if(boardChessCondition(row + i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col - i))
+                break;
+
+            if(boardChessCondition(row - i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "Queen")
+    {
+        //up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col))
+                break;
+
+            if(boardChessCondition(row + i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col))
+                break;
+
+            if(boardChessCondition(row - i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col + i))
+                break;
+
+            if(boardChessCondition(row, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col - i))
+                break;
+
+            if(boardChessCondition(row, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col + i))
+                break;
+
+            if(boardChessCondition(row + i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col + i))
+                break;
+
+            if(boardChessCondition(row - i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col - i))
+                break;
+
+            if(boardChessCondition(row + i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col - i))
+                break;
+
+            if(boardChessCondition(row - i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "King")
+    {
+        if(board[row][col].player == 'w')
+        {
+            //up
+            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != whiteChess && board[row + 1][col].bTarget == 0)
+                return true;
+
+            //down
+            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != whiteChess && board[row - 1][col].bTarget == 0)
+                return true;
+
+            //right
+            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != whiteChess && board[row][col + 1].bTarget == 0)
+                return true;
+
+            //left
+            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != whiteChess && board[row][col - 1].bTarget == 0)
+                return true;
+
+            //up right
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != whiteChess && board[row + 1][col + 1].bTarget == 0)
+                return true;
+
+            //up left
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != whiteChess && board[row + 1][col - 1].bTarget == 0)
+                return true;
+
+            //down right
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != whiteChess && board[row - 1][col + 1].bTarget == 0)
+                return true;
+
+            //down left
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != whiteChess && board[row - 1][col - 1].bTarget == 0)
+                return true;
+
+            //left castle
+            if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false)
+            {
+                if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
+                {
+                    if(board[7][4].bTarget == 0 && board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //right castle
+            if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false)
+            {
+                if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
+                {
+                    if(board[7][4].bTarget == 0 && board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        else//board[row][col].player = 'b'
+        {
+            //up
+            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].bTarget == 0)
+                return true;
+
+            //down
+            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].bTarget == 0)
+                return true;
+
+            //right
+            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].bTarget == 0)
+                return true;
+
+            //left
+            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].bTarget == 0)
+                return true;
+
+            //up right
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].bTarget == 0)
+                return true;
+
+            //up left
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].bTarget == 0)
+                return true;
+
+            //down right
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].bTarget == 0)
+                return true;
+
+            //down left
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
+                return true;
+
+            //left castle
+            if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false)
+            {
+                if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
+                {
+                    if(board[0][4].wTarget == 0 && board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //right castle
+            if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false)
+            {
+                if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
+                {
+                    if(board[0][4].wTarget == 0 && board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
 }
 
 void GameManager::transBoardToFen()

@@ -881,6 +881,12 @@ void GameManager::playerMove(int row, int col)
         Black.pawns[i].inNextTurn = false;
     }
 
+    if(board[row][col].ifHavePiece)
+    {
+        eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
+
+    }
+
     if(selectChessPlayer == 'w')
     {
         if(selectChessType == "King")
@@ -1206,6 +1212,8 @@ void GameManager::playerMove(int row, int col)
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
 {
+    noEat = 0;
+
     if(player == 'w')
     {
         if(chessType == "Pawn")

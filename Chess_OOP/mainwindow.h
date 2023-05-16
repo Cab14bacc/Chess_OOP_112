@@ -39,6 +39,10 @@ public:
 
     void showResultWindow(int whoWin);
 
+    void resetGame();
+
+    void Promoting(int row, int col);
+
 private slots:
     void labelClicked();
 
@@ -66,8 +70,8 @@ private:
     QPixmap *iconBKnight;
     QPixmap *iconBRook;
     QPixmap *iconBPawn;
-    QTimer *whiteTimer = new QTimer;
-    QTimer *blackTimer = new QTimer;
+    QTimer whiteTimer;
+    QTimer blackTimer;
     int whiteCounter;
     int blackCounter;
     QSound *startSound;

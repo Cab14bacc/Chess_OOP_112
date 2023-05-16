@@ -1,10 +1,26 @@
 #include <iostream>
 #include "GameManager.h"
 
+
 using namespace std;
 
 GameManager::GameManager()
 {
+    wPawn = 8;
+    wRook = 2;
+    wKnight = 2;
+    wBishop = 2;
+    wQueen = 1;
+    bPawn = 8;
+    bRook = 2;
+    bKnight = 2;
+    bBishop = 2;
+    bQueen = 1;
+    noEat = 0;
+    fen = "";
+    ifWhiteCanMove = true;
+    ifBlackCanMove = true;
+    ifDraw = false;
     curStep = 0;
     White.setPlayer('w');
     Black.setPlayer('b');
@@ -765,7 +781,7 @@ void GameManager::showCanMove(int row, int col)
                     board[row - 1][col - 1].canMove = true;
 
                 //left castle
-                if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false)
+                if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false && board[7][0].chessType == "Rook" && board[7][0].player == 'w')
                 {
                     if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
                     {
@@ -777,7 +793,7 @@ void GameManager::showCanMove(int row, int col)
                 }
 
                 //right castle
-                if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false)
+                if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false && board[7][7].chessType == "Rook" && board[7][7].player == 'w')
                 {
                     if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
                     {
@@ -791,39 +807,39 @@ void GameManager::showCanMove(int row, int col)
             else//selectChessPlayer = 'b'
             {
                 //up
-                if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].bTarget == 0)
+                if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].wTarget == 0)
                     board[row + 1][col].canMove = true;
 
                 //down
-                if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].bTarget == 0)
+                if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].wTarget == 0)
                     board[row - 1][col].canMove = true;
 
                 //right
-                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].bTarget == 0)
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].wTarget == 0)
                     board[row][col + 1].canMove = true;
 
                 //left
-                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].bTarget == 0)
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].wTarget == 0)
                     board[row][col - 1].canMove = true;
 
                 //up right
-                if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].bTarget == 0)
+                if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].wTarget == 0)
                     board[row + 1][col + 1].canMove = true;
 
                 //up left
-                if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].bTarget == 0)
+                if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].wTarget == 0)
                     board[row + 1][col - 1].canMove = true;
 
                 //down right
-                if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].bTarget == 0)
+                if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].wTarget == 0)
                     board[row - 1][col + 1].canMove = true;
 
                 //down left
-                if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
+                if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].wTarget == 0)
                     board[row - 1][col - 1].canMove = true;
 
                 //left castle
-                if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false)
+                if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false && board[0][0].chessType == "Rook" && board[0][0].player == 'b')
                 {
                     if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
                     {
@@ -835,7 +851,7 @@ void GameManager::showCanMove(int row, int col)
                 }
 
                 //right castle
-                if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false)
+                if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false && board[0][7].chessType == "Rook" && board[0][7].player == 'b')
                 {
                     if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
                     {
@@ -864,6 +880,8 @@ void GameManager::playerMove(int row, int col)
         return;
     }
 
+    noEat++;
+
     for(int i = 0;i<White.pawns.size();i++)
     {
         White.pawns[i].inNextTurn = false;
@@ -872,6 +890,11 @@ void GameManager::playerMove(int row, int col)
     for(int i = 0;i<Black.pawns.size();i++)
     {
         Black.pawns[i].inNextTurn = false;
+    }
+
+    if(board[row][col].ifHavePiece)
+    {
+        eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
     }
 
     if(selectChessPlayer == 'w')
@@ -920,6 +943,9 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[White.king.y][White.king.x].index = 0;
+                board[White.king.y][White.king.x].chessType = "0";
+                board[White.king.y][White.king.x].player = '0';
                 board[White.king.y][White.king.x].ifHavePiece = false;//set original position ifHavePiece = false
                 White.king.y = row;
                 White.king.x = col;
@@ -929,6 +955,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].player = selectChessPlayer;
             }
 
+            White.king.ifMove = true;
         }
         else if(selectChessType == "Pawn")
         {
@@ -990,6 +1017,7 @@ void GameManager::playerMove(int row, int col)
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].player = '0';
                 White.rooks[selectChessIndex].y = row;
                 White.rooks[selectChessIndex].x = col;
+                White.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -1073,6 +1101,9 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[Black.king.y][Black.king.x].index = 0;
+                board[Black.king.y][Black.king.x].chessType = "0";
+                board[Black.king.y][Black.king.x].player = '0';
                 board[Black.king.y][Black.king.x].ifHavePiece = false;
                 Black.king.y = row;
                 Black.king.x = col;
@@ -1082,6 +1113,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].player = selectChessPlayer;
             }
 
+            Black.king.ifMove = true;
         }
         else if(selectChessType == "Pawn")
         {
@@ -1144,6 +1176,7 @@ void GameManager::playerMove(int row, int col)
                 board[Black.rooks[selectChessIndex].y][Black.rooks[selectChessIndex].x].player = '0';
                 Black.rooks[selectChessIndex].y = row;
                 Black.rooks[selectChessIndex].x = col;
+                Black.rooks[selectChessIndex].ifMove = true;
             }
             else if(selectChessType == "Bishop")
             {
@@ -1187,35 +1220,56 @@ void GameManager::playerMove(int row, int col)
         }
     }
 
+    computeTarget();
     recordCurBoard();
     curStep++;
     steps.resize(curStep + 1);
     steps[curStep] = curBoard;
+    transBoardToFen();
+    fens.resize(curStep + 1);
+    fens[curStep] = fen;
+    IfBoardRepeat3Times(fen);
+    ifWhiteCanMove = false;
+    ifBlackCanMove = false;
+    judgeIfPlayerCanMove(playerTurn);
+
+    if(wPawn == 0 && wRook == 0 && wKnight == 0 && wBishop == 0 && wQueen == 0)
+        ifInsufficientChess('w');
+
+    if(bPawn == 0 && bRook == 0 && bKnight == 0 && bBishop == 0 && bQueen == 0)
+        ifInsufficientChess('b');
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
 {
+    noEat = 0;
+
     if(player == 'w')
     {
         if(chessType == "Pawn")
         {
-            White.pawns.erase(White.pawns.begin() + index);
+            wPawn--;
+            //White.pawns.erase(White.pawns.begin() + index);
         }
         else if(chessType == "Rook")
         {
-            White.rooks.erase(White.rooks.begin() + index);
+            wRook--;
+            //White.rooks.erase(White.rooks.begin() + index);
         }
         else if(chessType == "Bishop")
         {
-            White.bishops.erase(White.bishops.begin() + index);
+            wBishop--;
+            //White.bishops.erase(White.bishops.begin() + index);
         }
         else if(chessType == "Knight")
         {
-            White.knights.erase(White.knights.begin() + index);
+            wKnight--;
+            //White.knights.erase(White.knights.begin() + index);
         }
         else if(chessType == "Queen")
         {
-            White.queens.erase(White.queens.begin() + index);
+            wQueen--;
+            //White.queens.erase(White.queens.begin() + index);
         }
         //        else if(chessType == "King")
         //        {
@@ -1226,23 +1280,28 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
     {
         if(chessType == "Pawn")
         {
-            Black.pawns.erase(Black.pawns.begin()+index);
+            bPawn--;
+            //Black.pawns.erase(Black.pawns.begin()+index);
         }
         else if(chessType == "Rook")
         {
-            Black.rooks.erase(Black.rooks.begin()+index);
+            bRook--;
+            //Black.rooks.erase(Black.rooks.begin()+index);
         }
         else if(chessType == "Bishop")
         {
-            Black.bishops.erase(Black.bishops.begin()+index);
+            bBishop--;
+            //Black.bishops.erase(Black.bishops.begin()+index);
         }
         else if(chessType == "Knight")
         {
-            Black.knights.erase(Black.knights.begin()+index);
+            bKnight--;
+            //Black.knights.erase(Black.knights.begin()+index);
         }
         else if(chessType == "Queen")
         {
-            Black.queens.erase(Black.queens.begin()+index);
+            bQueen--;
+            //Black.queens.erase(Black.queens.begin()+index);
         }
         //        else if(chessType == "King")
         //        {
@@ -1278,7 +1337,7 @@ int GameManager::boardChessCondition(int row, int col)
     }
 }
 
-void check(int i,int j,ViewManager board[][8]);
+int check(int i,int j,ViewManager board[][8]);
 
 void GameManager::computeTarget()
 {
@@ -1291,6 +1350,10 @@ void GameManager::computeTarget()
             board[i][k].bTarget = 0;
         }
     }
+    blackKingBeenAttackBy[0]=0;
+    blackKingBeenAttackBy[1]=0;
+    whiteKingBeenAttackBy[0]=0;
+    whiteKingBeenAttackBy[1]=0;
     //if there has piece, than count where can it attack, and record it to wTargets and bTarget
     for (int i = 0;i<8;i++)
     {
@@ -1298,14 +1361,27 @@ void GameManager::computeTarget()
         {
             if (board[i][j].ifHavePiece)
             {
-                check(i,j,board);
+                if(check(i,j,board))
+                {
+                    if(board[i][j].player== 'w')
+                    {
+                        blackKingBeenAttackBy[0]=i;
+                        blackKingBeenAttackBy[1]=j;
+                    }
+                    else if(board[i][j].player== 'b')
+                    {
+                        whiteKingBeenAttackBy[0]=i;
+                        whiteKingBeenAttackBy[1]=j;
+                    }
+                }
+
             }
         }
     }
 }
-
-void check(int i,int j,ViewManager board[][8])
+int check(int i,int j,ViewManager board[][8])
 {
+    int kingAttack = 0;
     //if the input board's piece type is Pawn.
     if(board[i][j].chessType == "Pawn")
     {
@@ -1319,6 +1395,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j+1].player!='w')
                 {
                     board[i-1][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i-1>=0)
@@ -1327,6 +1408,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j-1].player!='w')
                 {
                     board[i-1][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
@@ -1339,6 +1425,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j+1].player!='b')
                 {
                     board[i+1][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i+1<8)
@@ -1347,6 +1438,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j-1].player!='b')
                 {
                     board[i+1][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
@@ -1364,6 +1460,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j+2].player!='w')
                 {
                     board[i+1][j+2].wTarget++;
+                    //check if attack king
+                    if (board[i+1][j+2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+1<8&&i+2<8)
@@ -1372,6 +1473,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+2][j+1].player!='w')
                 {
                     board[i+2][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i+2][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-2>=0&&i+1<8)
@@ -1380,6 +1486,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j-2].player!='w')
                 {
                     board[i+1][j-2].wTarget++;
+                    //check if attack king
+                    if (board[i+1][j-2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i+2<8)
@@ -1388,6 +1499,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+2][j-1].player!='w')
                 {
                     board[i+2][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i+2][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+2<8&&i-1>=0)
@@ -1396,6 +1512,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j+2].player!='w')
                 {
                     board[i-1][j+2].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j+2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+1<8&&i-2>=0)
@@ -1404,6 +1525,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-2][j+1].player!='w')
                 {
                     board[i-2][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i-2][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-2>=0&&i-1>=0)
@@ -1412,6 +1538,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j-2].player!='w')
                 {
                     board[i-1][j-2].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j-2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i-2>=0)
@@ -1420,6 +1551,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-2][j-1].player!='w')
                 {
                     board[i-2][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i-2][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
@@ -1432,6 +1568,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j+2].player!='b')
                 {
                     board[i+1][j+2].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j+2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+1<8&&i+2<8)
@@ -1440,6 +1581,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+2][j+1].player!='b')
                 {
                     board[i+2][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i+2][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-2>=0&&i+1<8)
@@ -1448,6 +1594,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+1][j-2].player!='b')
                 {
                     board[i+1][j-2].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j-2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i+2<8)
@@ -1456,6 +1607,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i+2][j-1].player!='b')
                 {
                     board[i+2][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i+2][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+2<8&&i-1>=0)
@@ -1464,6 +1620,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j+2].player!='b')
                 {
                     board[i-1][j+2].bTarget++;
+                    //check if attack king
+                    if (board[i-1][j+2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j+1<8&&i-2>=0)
@@ -1472,6 +1633,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-2][j+1].player!='b')
                 {
                     board[i-2][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i-2][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-2>=0&&i-1>=0)
@@ -1480,6 +1646,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-1][j-2].player!='b')
                 {
                     board[i-1][j-2].bTarget++;
+                    //check if attack king
+                    if (board[i-1][j-2].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if (j-1>=0&&i-2>=0)
@@ -1488,6 +1659,11 @@ void check(int i,int j,ViewManager board[][8])
                 if (board[i-2][j-1].player!='b')
                 {
                     board[i-2][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i-2][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
@@ -1508,6 +1684,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -1530,6 +1711,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -1552,6 +1738,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -1574,6 +1765,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -1598,6 +1794,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -1620,6 +1821,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -1642,6 +1848,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -1664,6 +1875,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -1693,6 +1909,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j+k].player=='b')
                     {
                         board[i+k][j+k].wTarget++;
+                        //check if attack king
+                        if (board[i+k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j+k].player=='0')
@@ -1719,6 +1940,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j-k].player=='b')
                     {
                         board[i+k][j-k].wTarget++;
+                        //check if attack king
+                        if (board[i+k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j-k].player=='0')
@@ -1745,6 +1971,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j+k].player=='b')
                     {
                         board[i-k][j+k].wTarget++;
+                        //check if attack king
+                        if (board[i-k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j+k].player=='0')
@@ -1772,6 +2003,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j-k].player=='b')
                     {
                         board[i-k][j-k].wTarget++;
+                        //check if attack king
+                        if (board[i-k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j-k].player=='0')
@@ -1800,6 +2036,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j+k].player=='w')
                     {
                         board[i+k][j+k].bTarget++;
+                        //check if attack king
+                        if (board[i+k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j+k].player=='0')
@@ -1825,6 +2066,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j-k].player=='w')
                     {
                         board[i+k][j-k].bTarget++;
+                        //check if attack king
+                        if (board[i+k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j-k].player=='0')
@@ -1851,6 +2097,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j+k].player=='w')
                     {
                         board[i-k][j+k].bTarget++;
+                        //check if attack king
+                        if (board[i-k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j+k].player=='0')
@@ -1877,6 +2128,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j-k].player=='w')
                     {
                         board[i-k][j-k].bTarget++;
+                        //check if attack king
+                        if (board[i-k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j-k].player=='0')
@@ -1910,6 +2166,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j+k].player=='b')
                     {
                         board[i+k][j+k].wTarget++;
+                        //check if attack king
+                        if (board[i+k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j+k].player=='0')
@@ -1935,6 +2196,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j-k].player=='b')
                     {
                         board[i+k][j-k].wTarget++;
+                        //check if attack king
+                        if (board[i+k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j-k].player=='0')
@@ -1960,6 +2226,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j+k].player=='b')
                     {
                         board[i-k][j+k].wTarget++;
+                        //check if attack king
+                        if (board[i-k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j+k].player=='0')
@@ -1985,6 +2256,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j-k].player=='b')
                     {
                         board[i-k][j-k].wTarget++;
+                        //check if attack king
+                        if (board[i-k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j-k].player=='0')
@@ -2011,6 +2287,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -2031,6 +2312,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='b')
                     {
                         board[k][j].wTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -2051,6 +2337,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -2071,6 +2362,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='b')
                     {
                         board[i][k].wTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -2094,6 +2390,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j+k].player=='w')
                     {
                         board[i+k][j+k].bTarget++;
+                        //check if attack king
+                        if (board[i+k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j+k].player=='0')
@@ -2119,6 +2420,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i+k][j-k].player=='w')
                     {
                         board[i+k][j-k].bTarget++;
+                        //check if attack king
+                        if (board[i+k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i+k][j-k].player=='0')
@@ -2144,6 +2450,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j+k].player=='w')
                     {
                         board[i-k][j+k].bTarget++;
+                        //check if attack king
+                        if (board[i-k][j+k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j+k].player=='0')
@@ -2169,6 +2480,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i-k][j-k].player=='w')
                     {
                         board[i-k][j-k].bTarget++;
+                        //check if attack king
+                        if (board[i-k][j-k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }
                     else if(board[i-k][j-k].player=='0')
@@ -2195,6 +2511,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -2215,6 +2536,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[k][j].player=='w')
                     {
                         board[k][j].bTarget++;
+                        //check if attack king
+                        if (board[k][j].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[k][j].player=='0')
                     {
@@ -2235,6 +2561,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -2255,6 +2586,11 @@ void check(int i,int j,ViewManager board[][8])
                     if (board[i][k].player=='w')
                     {
                         board[i][k].bTarget++;
+                        //check if attack king
+                        if (board[i][k].chessType=="King")
+                        {
+                            kingAttack = 1;
+                        }
                         break;
                     }else if(board[i][k].player=='0')
                     {
@@ -2280,6 +2616,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i+1][j].player != 'w')
                 {
                     board[i+1][j].wTarget++;
+                    //check if attack king
+                    if (board[i+1][j].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0)
@@ -2287,6 +2628,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i-1][j].player != 'w')
                 {
                     board[i-1][j].wTarget++;
+                    //check if attack king
+                    if ( board[i-1][j].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(j+1<8)
@@ -2294,6 +2640,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i][j+1].player != 'w')
                 {
                     board[i][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(j-1>=0)
@@ -2301,6 +2652,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i][j-1].player != 'w')
                 {
                     board[i][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i+1<8&&j+1<8)
@@ -2308,6 +2664,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i+1][j+1].player != 'w')
                 {
                     board[i+1][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i+1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0&&j+1<8)
@@ -2315,6 +2676,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i-1][j+1].player != 'w')
                 {
                     board[i-1][j+1].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i+1<8&&j-1>=0)
@@ -2322,6 +2688,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i+1][j-1].player != 'w')
                 {
                     board[i+1][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i+1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0&&j-1>=0)
@@ -2329,6 +2700,11 @@ void check(int i,int j,ViewManager board[][8])
                 if(board[i-1][j-1].player != 'w')
                 {
                     board[i-1][j-1].wTarget++;
+                    //check if attack king
+                    if (board[i-1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
@@ -2339,60 +2715,102 @@ void check(int i,int j,ViewManager board[][8])
             {
                 if(board[i+1][j].player != 'b')
                 {
-                    board[i+1][j].wTarget++;
+                    board[i+1][j].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0)
             {
                 if(board[i-1][j].player != 'b')
                 {
-                    board[i-1][j].wTarget++;
+                    board[i-1][j].bTarget++;
+                    //check if attack king
+                    if (board[i-1][j].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(j+1<8)
             {
                 if(board[i][j+1].player != 'b')
                 {
-                    board[i][j+1].wTarget++;
+                    board[i][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(j-1>=0)
             {
                 if(board[i][j-1].player != 'b')
                 {
-                    board[i][j-1].wTarget++;
+                    board[i][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i+1<8&&j+1<8)
             {
                 if(board[i+1][j+1].player != 'b')
                 {
-                    board[i+1][j+1].wTarget++;
+                    board[i+1][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0&&j+1<8)
             {
                 if(board[i-1][j+1].player != 'b')
                 {
-                    board[i-1][j+1].wTarget++;
+                    board[i-1][j+1].bTarget++;
+                    //check if attack king
+                    if (board[i-1][j+1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
+
                 }
             }
             if(i+1<8&&j-1>=0)
             {
                 if(board[i+1][j-1].player != 'b')
                 {
-                    board[i+1][j-1].wTarget++;
+                    board[i+1][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i+1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
             if(i-1>=0&&j-1>=0)
             {
                 if(board[i-1][j-1].player != 'b')
                 {
-                    board[i-1][j-1].wTarget++;
+                    board[i-1][j-1].bTarget++;
+                    //check if attack king
+                    if (board[i-1][j-1].chessType=="King")
+                    {
+                        kingAttack = 1;
+                    }
                 }
             }
         }
     }
+    return kingAttack;
 }
 
 void GameManager::recordCurBoard()
@@ -2470,4 +2888,1067 @@ int GameManager::judgeWinOrLose()
     }
 
     return gameContinue;
+}
+
+void GameManager::judgeIfPlayerCanMove(char player)
+{
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(board[i][j].ifHavePiece)
+            {
+                if(ifWhiteCanMove == false && board[i][j].player == 'w' && playerTurn == 'w')
+                {
+                    ifWhiteCanMove = ifPosCanMove(i, j);
+                }
+                else if(ifBlackCanMove == false && board[i][j].player == 'b' && playerTurn == 'b')
+                {
+                    ifBlackCanMove = ifPosCanMove(i, j);
+                }
+            }
+        }
+    }
+}
+
+bool GameManager::ifPosCanMove(int row, int col)
+{
+    if(board[row][col].chessType == "Pawn")
+    {
+        if(board[row][col].player == 'w')
+        {
+            //first step
+            if(row == 6)
+            {
+                if(ifPosInBoard(row - 2, col) && board[row - 2][col].ifHavePiece == false && board[row - 1][col].ifHavePiece == false)
+                {
+                    return true;
+                }
+            }
+
+            if(ifPosInBoard(row - 1, col) && board[row - 1][col].ifHavePiece == false)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) == blackChess)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) == blackChess)
+            {
+                return true;
+            }
+
+            //En passant
+            if(row == 3)
+            {
+                //left En passant
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == blackChess && board[row][col - 1].chessType == "Pawn")
+                {
+                    if(Black.pawns[board[row][col - 1].index].ifmove2Step == true && Black.pawns[board[row][col - 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+
+                //right En passant
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == blackChess && board[row][col + 1].chessType == "Pawn")
+                {
+                    if(Black.pawns[board[row][col + 1].index].ifmove2Step == true && Black.pawns[board[row][col + 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        else//board[row][col].player = 'b'
+        {
+            //first step
+            if(row == 1)
+            {
+                if(ifPosInBoard(row + 2, col) && board[row + 2][col].ifHavePiece == false && board[row + 1][col].ifHavePiece == false)
+                {
+                    return true;
+                }
+            }
+
+            if(ifPosInBoard(row + 1, col) && board[row + 1][col].ifHavePiece == false)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) == whiteChess)
+            {
+                return true;
+            }
+
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) == whiteChess)
+            {
+                return true;
+            }
+
+            //En passant
+            if(row == 4)
+            {
+                //left En passant
+                if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) == whiteChess && board[row][col - 1].chessType == "Pawn")
+                {
+                    if(White.pawns[board[row][col - 1].index].ifmove2Step == true && White.pawns[board[row][col - 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+
+                //right En passant
+                if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) == whiteChess && board[row][col + 1].chessType == "Pawn")
+                {
+                    if(White.pawns[board[row][col + 1].index].ifmove2Step == true && White.pawns[board[row][col + 1].index].inNextTurn == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+    else if(board[row][col].chessType == "Rook")
+    {
+        //up
+        for(int i = 1; i < 8;i++)
+        {
+            if(!ifPosInBoard(row + i, col))
+                break;
+
+            if(boardChessCondition(row + i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col))
+                break;
+
+            if(boardChessCondition(row - i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col + i))
+                break;
+
+            if(boardChessCondition(row, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col - i))
+                break;
+
+            if(boardChessCondition(row, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "Knight")
+    {
+        if(board[row][col].player == 'w')
+        {
+            if(ifPosInBoard(row + 2, col + 1) && boardChessCondition(row + 2, col + 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 2, col - 1) && boardChessCondition(row + 2, col - 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col + 1) && boardChessCondition(row - 2, col + 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col - 1) && boardChessCondition(row - 2, col - 1) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col + 2) && boardChessCondition(row + 1, col + 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col - 2) && boardChessCondition(row + 1, col - 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col + 2) && boardChessCondition(row - 1, col + 2) != whiteChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col - 2) && boardChessCondition(row - 1, col - 2) != whiteChess)
+                return true;
+
+            return false;
+        }
+        else//board[row][col].player == 'b'
+        {
+            if(ifPosInBoard(row + 2, col + 1) && boardChessCondition(row + 2, col + 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 2, col - 1) && boardChessCondition(row + 2, col - 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col + 1) && boardChessCondition(row - 2, col + 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 2, col - 1) && boardChessCondition(row - 2, col - 1) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col + 2) && boardChessCondition(row + 1, col + 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row + 1, col - 2) && boardChessCondition(row + 1, col - 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col + 2) && boardChessCondition(row - 1, col + 2) != blackChess)
+                return true;
+
+            if(ifPosInBoard(row - 1, col - 2) && boardChessCondition(row - 1, col - 2) != blackChess)
+                return true;
+
+            return false;
+        }
+    }
+    else if(board[row][col].chessType == "Bishop")
+    {
+        //right up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col + i))
+                break;
+
+            if(boardChessCondition(row + i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col + i))
+                break;
+
+            if(boardChessCondition(row - i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col - i))
+                break;
+
+            if(boardChessCondition(row + i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col - i))
+                break;
+
+            if(boardChessCondition(row - i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "Queen")
+    {
+        //up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col))
+                break;
+
+            if(boardChessCondition(row + i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col))
+                break;
+
+            if(boardChessCondition(row - i, col) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col + i))
+                break;
+
+            if(boardChessCondition(row, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row, col - i))
+                break;
+
+            if(boardChessCondition(row, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col + i))
+                break;
+
+            if(boardChessCondition(row + i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //right down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col + i))
+                break;
+
+            if(boardChessCondition(row - i, col + i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col + i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left up
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row + i, col - i))
+                break;
+
+            if(boardChessCondition(row + i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row + i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        //left down
+        for(int i = 1;i<8;i++)
+        {
+            if(!ifPosInBoard(row - i, col - i))
+                break;
+
+            if(boardChessCondition(row - i, col - i) == noChess)
+                return true;
+            else if(boardChessCondition(row - i, col - i) == whiteChess)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+            else//boardChessCondition == blackChess
+            {
+                if(board[row][col].player == 'b')
+                {
+                    break;
+                }
+                else
+                {
+                    return true;
+                    break;
+                }
+            }
+        }
+
+        return false;
+    }
+    else if(board[row][col].chessType == "King")
+    {
+        if(board[row][col].player == 'w')
+        {
+
+            //up
+            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != whiteChess && board[row + 1][col].bTarget == 0)
+                return true;
+
+            //down
+            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != whiteChess && board[row - 1][col].bTarget == 0)
+                return true;
+
+            //right
+            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != whiteChess && board[row][col + 1].bTarget == 0)
+                return true;
+
+            //left
+            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != whiteChess && board[row][col - 1].bTarget == 0)
+                return true;
+
+            //up right
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != whiteChess && board[row + 1][col + 1].bTarget == 0)
+                return true;
+
+            //up left
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != whiteChess && board[row + 1][col - 1].bTarget == 0)
+                return true;
+
+            //down right
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != whiteChess && board[row - 1][col + 1].bTarget == 0)
+                return true;
+
+            //down left
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != whiteChess && board[row - 1][col - 1].bTarget == 0)
+                return true;
+
+            //left castle
+            if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false && board[7][0].chessType == "Rook" && board[7][0].player == 'w')
+            {
+                if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
+                {
+                    if(board[7][4].bTarget == 0 && board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //right castle
+            if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false && board[7][7].chessType == "Rook" && board[7][7].player == 'w')
+            {
+                if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
+                {
+                    if(board[7][4].bTarget == 0 && board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        else//board[row][col].player = 'b'
+        {
+            //up
+            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].bTarget == 0)
+                return true;
+
+            //down
+            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].bTarget == 0)
+                return true;
+
+            //right
+            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].bTarget == 0)
+                return true;
+
+            //left
+            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].bTarget == 0)
+                return true;
+
+            //up right
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].bTarget == 0)
+                return true;
+
+            //up left
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].bTarget == 0)
+                return true;
+
+            //down right
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].bTarget == 0)
+                return true;
+
+            //down left
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
+                return true;
+
+            //left castle
+            if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false && board[0][0].chessType == "Rook" && board[0][0].player == 'b')
+            {
+                if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
+                {
+                    if(board[0][4].wTarget == 0 && board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            //right castle
+            if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false && board[0][7].chessType == "Rook" && board[0][7].player == 'b')
+            {
+                if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
+                {
+                    if(board[0][4].wTarget == 0 && board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+}
+
+void GameManager::transBoardToFen()
+{
+    int blank = 0;
+    fen = "";
+
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(board[i][j].ifHavePiece == false)
+            {
+                blank++;
+            }
+            else//board[i][j].ifHavePiece == true
+            {
+                if(blank != 0)
+                {
+                    fen.push_back(blank + '0');
+                    blank = 0;
+                }
+
+                if(board[i][j].player == 'b')
+                {
+                    if(board[i][j].chessType == "Pawn")
+                    {
+                        fen.push_back(blank + 'p');
+                    }
+                    else if(board[i][j].chessType == "Rook")
+                    {
+                        fen.push_back(blank + 'r');
+                    }
+                    else if(board[i][j].chessType == "Knight")
+                    {
+                        fen.push_back(blank + 'n');
+                    }
+                    else if(board[i][j].chessType == "Bishop")
+                    {
+                        fen.push_back(blank + 'b');
+                    }
+                    else if(board[i][j].chessType == "Queen")
+                    {
+                        fen.push_back(blank + 'q');
+                    }
+                    else if(board[i][j].chessType == "King")
+                    {
+                        fen.push_back(blank + 'k');
+                    }
+                }
+                else//board[i][j].player == 'w'
+                {
+                    if(board[i][j].chessType == "Pawn")
+                    {
+                        fen.push_back(blank + 'P');
+                    }
+                    else if(board[i][j].chessType == "Rook")
+                    {
+                        fen.push_back(blank + 'R');
+                    }
+                    else if(board[i][j].chessType == "Knight")
+                    {
+                        fen.push_back(blank + 'N');
+                    }
+                    else if(board[i][j].chessType == "Bishop")
+                    {
+                        fen.push_back(blank + 'B');
+                    }
+                    else if(board[i][j].chessType == "Queen")
+                    {
+                        fen.push_back(blank + 'Q');
+                    }
+                    else if(board[i][j].chessType == "King")
+                    {
+                        fen.push_back(blank + 'K');
+                    }
+                }
+            }
+        }
+
+        if(blank != 0)
+        {
+            fen.push_back(blank + '0');
+            blank = 0;
+        }
+
+        fen.push_back('/');
+    }
+}
+
+void GameManager::IfBoardRepeat3Times(string curFen)
+{
+    int repeatTimes = 0;
+
+    for(int i = 0; i < fens.size(); i++)
+    {
+        if(curFen == fens[i])
+        {
+            repeatTimes++;
+        }
+
+        if(repeatTimes == 3)
+        {
+            ifDraw = true;
+            return;
+        }
+    }
+}
+
+void GameManager::ifInsufficientChess(char player)//The only player left is the king
+{
+    if(player = 'w')
+    {
+        if(bPawn > 0 || bQueen > 0 || bRook > 0 || bBishop >= 2 || (bKnight > 0 && bBishop > 0))
+        {
+            return ;
+        }
+
+        ifDraw = true;
+    }
+    else//player = 'b'
+    {
+        if(wPawn > 0 || wQueen > 0 || wRook > 0 || wBishop >= 2 || (wKnight > 0 && wBishop > 0))
+        {
+            return;
+        }
+
+        ifDraw = true;
+    }
+}
+
+void GameManager::Promoting(int row, int col, string type)
+{
+    if(type == "Queen")
+    {
+        Queen *newQueen = new Queen;
+
+        if(board[row][col].player == 'w')
+        {
+            newQueen->player = 'w';
+            newQueen->x = col;
+            newQueen->y = row;
+            White.queens.push_back(*newQueen);
+        }
+        else//board[row][col].player == 'b'
+        {
+            newQueen->player = 'b';
+            newQueen->x = col;
+            newQueen->y = row;
+        }
+    }
+    else if(type == "Bishop")
+    {
+        Bishop *newBishop = new Bishop;
+
+        if(board[row][col].player == 'w')
+        {
+            newBishop->player = 'w';
+            newBishop->x = col;
+            newBishop->y = row;
+        }
+        else//board[row][col].player == 'b'
+        {
+            newBishop->player = 'b';
+            newBishop->x = col;
+            newBishop->y = row;
+        }
+    }
+    else if(type == "Knight")
+    {
+        Knight *newKnight = new Knight;
+
+        if(board[row][col].player == 'w')
+        {
+
+        }
+        else//board[row][col].player == 'b'
+        {
+
+        }
+    }
+    else if(type == "Rook")
+    {
+        Rook *newRook = new Rook;
+
+        if(board[row][col].player == 'w')
+        {
+
+        }
+        else//board[row][col].player == 'b'
+        {
+
+        }
+    }
+
+    board[row][col].chessType = type;
 }

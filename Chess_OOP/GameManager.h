@@ -2,6 +2,10 @@
 #include "viewmanager.h"
 #include "CurBoard.h"
 #include <vector>
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Rook.h"
 
 using namespace std;
 
@@ -12,13 +16,29 @@ using namespace std;
 #define noChess 3
 #define whiteWin 1
 #define blackWin 2
-#define draw 3
-#define gameContinue 4
+#define gameContinue 3
+#define draw 4
 
 class GameManager
 {
 public:
     GameManager();
+    int wPawn;
+    int wRook;
+    int wKnight;
+    int wBishop;
+    int wQueen;
+    int bPawn;
+    int bRook;
+    int bKnight;
+    int bBishop;
+    int bQueen;
+    int noEat;
+    string fen;
+    vector <string> fens;
+    bool ifWhiteCanMove;
+    bool ifBlackCanMove;
+    bool ifDraw;
     int curStep;
     CurBoard curBoard;
     vector <CurBoard> steps;
@@ -30,6 +50,8 @@ public:
     char selectChessPlayer;
     string selectChessType;
     int selectChessIndex;
+    int blackKingBeenAttackBy[2];
+    int whiteKingBeenAttackBy[2];
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
     bool ifPosInBoard(int row, int col);
@@ -38,6 +60,12 @@ public:
     void computeTarget();
     void recordCurBoard();
     int judgeWinOrLose();
+    bool ifPosCanMove(int row, int col);
+    void judgeIfPlayerCanMove(char player);
+    void transBoardToFen();
+    void IfBoardRepeat3Times(string curFen);
+    void ifInsufficientChess(char player);
+    void Promoting(int row, int col, string type);
 };
 
 #endif // GAMEMANAGER_H

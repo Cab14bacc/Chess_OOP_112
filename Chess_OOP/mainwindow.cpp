@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     setSound();
     startSound->play();//plat BGM
     startSound->setLoops(-1);//repeat play
+    connect(&whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    connect(&blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 }
 
 MainWindow::~MainWindow()
@@ -84,7 +86,6 @@ void MainWindow::labelClicked()
     else
     {
         game.playerMove(curRow, curCol);
-        game.computeTarget();
         printInformation();
         game.clickTimes = 1;
         update();
@@ -97,11 +98,27 @@ void MainWindow::labelClicked()
         {
             showResultWindow(whiteWin);
         }
+        else if(game.ifDraw || game.noEat == 100 || (game.playerTurn == 'w' && !game.ifWhiteCanMove) || (game.playerTurn == 'b' && !game.ifBlackCanMove))
+        {
+            showResultWindow(draw);
+        }
     }
 }
 
 void MainWindow::update()
 {
+    for(int i = 0; i < 8; i++)
+    {
+        if(game.board[0][i].chessType == "Pawn")
+        {
+            Promoting(0, i);
+        }
+        else if(game.board[7][i].chessType == "Pawn")
+        {
+            Promoting(7, i);
+        }
+    }
+
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -185,20 +202,7 @@ void MainWindow::split(string Words[], QString Name)
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
-    setTime();
-    game.playerTurn = 'w';
-    game.Black.pawns.clear();
-    game.Black.rooks.clear();
-    game.Black.knights.clear();
-    game.Black.bishops.clear();
-    game.Black.queens.clear();
-    game.White.pawns.clear();
-    game.White.rooks.clear();
-    game.White.knights.clear();
-    game.White.bishops.clear();
-    game.White.queens.clear();
-    game.curStep = 0;
-    game.steps.clear();
+    resetGame();
 
     for(int i =0;i<8;i++)
     {
@@ -223,11 +227,12 @@ void MainWindow::on_newGame_clicked()
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
     Rook *newRook = new Rook;
+    newRook->ifMove = false;
     Pawn *newPawn = new Pawn;
 
     for(int i = 0; i < 8; i++)
     {
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(1);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -239,7 +244,7 @@ void MainWindow::on_newGame_clicked()
         game.board[1][i].chessType = "Pawn";
         game.board[1][i].ifHavePiece = true;
         game.board[1][i].index = i;
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(6);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -350,6 +355,7 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(4);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconBKing);
+    game.Black.king.ifMove = false;
     game.Black.king.x = 4;
     game.Black.king.y = 0;
     game.board[0][4].player = 'b';
@@ -456,6 +462,7 @@ void MainWindow::on_newGame_clicked()
     lab->setPixmap(*iconWKing);
     game.White.king.x = 4;
     game.White.king.y = 7;
+    game.White.king.ifMove = false;
     game.board[7][4].player = 'w';
     game.board[7][4].chessType = "King";
     game.board[7][4].ifHavePiece = true;
@@ -464,6 +471,8 @@ void MainWindow::on_newGame_clicked()
     game.computeTarget();
     game.recordCurBoard();
     game.steps.push_back(game.curBoard);
+    game.transBoardToFen();
+    game.fens.push_back(game.fen);
     printInformation();
 }
 
@@ -503,16 +512,16 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
-            //cout << i<<j;
+            cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
-                //cout << game.board[i][j].player;
-                //cout << game.board[i][j].chessType;
+                cout << game.board[i][j].player;
+                cout << game.board[i][j].chessType;
             }
 
             if(game.board[i][j].canMove)
             {
-                cout << "c";
+                //cout << "c";
             }
             //cout << "in"<<game.board[i][j].index;
             cout << "bt"<<game.board[i][j].bTarget;
@@ -523,7 +532,57 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 
-    cout << game.curStep<<" "<<game.steps.size();
+    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    //cout << game.fen<<endl;
+    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    //cout << "noEat:" << game.noEat<<endl;
+
+    if(game.ifWhiteCanMove)
+    {
+        cout << "ifWhiteCanMove: true";
+    }
+    else
+    {
+        cout << "ifWhiteCanMove: false";
+    }
+    cout << endl;
+    if(game.ifBlackCanMove)
+    {
+        cout << "ifBlackCanMove: true";
+    }
+    else
+    {
+        cout << "ifBlackCanMove: false";
+    }
+    cout << endl;
+    if(game.ifDraw)
+    {
+        cout <<"ifDraw: true";
+    }
+    else
+    {
+        cout << "ifDraw: false";
+    }
+    cout << endl;
+    if(game.White.king.ifMove)
+    {
+        cout << "White.king.ifMove = true";
+    }
+    else
+    {
+        cout << "White.king.ifMove = false";
+    }
+    cout << endl;
+    if(game.Black.king.ifMove)
+    {
+        cout << "Black.king.ifMove = true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove = false";
+    }
+    cout << endl;
 }
 
 void MainWindow::on_undo_clicked()
@@ -536,6 +595,7 @@ void MainWindow::on_undo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
@@ -549,6 +609,7 @@ void MainWindow::on_redo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
@@ -572,10 +633,8 @@ void MainWindow::loadBoard()
 
 void MainWindow::setTime()
 {
-    connect(whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    whiteTimer->start(1000);
-    connect(blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    blackTimer->start(1000);
+    whiteTimer.start(1000);
+    blackTimer.start(1000);
     whiteCounter = 10 * 60;
     blackCounter = 10 * 60;
     ui->whiteTime->setAlignment(Qt::AlignCenter);
@@ -588,28 +647,28 @@ void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
     {
-        whiteTimer->start();
-        blackTimer->stop();
+        whiteTimer.start();
+        blackTimer.stop();
         whiteCounter = whiteCounter - 1;
         ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
     }
-    else//game.playerTurn == 'b'
+    else if(game.playerTurn == 'b')
     {
-        whiteTimer->stop();
-        blackTimer->start();
+        whiteTimer.stop();
+        blackTimer.start();
         blackCounter = blackCounter - 1;
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
     if(whiteCounter == 0)
     {
-        whiteTimer->stop();
+        whiteTimer.stop();
         //set white lose
         showResultWindow(blackWin);
     }
     else if(blackCounter == 0)
     {
-        blackTimer->stop();
+        blackTimer.stop();
         //set black lose
         showResultWindow(whiteWin);
     }
@@ -664,6 +723,88 @@ void MainWindow::showResultWindow(int whoWin)
         qApp->quit();
     });
     layout->addWidget(quitBtn);
+
+    dialog->setLayout(layout);
+    dialog->exec();//display
+}
+
+void MainWindow::resetGame()
+{
+    game.playerTurn = 'w';
+    game.Black.pawns.clear();
+    game.Black.rooks.clear();
+    game.Black.knights.clear();
+    game.Black.bishops.clear();
+    game.Black.queens.clear();
+    game.White.pawns.clear();
+    game.White.rooks.clear();
+    game.White.knights.clear();
+    game.White.bishops.clear();
+    game.White.queens.clear();
+    game.curStep = 0;
+    game.steps.clear();
+    game.wPawn = 8;
+    game.wRook = 2;
+    game.wKnight = 2;
+    game.wBishop = 2;
+    game.wQueen = 1;
+    game.bPawn = 8;
+    game.bRook = 2;
+    game.bKnight = 2;
+    game.bBishop = 2;
+    game.bQueen = 1;
+    game.noEat = 0;
+    game.fen = "";
+    game.ifWhiteCanMove = true;
+    game.ifBlackCanMove = true;
+    game.ifDraw = false;
+    game.fens.clear();
+    setTime();
+}
+
+void MainWindow::Promoting(int row, int col)
+{
+     QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Promoting");
+    dialog->setFixedSize(200, 150);
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(label);
+
+    QPushButton *queenBtn = new QPushButton("Queen", dialog);
+    connect(queenBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Queen");
+    });
+
+    layout->addWidget(queenBtn);
+
+    QPushButton *bishopBtn = new QPushButton("Bishop", dialog);
+    connect(bishopBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Bishop");
+    });
+
+    layout->addWidget(bishopBtn);
+
+    QPushButton *knightBtn = new QPushButton("Knight", dialog);
+    connect(knightBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Knight");
+    });
+
+    layout->addWidget(knightBtn);
+
+    QPushButton *rookBtn = new QPushButton("Rook", dialog);
+    connect(rookBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Rook");
+    });
+
+    layout->addWidget(rookBtn);
 
     dialog->setLayout(layout);
     dialog->exec();//display

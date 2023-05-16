@@ -180,7 +180,7 @@ void MainWindow::update()
             QPoint pos = ui->gameBoard->itemAtPosition(0,var)->widget()
                              ->mapFromGlobal(ui->gameBoard->itemAtPosition(0,var)->widget()->pos());
             promoMenuW.move(pos);
-            promoMenuW.show();
+            promoMenuW.exec();
             if (promoMenuW.result == 1)
             {
                 game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
@@ -222,7 +222,7 @@ void MainWindow::update()
             QPoint pos = ui->gameBoard->itemAtPosition(7,var)->widget()
                              ->mapFromGlobal(ui->gameBoard->itemAtPosition(7,var)->widget()->pos());
             promoMenuB.move(pos);
-            promoMenuB.show();
+            promoMenuB.exec();
             if (promoMenuB.result == 1)
             {
                 game.eraseChessPiece("Pabn",'b',game.board[7][var].index);

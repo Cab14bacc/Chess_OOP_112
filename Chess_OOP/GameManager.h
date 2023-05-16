@@ -19,6 +19,7 @@ class GameManager
 {
 public:
     GameManager();
+    int noEat;
     string fen;
     vector <string> fens;
     bool ifWhiteCanMove;

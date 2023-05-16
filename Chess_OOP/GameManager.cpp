@@ -5,6 +5,7 @@ using namespace std;
 
 GameManager::GameManager()
 {
+    noEat = 0;
     fen = "";
     ifWhiteCanMove = true;
     ifBlackCanMove = true;
@@ -867,6 +868,8 @@ void GameManager::playerMove(int row, int col)
         }
         return;
     }
+
+    noEat++;
 
     for(int i = 0;i<White.pawns.size();i++)
     {

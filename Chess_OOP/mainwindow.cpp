@@ -97,7 +97,7 @@ void MainWindow::labelClicked()
         {
             showResultWindow(whiteWin);
         }
-        else if(game.ifDraw)
+        else if(game.ifDraw && game.noEat == 100)
         {
             showResultWindow(draw);
         }

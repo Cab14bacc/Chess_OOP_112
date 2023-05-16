@@ -894,7 +894,6 @@ void GameManager::playerMove(int row, int col)
     if(board[row][col].ifHavePiece)
     {
         eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
-
     }
 
     if(selectChessPlayer == 'w')
@@ -1235,27 +1234,27 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
         if(chessType == "Pawn")
         {
             wPawn--;
-            White.pawns.erase(White.pawns.begin() + index);
+            //White.pawns.erase(White.pawns.begin() + index);
         }
         else if(chessType == "Rook")
         {
             wRook--;
-            White.rooks.erase(White.rooks.begin() + index);
+            //White.rooks.erase(White.rooks.begin() + index);
         }
         else if(chessType == "Bishop")
         {
             wBishop--;
-            White.bishops.erase(White.bishops.begin() + index);
+            //White.bishops.erase(White.bishops.begin() + index);
         }
         else if(chessType == "Knight")
         {
             wKnight--;
-            White.knights.erase(White.knights.begin() + index);
+            //White.knights.erase(White.knights.begin() + index);
         }
         else if(chessType == "Queen")
         {
             wQueen--;
-            White.queens.erase(White.queens.begin() + index);
+            //White.queens.erase(White.queens.begin() + index);
         }
         //        else if(chessType == "King")
         //        {
@@ -1267,27 +1266,27 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
         if(chessType == "Pawn")
         {
             bPawn--;
-            Black.pawns.erase(Black.pawns.begin()+index);
+            //Black.pawns.erase(Black.pawns.begin()+index);
         }
         else if(chessType == "Rook")
         {
             bRook--;
-            Black.rooks.erase(Black.rooks.begin()+index);
+            //Black.rooks.erase(Black.rooks.begin()+index);
         }
         else if(chessType == "Bishop")
         {
             bBishop--;
-            Black.bishops.erase(Black.bishops.begin()+index);
+            //Black.bishops.erase(Black.bishops.begin()+index);
         }
         else if(chessType == "Knight")
         {
             bKnight--;
-            Black.knights.erase(Black.knights.begin()+index);
+            //Black.knights.erase(Black.knights.begin()+index);
         }
         else if(chessType == "Queen")
         {
             bQueen--;
-            Black.queens.erase(Black.queens.begin()+index);
+            //Black.queens.erase(Black.queens.begin()+index);
         }
         //        else if(chessType == "King")
         //        {

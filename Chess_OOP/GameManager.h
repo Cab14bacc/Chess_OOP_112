@@ -10,7 +10,10 @@ using namespace std;
 #define whiteChess 1
 #define blackChess 2
 #define noChess 3
-
+#define whiteWin 1
+#define blackWin 2
+#define draw 3
+#define gameContinue 4
 
 class GameManager
 {
@@ -29,12 +32,12 @@ public:
     int selectChessIndex;
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
-    bool ifGameOver();
     bool ifPosInBoard(int row, int col);
     int boardChessCondition(int row, int col);//return 1:white chess、2:black、3:no chess on the board
     void eraseChessPiece(string chessType, char player,int index);
     void computeTarget();
     void recordCurBoard();
+    int gameState();
 };
 
 #endif // GAMEMANAGER_H

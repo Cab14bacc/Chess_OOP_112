@@ -5,8 +5,6 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QSound>
-#define whiteWin 1
-#define blackWin 2
 
 using namespace std;;
 

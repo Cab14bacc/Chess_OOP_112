@@ -50,6 +50,8 @@ public:
     char selectChessPlayer;
     string selectChessType;
     int selectChessIndex;
+    int blackKingBeenAttackBy[2];
+    int whiteKingBeenAttackBy[2];
     void showCanMove(int row, int col);
     void playerMove(int row, int col);
     bool ifPosInBoard(int row, int col);

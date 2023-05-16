@@ -97,6 +97,10 @@ void MainWindow::labelClicked()
         {
             showResultWindow(whiteWin);
         }
+        else if(game.ifDraw)
+        {
+            showResultWindow(draw);
+        }
     }
 }
 
@@ -464,6 +468,8 @@ void MainWindow::on_newGame_clicked()
     game.computeTarget();
     game.recordCurBoard();
     game.steps.push_back(game.curBoard);
+    game.transBoardToFen();
+    game.fens.push_back(game.fen);
     printInformation();
 }
 
@@ -523,7 +529,8 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 
-    cout << game.curStep<<" "<<game.steps.size();
+    cout << game.curStep<<" "<<game.steps.size()<<endl;
+    cout << game.fen;
 }
 
 void MainWindow::on_undo_clicked()

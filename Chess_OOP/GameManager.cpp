@@ -5,6 +5,10 @@ using namespace std;
 
 GameManager::GameManager()
 {
+    fen = "";
+    ifWhiteCanMove = true;
+    ifBlackCanMove = true;
+    ifDraw = false;
     curStep = 0;
     White.setPlayer('w');
     Black.setPlayer('b');
@@ -1191,6 +1195,10 @@ void GameManager::playerMove(int row, int col)
     curStep++;
     steps.resize(curStep + 1);
     steps[curStep] = curBoard;
+    transBoardToFen();
+    fens.resize(curStep + 1);
+    fens[curStep] = fen;
+    IfBoardRepeat3Times(fen);
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -2470,4 +2478,116 @@ int GameManager::judgeWinOrLose()
     }
 
     return gameContinue;
+}
+
+void GameManager::judgeIfPlayerCanMove()
+{
+
+}
+
+void GameManager::transBoardToFen()
+{
+    int blank = 0;
+    fen = "";
+
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            if(board[i][j].ifHavePiece == false)
+            {
+                blank++;
+            }
+            else//board[i][j].ifHavePiece == true
+            {
+                if(blank != 0)
+                {
+                    fen.push_back(blank + '0');
+                    blank = 0;
+                }
+
+                if(board[i][j].player == 'b')
+                {
+                    if(board[i][j].chessType == "Pawn")
+                    {
+                        fen.push_back(blank + 'p');
+                    }
+                    else if(board[i][j].chessType == "Rook")
+                    {
+                        fen.push_back(blank + 'r');
+                    }
+                    else if(board[i][j].chessType == "Knight")
+                    {
+                        fen.push_back(blank + 'n');
+                    }
+                    else if(board[i][j].chessType == "Bishop")
+                    {
+                        fen.push_back(blank + 'b');
+                    }
+                    else if(board[i][j].chessType == "Queen")
+                    {
+                        fen.push_back(blank + 'q');
+                    }
+                    else if(board[i][j].chessType == "King")
+                    {
+                        fen.push_back(blank + 'k');
+                    }
+                }
+                else//board[i][j].player == 'w'
+                {
+                    if(board[i][j].chessType == "Pawn")
+                    {
+                        fen.push_back(blank + 'P');
+                    }
+                    else if(board[i][j].chessType == "Rook")
+                    {
+                        fen.push_back(blank + 'R');
+                    }
+                    else if(board[i][j].chessType == "Knight")
+                    {
+                        fen.push_back(blank + 'N');
+                    }
+                    else if(board[i][j].chessType == "Bishop")
+                    {
+                        fen.push_back(blank + 'B');
+                    }
+                    else if(board[i][j].chessType == "Queen")
+                    {
+                        fen.push_back(blank + 'Q');
+                    }
+                    else if(board[i][j].chessType == "King")
+                    {
+                        fen.push_back(blank + 'K');
+                    }
+                }
+            }
+        }
+
+        if(blank != 0)
+        {
+            fen.push_back(blank + '0');
+            blank = 0;
+        }
+
+        fen.push_back('/');
+    }
+}
+
+void GameManager::IfBoardRepeat3Times(string curFen)
+{
+    int repeatTimes = 0;
+
+    for(int i = 0; i < fens.size(); i++)
+    {
+        if(curFen == fens[i])
+        {
+            repeatTimes++;
+        }
+
+        if(repeatTimes == 3)
+        {
+            ifDraw = true;
+            return;
+        }
+    }
 }

@@ -1252,11 +1252,6 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
 
 }
 
-bool GameManager::ifGameOver()
-{
-    return true;
-}
-
 bool GameManager::ifPosInBoard(int row, int col)
 {
     if(row >= 0 && row < 8 && col >= 0 && col < 8)
@@ -1500,7 +1495,7 @@ void check(int i,int j,ViewManager board[][8])
     //if the input board's piece type is Rook.
     else if(board[i][j].chessType == "Rook")
     {
-         //check which side it is.
+        //check which side it is.
         if(board[i][j].player == 'w')
         {
             //check down side.
@@ -1694,7 +1689,7 @@ void check(int i,int j,ViewManager board[][8])
 
                 if (i+k<8&&j+k<8)
                 {
-                     //if touch target or teammate, stop checking
+                    //if touch target or teammate, stop checking
                     if (board[i+k][j+k].player=='b')
                     {
                         board[i+k][j+k].wTarget++;
@@ -1746,7 +1741,7 @@ void check(int i,int j,ViewManager board[][8])
             {
                 if (i-k>=0&&j+k<8)
                 {
-                     //if touch target or teammate, stop checking
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j+k].player=='b')
                     {
                         board[i-k][j+k].wTarget++;
@@ -1773,7 +1768,7 @@ void check(int i,int j,ViewManager board[][8])
                 if (i-k>=0&&j-k>=0)
                 {
 
-                     //if touch target or teammate, stop checking
+                    //if touch target or teammate, stop checking
                     if (board[i-k][j-k].player=='b')
                     {
                         board[i-k][j-k].wTarget++;
@@ -2276,7 +2271,7 @@ void check(int i,int j,ViewManager board[][8])
     //if the input board's piece type is King.
     else if(board[i][j].chessType == "King")
     {
-         //check which side it is.
+        //check which side it is.
         if (board[i][j].player == 'w')
         {
             //check the 8 possible postions
@@ -2418,4 +2413,61 @@ void GameManager::recordCurBoard()
     }
 
     curBoard.playerTurn = playerTurn;
+}
+
+int GameManager::judgeWinOrLose()
+{
+    //black win
+    //king position is attacked by more than two chess
+    if(board[White.king.y][White.king.x].bTarget >= 2)
+    {
+        //check eight boards around
+        //up
+        if(ifPosInBoard(White.king.y - 1, White.king.x) && board[White.king.y - 1][White.king.x].bTarget > 0
+            //down
+            && ifPosInBoard(White.king.y + 1, White.king.x) && board[White.king.y + 1][White.king.x].bTarget > 0
+            //left
+            && ifPosInBoard(White.king.y, White.king.x - 1) && board[White.king.y][White.king.x - 1].bTarget > 0
+            //right
+            && ifPosInBoard(White.king.y, White.king.x + 1) && board[White.king.y][White.king.x + 1].bTarget > 0
+            //left up
+            && ifPosInBoard(White.king.y + 1, White.king.x - 1) && board[White.king.y + 1][White.king.x - 1].bTarget > 0
+            //right up
+            && ifPosInBoard(White.king.y + 1, White.king.x + 1) && board[White.king.y + 1][White.king.x + 1].bTarget > 0
+            //left down
+            && ifPosInBoard(White.king.y - 1, White.king.x - 1) && board[White.king.y - 1][White.king.x - 1].bTarget > 0
+            //right down
+            && ifPosInBoard(White.king.y - 1, White.king.x + 1) && board[White.king.y - 1][White.king.x + 1].bTarget > 0)
+        {
+            return blackWin;
+        }
+    }
+
+    //white win
+    //king position is attacked by more than two chess
+    if(board[Black.king.y][Black.king.x].bTarget >= 2)
+    {
+        //check eight boards around
+        //up
+        if(ifPosInBoard(Black.king.y - 1, Black.king.x) && board[Black.king.y - 1][Black.king.x].wTarget > 0
+            //down
+            && ifPosInBoard(Black.king.y + 1, Black.king.x) && board[Black.king.y + 1][Black.king.x].wTarget > 0
+            //left
+            && ifPosInBoard(Black.king.y, Black.king.x - 1) && board[Black.king.y][Black.king.x - 1].wTarget > 0
+            //right
+            && ifPosInBoard(Black.king.y, Black.king.x + 1) && board[Black.king.y][Black.king.x + 1].wTarget > 0
+            //left up
+            && ifPosInBoard(Black.king.y + 1, Black.king.x - 1) && board[Black.king.y + 1][Black.king.x - 1].wTarget > 0
+            //right up
+            && ifPosInBoard(Black.king.y + 1, Black.king.x + 1) && board[Black.king.y + 1][Black.king.x + 1].wTarget > 0
+            //left down
+            && ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && board[Black.king.y - 1][Black.king.x - 1].wTarget > 0
+            //right down
+            && ifPosInBoard(Black.king.y - 1, Black.king.x + 1) && board[Black.king.y - 1][Black.king.x + 1].wTarget > 0)
+        {
+            return whiteWin;
+        }
+    }
+
+    return gameContinue;
 }

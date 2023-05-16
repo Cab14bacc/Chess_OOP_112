@@ -9,6 +9,7 @@
 #include "Knight.h"
 #include "Rook.h"
 #include "Pawn.h"
+#include <QDialog>
 
 using namespace std;
 
@@ -23,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setBoard();//set labels and put color on it
     initIcon();//just to set images
+    setSound();
+    startSound->play();//plat BGM
+    startSound->setLoops(-1);//repeat play
 }
 
 MainWindow::~MainWindow()
@@ -63,6 +67,7 @@ void MainWindow::setBoard()
 //if label clicled, call this function
 void MainWindow::labelClicked()
 {
+    clickSound->play();
     MyLabel *lab = qobject_cast<MyLabel*>(sender());
     QString Name = lab->objectName();
     string words[2];
@@ -83,6 +88,15 @@ void MainWindow::labelClicked()
         printInformation();
         game.clickTimes = 1;
         update();
+
+        if(game.judgeWinOrLose() == blackWin)
+        {
+            showResultWindow(blackWin);
+        }
+        else if(game.judgeWinOrLose() == whiteWin)
+        {
+            showResultWindow(whiteWin);
+        }
     }
 }
 
@@ -170,6 +184,8 @@ void MainWindow::split(string Words[], QString Name)
 //if new game button clicked, put images and call gamestart function
 void MainWindow::on_newGame_clicked()
 {
+    clickSound->play();
+    setTime();
     game.playerTurn = 'w';
     game.Black.pawns.clear();
     game.Black.rooks.clear();
@@ -203,7 +219,6 @@ void MainWindow::on_newGame_clicked()
     QString row;
     QString col;
     MyLabel *lab;
-    King *newKing;
     Queen *newQueen = new Queen;
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
@@ -488,27 +503,24 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
-            cout << i<<j;
-
+            //cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
-                cout << game.board[i][j].player;
-                cout << game.board[i][j].chessType;
+                //cout << game.board[i][j].player;
+                //cout << game.board[i][j].chessType;
             }
 
             if(game.board[i][j].canMove)
             {
                 cout << "c";
             }
-
-            cout << "in"<<game.board[i][j].index;
+            //cout << "in"<<game.board[i][j].index;
             cout << "bt"<<game.board[i][j].bTarget;
             cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 
         cout << "\n";
-
     }
 
     cout << game.curStep<<" "<<game.steps.size();
@@ -516,6 +528,8 @@ void MainWindow::printInformation()
 
 void MainWindow::on_undo_clicked()
 {
+    clickSound->play();
+
     if(game.curStep != 0)
     {
         game.curStep--;
@@ -527,6 +541,8 @@ void MainWindow::on_undo_clicked()
 
 void MainWindow::on_redo_clicked()
 {
+    clickSound->play();
+
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;
@@ -549,6 +565,106 @@ void MainWindow::loadBoard()
             game.board[i][j].chessType = game.steps[game.curStep].curBoard[i][j].chessType;
             game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
             game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
+            game.playerTurn = game.steps[game.curStep].playerTurn;
         }
     }
+}
+
+void MainWindow::setTime()
+{
+    connect(whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    whiteTimer->start(1000);
+    connect(blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    blackTimer->start(1000);
+    whiteCounter = 10 * 60;
+    blackCounter = 10 * 60;
+    ui->whiteTime->setAlignment(Qt::AlignCenter);
+    ui->blackTime->setAlignment(Qt::AlignCenter);
+    ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
+    ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
+}
+
+void MainWindow::updateTimer()
+{
+    if(game.playerTurn == 'w')
+    {
+        whiteTimer->start();
+        blackTimer->stop();
+        whiteCounter = whiteCounter - 1;
+        ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
+    }
+    else//game.playerTurn == 'b'
+    {
+        whiteTimer->stop();
+        blackTimer->start();
+        blackCounter = blackCounter - 1;
+        ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
+    }
+
+    if(whiteCounter == 0)
+    {
+        whiteTimer->stop();
+        //set white lose
+        showResultWindow(blackWin);
+    }
+    else if(blackCounter == 0)
+    {
+        blackTimer->stop();
+        //set black lose
+        showResultWindow(whiteWin);
+    }
+}
+
+void MainWindow::setSound()
+{
+    startSound = new QSound("./sounds/RoadtoDazir.wav",this);
+    clickSound = new QSound("./sounds/OpenCell.wav",this);
+}
+
+void MainWindow::showResultWindow(int whoWin)
+{
+    QDialog *dialog = new QDialog(this);
+    QLabel *label = new QLabel(dialog);
+
+    if (whoWin == whiteWin)
+    {
+        label->setText("White Win!");
+    }
+    else if(whoWin == blackWin)
+    {
+        label->setText("Black Win!");
+    }
+    else//whoWin == draw
+    {
+        label->setText("Draw!");
+    }
+
+    QFont ft;
+    ft.setPointSize(16);
+    label->setFont(ft);
+    label->setAlignment(Qt::AlignCenter);
+    dialog->setWindowTitle("Game Result");
+    dialog->setFixedSize(200, 150);
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(label);
+
+    QPushButton *replayBtn = new QPushButton("Replay", dialog);
+    connect(replayBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        on_newGame_clicked();
+    });
+
+    layout->addWidget(replayBtn);
+
+    QPushButton *quitBtn = new QPushButton("Quit", dialog);
+    connect(quitBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        qApp->quit();
+    });
+    layout->addWidget(quitBtn);
+
+    dialog->setLayout(layout);
+    dialog->exec();//display
 }

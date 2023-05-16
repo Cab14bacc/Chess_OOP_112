@@ -88,6 +88,15 @@ void MainWindow::labelClicked()
         printInformation();
         game.clickTimes = 1;
         update();
+
+        if(game.judgeWinOrLose() == blackWin)
+        {
+            showResultWindow(blackWin);
+        }
+        else if(game.judgeWinOrLose() == whiteWin)
+        {
+            showResultWindow(whiteWin);
+        }
     }
 }
 
@@ -503,7 +512,7 @@ void MainWindow::printInformation()
 
             if(game.board[i][j].canMove)
             {
-                //cout << "c";
+                cout << "c";
             }
             //cout << "in"<<game.board[i][j].index;
             cout << "bt"<<game.board[i][j].bTarget;
@@ -579,12 +588,16 @@ void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
     {
-        whiteCounter--;
+        whiteTimer->start();
+        blackTimer->stop();
+        whiteCounter = whiteCounter - 1;
         ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
     }
     else//game.playerTurn == 'b'
     {
-        blackCounter--;
+        whiteTimer->stop();
+        blackTimer->start();
+        blackCounter = blackCounter - 1;
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
@@ -592,11 +605,13 @@ void MainWindow::updateTimer()
     {
         whiteTimer->stop();
         //set white lose
+        showResultWindow(blackWin);
     }
-    else//blackCounter == 0
+    else if(blackCounter == 0)
     {
         blackTimer->stop();
         //set black lose
+        showResultWindow(whiteWin);
     }
 }
 
@@ -615,9 +630,13 @@ void MainWindow::showResultWindow(int whoWin)
     {
         label->setText("White Win!");
     }
-    else//whoWin == blackWin
+    else if(whoWin == blackWin)
     {
         label->setText("Black Win!");
+    }
+    else//whoWin == draw
+    {
+        label->setText("Draw!");
     }
 
     QFont ft;
@@ -647,5 +666,5 @@ void MainWindow::showResultWindow(int whoWin)
     layout->addWidget(quitBtn);
 
     dialog->setLayout(layout);
-    dialog->exec();
+    dialog->exec();//display
 }

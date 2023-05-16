@@ -19,6 +19,16 @@ class GameManager
 {
 public:
     GameManager();
+    int wPawn;
+    int wRook;
+    int wKnight;
+    int wBishop;
+    int wQueen;
+    int bPawn;
+    int bRook;
+    int bKnight;
+    int bBishop;
+    int bQueen;
     int noEat;
     string fen;
     vector <string> fens;
@@ -47,6 +57,7 @@ public:
     void judgeIfPlayerCanMove();
     void transBoardToFen();
     void IfBoardRepeat3Times(string curFen);
+    void ifInsufficientChess(char player);
 };
 
 #endif // GAMEMANAGER_H

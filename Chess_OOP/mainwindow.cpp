@@ -190,19 +190,7 @@ void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
     setTime();
-    game.playerTurn = 'w';
-    game.Black.pawns.clear();
-    game.Black.rooks.clear();
-    game.Black.knights.clear();
-    game.Black.bishops.clear();
-    game.Black.queens.clear();
-    game.White.pawns.clear();
-    game.White.rooks.clear();
-    game.White.knights.clear();
-    game.White.bishops.clear();
-    game.White.queens.clear();
-    game.curStep = 0;
-    game.steps.clear();
+    resetGame();
 
     for(int i =0;i<8;i++)
     {
@@ -509,7 +497,7 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
-            //cout << i<<j;
+            cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
                 //cout << game.board[i][j].player;
@@ -521,16 +509,18 @@ void MainWindow::printInformation()
                 cout << "c";
             }
             //cout << "in"<<game.board[i][j].index;
-            cout << "bt"<<game.board[i][j].bTarget;
-            cout << "wt"<<game.board[i][j].wTarget;
+            //cout << "bt"<<game.board[i][j].bTarget;
+            //cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 
         cout << "\n";
     }
 
-    cout << game.curStep<<" "<<game.steps.size()<<endl;
-    cout << game.fen;
+    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    //cout << game.fen<<endl;
+    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
 }
 
 void MainWindow::on_undo_clicked()
@@ -674,4 +664,37 @@ void MainWindow::showResultWindow(int whoWin)
 
     dialog->setLayout(layout);
     dialog->exec();//display
+}
+
+void MainWindow::resetGame()
+{
+    game.playerTurn = 'w';
+    game.Black.pawns.clear();
+    game.Black.rooks.clear();
+    game.Black.knights.clear();
+    game.Black.bishops.clear();
+    game.Black.queens.clear();
+    game.White.pawns.clear();
+    game.White.rooks.clear();
+    game.White.knights.clear();
+    game.White.bishops.clear();
+    game.White.queens.clear();
+    game.curStep = 0;
+    game.steps.clear();
+    game.wPawn = 8;
+    game.wRook = 2;
+    game.wKnight = 2;
+    game.wBishop = 2;
+    game.wQueen = 1;
+    game.bPawn = 8;
+    game.bRook = 2;
+    game.bKnight = 2;
+    game.bBishop = 2;
+    game.bQueen = 1;
+    game.noEat = 0;
+    game.fen = "";
+    game.ifWhiteCanMove = true;
+    game.ifBlackCanMove = true;
+    game.ifDraw = false;
+    game.fens.clear();
 }

@@ -38,6 +38,8 @@ public:
     void computeTarget();
     void recordCurBoard();
     int judgeWinOrLose();
+    int blackKingBeenAttackBy[2];
+    int whiteKingBeenAttackBy[2];
 };
 
 #endif // GAMEMANAGER_H

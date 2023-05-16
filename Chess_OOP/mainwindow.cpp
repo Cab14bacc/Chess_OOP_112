@@ -499,6 +499,7 @@ void MainWindow::initIcon()
 void MainWindow::printInformation()
 {
     system("cls");
+    /*
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -524,6 +525,9 @@ void MainWindow::printInformation()
     }
 
     cout << game.curStep<<" "<<game.steps.size();
+    */
+    cout << game.blackKingBeenAttackBy[0] << " " << game.blackKingBeenAttackBy[1] << " ";
+    cout << game.whiteKingBeenAttackBy[0] << " " << game.whiteKingBeenAttackBy[1] << " " << endl;
 }
 
 void MainWindow::on_undo_clicked()

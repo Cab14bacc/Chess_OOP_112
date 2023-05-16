@@ -89,11 +89,11 @@ void MainWindow::labelClicked()
         game.clickTimes = 1;
         update();
 
-        if(game.gameState() == blackWin)
+        if(game.judgeWinOrLose() == blackWin)
         {
             showResultWindow(blackWin);
         }
-        else if(game.gameState() == whiteWin)
+        else if(game.judgeWinOrLose() == whiteWin)
         {
             showResultWindow(whiteWin);
         }

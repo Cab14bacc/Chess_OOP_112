@@ -37,7 +37,7 @@ public:
     void eraseChessPiece(string chessType, char player,int index);
     void computeTarget();
     void recordCurBoard();
-    int gameState();
+    int judgeWinOrLose();
 };
 
 #endif // GAMEMANAGER_H

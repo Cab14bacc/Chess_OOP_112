@@ -2290,7 +2290,7 @@ void GameManager::recordCurBoard()
     curBoard.playerTurn = playerTurn;
 }
 
-int GameManager::gameState()
+int GameManager::judgeWinOrLose()
 {
     //black win
     //king position is attacked by more than two chess

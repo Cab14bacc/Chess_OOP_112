@@ -1379,7 +1379,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+2][j+1].wTarget++;
                 }
             }
-            if (j-2>0&&i+1<8)
+            if (j-2>=0&&i+1<8)
             {
                 //if the destination is not teammate
                 if (board[i+1][j-2].player!='w')
@@ -1387,7 +1387,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+1][j-2].wTarget++;
                 }
             }
-            if (j-1>0&&i+2<8)
+            if (j-1>=0&&i+2<8)
             {
                 //if the destination is not teammate
                 if (board[i+2][j-1].player!='w')
@@ -1395,7 +1395,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+2][j-1].wTarget++;
                 }
             }
-            if (j+2<8&&i-1>0)
+            if (j+2<8&&i-1>=0)
             {
                 //if the destination is not teammate
                 if (board[i-1][j+2].player!='w')
@@ -1403,7 +1403,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-1][j+2].wTarget++;
                 }
             }
-            if (j+1<8&&i-2>0)
+            if (j+1<8&&i-2>=0)
             {
                 //if the destination is not teammate
                 if (board[i-2][j+1].player!='w')
@@ -1411,7 +1411,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-2][j+1].wTarget++;
                 }
             }
-            if (j-2>0&&i-1>0)
+            if (j-2>=0&&i-1>=0)
             {
                 //if the destination is not teammate
                 if (board[i-1][j-2].player!='w')
@@ -1419,7 +1419,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-1][j-2].wTarget++;
                 }
             }
-            if (j-1>0&&i-2>0)
+            if (j-1>=0&&i-2>=0)
             {
                 //if the destination is not teammate
                 if (board[i-2][j-1].player!='w')
@@ -1447,7 +1447,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+2][j+1].bTarget++;
                 }
             }
-            if (j-2>0&&i+1<8)
+            if (j-2>=0&&i+1<8)
             {
                 //if the destination is not teammate
                 if (board[i+1][j-2].player!='b')
@@ -1455,7 +1455,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+1][j-2].bTarget++;
                 }
             }
-            if (j-1>0&&i+2<8)
+            if (j-1>=0&&i+2<8)
             {
                 //if the destination is not teammate
                 if (board[i+2][j-1].player!='b')
@@ -1463,7 +1463,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i+2][j-1].bTarget++;
                 }
             }
-            if (j+2<8&&i-1>0)
+            if (j+2<8&&i-1>=0)
             {
                 //if the destination is not teammate
                 if (board[i-1][j+2].player!='b')
@@ -1471,7 +1471,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-1][j+2].bTarget++;
                 }
             }
-            if (j+1<8&&i-2>0)
+            if (j+1<8&&i-2>=0)
             {
                 //if the destination is not teammate
                 if (board[i-2][j+1].player!='b')
@@ -1479,7 +1479,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-2][j+1].bTarget++;
                 }
             }
-            if (j-2>0&&i-1>0)
+            if (j-2>=0&&i-1>=0)
             {
                 //if the destination is not teammate
                 if (board[i-1][j-2].player!='b')
@@ -1487,7 +1487,7 @@ void check(int i,int j,ViewManager board[][8])
                     board[i-1][j-2].bTarget++;
                 }
             }
-            if (j-1>0&&i-2>0)
+            if (j-1>=0&&i-2>=0)
             {
                 //if the destination is not teammate
                 if (board[i-2][j-1].player!='b')

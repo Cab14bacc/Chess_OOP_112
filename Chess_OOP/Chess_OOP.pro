@@ -15,6 +15,7 @@ SOURCES += \
     Player.cpp \
     main.cpp \
     mainwindow.cpp \
+    promomenu.cpp \
     viewmanager.cpp
 
 HEADERS += \
@@ -29,10 +30,12 @@ HEADERS += \
     Rook.h \
     mainwindow.h \
     myLabel.h \
+    promomenu.h \
     viewmanager.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    promomenu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

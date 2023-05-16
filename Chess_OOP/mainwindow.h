@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QSound>
+#include "promomenu.h"
 
 using namespace std;;
 
@@ -52,6 +53,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    PromoMenu promoMenuW;
+    PromoMenu promoMenuB;
     QList<MyLabel*> labelList;
     MyLabel *label;
     QPixmap *iconWKing;

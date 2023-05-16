@@ -10,6 +10,7 @@
 #include "Rook.h"
 #include "Pawn.h"
 #include <QDialog>
+#include "QWidgetAction"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ GameManager game;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), promoMenuW(this,"W"), promoMenuB(this,"B")
 {
 
     ui->setupUi(this);
@@ -26,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     initIcon();//just to set images
     setSound();
     startSound->play();//plat BGM
-    startSound->setLoops(-1);//repeat play
+    startSound->setLoops(-1);//repeat pla
 }
 
 MainWindow::~MainWindow()
@@ -164,6 +165,93 @@ void MainWindow::update()
             {
                 lab->clear();
             }
+        }
+    }
+
+
+    for (int var = 0; var < 7; ++var) {
+
+        if(game.board[0][var].chessType == "Pawn" && game.board[0][var].player == 'w')
+        {
+            QPoint pos = ui->gameBoard->itemAtPosition(0,var)->widget()
+                             ->mapFromGlobal(ui->gameBoard->itemAtPosition(0,var)->widget()->pos());
+            promoMenuW.move(pos);
+            promoMenuW.show();
+            if (promoMenuW.result == 1)
+            {
+                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
+                int index = (int)game.White.queens.size();
+                game.White.queens.insert(game.White.queens.end(),{'w',var,0,index});
+                game.board[0][var].chessType = "Queen";
+                game.board[0][var].index = index;
+            }
+            else if (promoMenuW.result == 2)
+            {
+                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
+                int index = (int)game.White.knights.size();
+                game.White.knights.insert(game.White.knights.end(),{'w',var,0,index});
+                game.board[0][var].chessType = "Knight";
+                game.board[0][var].index = index;
+            }
+            else if (promoMenuW.result == 3)
+            {
+                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
+                int index = (int)game.White.bishops.size();
+                game.White.bishops.insert(game.White.bishops.end(),{'w',var,0,index});
+                game.board[0][var].chessType = "Bishop";
+                game.board[0][var].index = index;
+            }
+            else if (promoMenuW.result == 4)
+            {
+                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
+                int index = (int)game.White.rooks.size();
+                game.White.rooks.insert(game.White.rooks.end(),{'w',var,0,index});
+                game.board[0][var].chessType = "Rook";
+                game.board[0][var].index = index;
+            }
+
+            break;
+        }
+        else if(game.board[7][var].chessType == "Pawn" && game.board[7][var].player == 'b')
+        {
+
+            QPoint pos = ui->gameBoard->itemAtPosition(7,var)->widget()
+                             ->mapFromGlobal(ui->gameBoard->itemAtPosition(7,var)->widget()->pos());
+            promoMenuB.move(pos);
+            promoMenuB.show();
+            if (promoMenuB.result == 1)
+            {
+                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
+                int index = (int)game.Black.queens.size();
+                game.Black.queens.insert(game.Black.queens.end(),{'b',var,7,index});
+                game.board[7][var].chessType = "Queen";
+                game.board[7][var].index = index;
+            }
+            else if (promoMenuB.result == 2)
+            {
+                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
+                int index = (int)game.Black.knights.size();
+                game.Black.knights.insert(game.Black.knights.end(),{'b',var,7,index});
+                game.board[7][var].chessType = "Knight";
+                game.board[7][var].index = index;
+            }
+            else if (promoMenuB.result == 3)
+            {
+                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
+                int index = (int)game.Black.bishops.size();
+                game.Black.bishops.insert(game.Black.bishops.end(),{'b',var,7,index});
+                game.board[7][var].chessType = "Bishop";
+                game.board[7][var].index = index;
+            }
+            else if (promoMenuB.result == 4)
+            {
+                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
+                int index = (int)game.Black.rooks.size();
+                game.Black.rooks.insert(game.Black.rooks.end(),{'b',var,7,index});
+                game.board[7][var].chessType = "Rook";
+                game.board[7][var].index = index;
+            }
+            break;
         }
     }
 }

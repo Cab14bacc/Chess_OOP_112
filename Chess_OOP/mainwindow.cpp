@@ -86,7 +86,6 @@ void MainWindow::labelClicked()
     else
     {
         game.playerMove(curRow, curCol);
-        game.computeTarget();
         printInformation();
         game.clickTimes = 1;
         update();
@@ -596,6 +595,7 @@ void MainWindow::on_undo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
@@ -609,6 +609,7 @@ void MainWindow::on_redo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 

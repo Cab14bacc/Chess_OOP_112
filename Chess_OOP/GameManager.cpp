@@ -1220,6 +1220,7 @@ void GameManager::playerMove(int row, int col)
         }
     }
 
+    computeTarget();
     recordCurBoard();
     curStep++;
     steps.resize(curStep + 1);
@@ -2897,11 +2898,11 @@ void GameManager::judgeIfPlayerCanMove(char player)
         {
             if(board[i][j].ifHavePiece)
             {
-                if(board[i][j].player == 'w' && player == 'w' && ifWhiteCanMove == false)
+                if(ifWhiteCanMove == false && board[i][j].player == 'w' && playerTurn == 'w')
                 {
                     ifWhiteCanMove = ifPosCanMove(i, j);
                 }
-                else if(board[i][j].player == 'b' && player == 'b' && ifBlackCanMove == false)
+                else if(ifBlackCanMove == false && board[i][j].player == 'b' && playerTurn == 'b')
                 {
                     ifBlackCanMove = ifPosCanMove(i, j);
                 }
@@ -3634,6 +3635,7 @@ bool GameManager::ifPosCanMove(int row, int col)
     {
         if(board[row][col].player == 'w')
         {
+
             //up
             if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != whiteChess && board[row + 1][col].bTarget == 0)
                 return true;
@@ -3667,7 +3669,7 @@ bool GameManager::ifPosCanMove(int row, int col)
                 return true;
 
             //left castle
-            if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false)
+            if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false && board[7][0].chessType == "Rook" && board[7][0].player == 'w')
             {
                 if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
                 {
@@ -3679,7 +3681,7 @@ bool GameManager::ifPosCanMove(int row, int col)
             }
 
             //right castle
-            if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false)
+            if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false && board[7][7].chessType == "Rook" && board[7][7].player == 'w')
             {
                 if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
                 {
@@ -3727,7 +3729,7 @@ bool GameManager::ifPosCanMove(int row, int col)
                 return true;
 
             //left castle
-            if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false)
+            if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false && board[0][0].chessType == "Rook" && board[0][0].player == 'b')
             {
                 if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
                 {
@@ -3739,7 +3741,7 @@ bool GameManager::ifPosCanMove(int row, int col)
             }
 
             //right castle
-            if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false)
+            if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false && board[0][7].chessType == "Rook" && board[0][7].player == 'b')
             {
                 if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
                 {

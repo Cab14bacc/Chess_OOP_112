@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GameManager.h"
 
+
 using namespace std;
 
 GameManager::GameManager()
@@ -942,6 +943,9 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[White.king.y][White.king.x].index = 0;
+                board[White.king.y][White.king.x].chessType = "0";
+                board[White.king.y][White.king.x].player = '0';
                 board[White.king.y][White.king.x].ifHavePiece = false;//set original position ifHavePiece = false
                 White.king.y = row;
                 White.king.x = col;
@@ -1097,6 +1101,9 @@ void GameManager::playerMove(int row, int col)
             }
             else
             {
+                board[Black.king.y][Black.king.x].index = 0;
+                board[Black.king.y][Black.king.x].chessType = "0";
+                board[Black.king.y][Black.king.x].player = '0';
                 board[Black.king.y][Black.king.x].ifHavePiece = false;
                 Black.king.y = row;
                 Black.king.x = col;
@@ -3516,4 +3523,71 @@ void GameManager::ifInsufficientChess(char player)//The only player left is the 
 
         ifDraw = true;
     }
+}
+
+void GameManager::Promoting(int row, int col, string type)
+{
+    if(type == "Queen")
+    {
+        Queen *newQueen = new Queen;
+
+        if(board[row][col].player == 'w')
+        {
+            newQueen->player = 'w';
+            newQueen->x = col;
+            newQueen->y = row;
+            White.queens.push_back(*newQueen);
+        }
+        else//board[row][col].player == 'b'
+        {
+            newQueen->player = 'b';
+            newQueen->x = col;
+            newQueen->y = row;
+        }
+    }
+    else if(type == "Bishop")
+    {
+        Bishop *newBishop = new Bishop;
+
+        if(board[row][col].player == 'w')
+        {
+            newBishop->player = 'w';
+            newBishop->x = col;
+            newBishop->y = row;
+        }
+        else//board[row][col].player == 'b'
+        {
+            newBishop->player = 'b';
+            newBishop->x = col;
+            newBishop->y = row;
+        }
+    }
+    else if(type == "Knight")
+    {
+        Knight *newKnight = new Knight;
+
+        if(board[row][col].player == 'w')
+        {
+
+        }
+        else//board[row][col].player == 'b'
+        {
+
+        }
+    }
+    else if(type == "Rook")
+    {
+        Rook *newRook = new Rook;
+
+        if(board[row][col].player == 'w')
+        {
+
+        }
+        else//board[row][col].player == 'b'
+        {
+
+        }
+    }
+
+    board[row][col].chessType = type;
 }

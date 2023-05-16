@@ -41,6 +41,8 @@ public:
 
     void resetGame();
 
+    void Promoting(int row, int col);
+
 private slots:
     void labelClicked();
 

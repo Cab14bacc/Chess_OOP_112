@@ -2,6 +2,10 @@
 #include "viewmanager.h"
 #include "CurBoard.h"
 #include <vector>
+#include "Queen.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "Rook.h"
 
 using namespace std;
 
@@ -59,6 +63,7 @@ public:
     void transBoardToFen();
     void IfBoardRepeat3Times(string curFen);
     void ifInsufficientChess(char player);
+    void Promoting(int row, int col, string type);
 };
 
 #endif // GAMEMANAGER_H

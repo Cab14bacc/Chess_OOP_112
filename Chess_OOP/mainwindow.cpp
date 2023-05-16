@@ -110,6 +110,18 @@ void MainWindow::update()
 {
     for(int i = 0; i < 8; i++)
     {
+        if(game.board[0][i].chessType == "Pawn")
+        {
+            Promoting(0, i);
+        }
+        else if(game.board[7][i].chessType == "Pawn")
+        {
+            Promoting(7, i);
+        }
+    }
+
+    for(int i = 0; i < 8; i++)
+    {
         for(int j = 0; j < 8; j++)
         {
             MyLabel *lab;
@@ -747,4 +759,52 @@ void MainWindow::resetGame()
     game.ifDraw = false;
     game.fens.clear();
     setTime();
+}
+
+void MainWindow::Promoting(int row, int col)
+{
+     QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Promoting");
+    dialog->setFixedSize(200, 150);
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    layout->addWidget(label);
+
+    QPushButton *queenBtn = new QPushButton("Queen", dialog);
+    connect(queenBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Queen");
+    });
+
+    layout->addWidget(queenBtn);
+
+    QPushButton *bishopBtn = new QPushButton("Bishop", dialog);
+    connect(bishopBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Bishop");
+    });
+
+    layout->addWidget(bishopBtn);
+
+    QPushButton *knightBtn = new QPushButton("Knight", dialog);
+    connect(knightBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Knight");
+    });
+
+    layout->addWidget(knightBtn);
+
+    QPushButton *rookBtn = new QPushButton("Rook", dialog);
+    connect(rookBtn, &QPushButton::clicked, [=](){
+        dialog->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Rook");
+    });
+
+    layout->addWidget(rookBtn);
+
+    dialog->setLayout(layout);
+    dialog->exec();//display
 }

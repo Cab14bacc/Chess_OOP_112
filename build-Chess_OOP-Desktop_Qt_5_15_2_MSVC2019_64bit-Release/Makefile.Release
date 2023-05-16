@@ -310,6 +310,13 @@ release\moc_mainwindow.cpp: ..\Chess_OOP\mainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qmainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtGui\qicon.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\QTimer \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\QSound \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qsound.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimediaglobal.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimedia-config.h \
 		release\moc_predefs.h \
 		C:\QT\5.15.2\msvc2019_64\bin\moc.exe
 	C:\QT\5.15.2\msvc2019_64\bin\moc.exe $(DEFINES) --compiler-flavor=msvc --include C:/Users/timy3/OneDrive/desktop/qt/Chess_OOP_112/build-Chess_OOP-Desktop_Qt_5_15_2_MSVC2019_64bit-Release/release/moc_predefs.h -IC:/QT/5.15.2/msvc2019_64/mkspecs/win32-msvc -IC:/Users/timy3/OneDrive/desktop/qt/Chess_OOP_112/Chess_OOP -IC:/QT/5.15.2/msvc2019_64/include -IC:/QT/5.15.2/msvc2019_64/include/QtMultimedia -IC:/QT/5.15.2/msvc2019_64/include/QtWidgets -IC:/QT/5.15.2/msvc2019_64/include/QtGui -IC:/QT/5.15.2/msvc2019_64/include/QtANGLE -IC:/QT/5.15.2/msvc2019_64/include/QtNetwork -IC:/QT/5.15.2/msvc2019_64/include/QtCore -I. -I"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.35.32215\include" -I"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.35.32215\ATLMFC\include" -I"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include" -I"C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.19041.0\\um" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.19041.0\\shared" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.19041.0\\winrt" -I"C:\Program Files (x86)\Windows Kits\10\\include\10.0.19041.0\\cppwinrt" -I"C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um" ..\Chess_OOP\mainwindow.h -o release\moc_mainwindow.cpp
@@ -591,6 +598,13 @@ release\main.obj: ..\Chess_OOP\main.cpp ..\Chess_OOP\GameManager.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qmainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtGui\qicon.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\QTimer \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\QSound \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qsound.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimediaglobal.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimedia-config.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QApplication \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qapplication.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtCore\qcoreapplication.h \
@@ -722,6 +736,13 @@ release\mainwindow.obj: ..\Chess_OOP\mainwindow.cpp ..\Chess_OOP\GameManager.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qmainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qtabwidget.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtGui\qicon.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\QTimer \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qtimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtCore\qbasictimer.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\QSound \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qsound.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimediaglobal.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtMultimedia\qtmultimedia-config.h \
 		ui_mainwindow.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtCore\QVariant \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QApplication \
@@ -745,7 +766,9 @@ release\mainwindow.obj: ..\Chess_OOP\mainwindow.cpp ..\Chess_OOP\GameManager.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qpushbutton.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qabstractbutton.h \
 		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QStatusBar \
-		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qstatusbar.h
+		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qstatusbar.h \
+		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\QDialog \
+		C:\QT\5.15.2\msvc2019_64\include\QtWidgets\qdialog.h
 
 release\viewmanager.obj: ..\Chess_OOP\viewmanager.cpp ..\Chess_OOP\viewmanager.h
 

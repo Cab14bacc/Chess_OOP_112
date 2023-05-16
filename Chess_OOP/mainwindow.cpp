@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     setSound();
     startSound->play();//plat BGM
     startSound->setLoops(-1);//repeat play
+    connect(&whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    connect(&blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 }
 
 MainWindow::~MainWindow()
@@ -189,7 +191,6 @@ void MainWindow::split(string Words[], QString Name)
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
-    setTime();
     resetGame();
 
     for(int i =0;i<8;i++)
@@ -569,10 +570,8 @@ void MainWindow::loadBoard()
 
 void MainWindow::setTime()
 {
-    connect(whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    whiteTimer->start(1000);
-    connect(blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    blackTimer->start(1000);
+    whiteTimer.start(1000);
+    blackTimer.start(1000);
     whiteCounter = 10 * 60;
     blackCounter = 10 * 60;
     ui->whiteTime->setAlignment(Qt::AlignCenter);
@@ -585,28 +584,28 @@ void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
     {
-        whiteTimer->start();
-        blackTimer->stop();
+        whiteTimer.start();
+        blackTimer.stop();
         whiteCounter = whiteCounter - 1;
         ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
     }
-    else//game.playerTurn == 'b'
+    else if(game.playerTurn == 'b')
     {
-        whiteTimer->stop();
-        blackTimer->start();
+        whiteTimer.stop();
+        blackTimer.start();
         blackCounter = blackCounter - 1;
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
     if(whiteCounter == 0)
     {
-        whiteTimer->stop();
+        whiteTimer.stop();
         //set white lose
         showResultWindow(blackWin);
     }
     else if(blackCounter == 0)
     {
-        blackTimer->stop();
+        blackTimer.stop();
         //set black lose
         showResultWindow(whiteWin);
     }
@@ -697,4 +696,5 @@ void MainWindow::resetGame()
     game.ifBlackCanMove = true;
     game.ifDraw = false;
     game.fens.clear();
+    setTime();
 }

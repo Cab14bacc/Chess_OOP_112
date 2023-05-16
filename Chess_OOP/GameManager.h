@@ -12,13 +12,29 @@ using namespace std;
 #define noChess 3
 #define whiteWin 1
 #define blackWin 2
-#define draw 3
-#define gameContinue 4
+#define gameContinue 3
+#define draw 4
 
 class GameManager
 {
 public:
     GameManager();
+    int wPawn;
+    int wRook;
+    int wKnight;
+    int wBishop;
+    int wQueen;
+    int bPawn;
+    int bRook;
+    int bKnight;
+    int bBishop;
+    int bQueen;
+    int noEat;
+    string fen;
+    vector <string> fens;
+    bool ifWhiteCanMove;
+    bool ifBlackCanMove;
+    bool ifDraw;
     int curStep;
     CurBoard curBoard;
     vector <CurBoard> steps;
@@ -38,6 +54,10 @@ public:
     void computeTarget();
     void recordCurBoard();
     int judgeWinOrLose();
+    void judgeIfPlayerCanMove();
+    void transBoardToFen();
+    void IfBoardRepeat3Times(string curFen);
+    void ifInsufficientChess(char player);
 };
 
 #endif // GAMEMANAGER_H

@@ -40,6 +40,8 @@ public:
 
     void showResultWindow(int whoWin);
 
+    void resetGame();
+
 private slots:
     void labelClicked();
 

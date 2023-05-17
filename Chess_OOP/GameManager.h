@@ -56,7 +56,6 @@ public:
     void playerMove(int row, int col);//execute move
     bool ifPosInBoard(int row, int col);//if input pos in baord
     int boardChessCondition(int row, int col);//return 1:white chess、2:black、3:no chess on the board
-    void eraseChessPiece(string chessType, char player,int index);
     void computeTarget();//compute every pos can be how many chess attack
     void recordCurBoard();//record currend board
     int judgeWinOrLose();//judge if checkmate

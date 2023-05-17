@@ -36,18 +36,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//set label and put color on it
+// Intent: set label and put color on it
+// Pre: no input
+// Post: set label and put color on it
 void MainWindow::setBoard()
 {
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
         {
+            //creat label
             label = new MyLabel(this);
             label->setParent(this);
             label->setFixedSize(60,60);
             label->setText("");
 
+            //put color
             if((i + j) % 2 == 0)
             {
                 label->setStyleSheet("QLabel{background-color:rgb(224,224,198);}");
@@ -66,10 +70,17 @@ void MainWindow::setBoard()
     }
 }
 
-//if label clicled, call this function
+// Intent: if label clicled, call this function
+// Pre: need press new game first
+// Post: select chess or move chess
 void MainWindow::labelClicked()
 {
     clickSound->play();
+
+    if(game.playerTurn == '0')
+        return;
+
+    //get row and col
     MyLabel *lab = qobject_cast<MyLabel*>(sender());
     QString Name = lab->objectName();
     string words[2];
@@ -77,12 +88,14 @@ void MainWindow::labelClicked()
     int curRow = stoi(words[0]);
     int curCol = stoi(words[1]);
 
+    //select chess
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
         update();
         printInformation();
     }
+    //move chess
     else
     {
         game.playerMove(curRow, curCol);
@@ -90,6 +103,7 @@ void MainWindow::labelClicked()
         update();
         printInformation();
 
+        //if kill self
         if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
         {
             on_undo_clicked();
@@ -103,6 +117,7 @@ void MainWindow::labelClicked()
             on_undo_clicked();
         }
 
+        //if game over
         if(game.judgeWinOrLose() == blackWin)
         {
             showResultWindow(blackWin);
@@ -118,8 +133,12 @@ void MainWindow::labelClicked()
     }
 }
 
+// Intent: update ui
+// Pre: on input
+// Post: update ui
 void MainWindow::update()
 {
+    //Promoting
     for(int i = 0; i < 8; i++)
     {
         if(game.board[0][i].chessType == "Pawn")
@@ -138,6 +157,7 @@ void MainWindow::update()
         }
     }
 
+    //update
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -147,6 +167,7 @@ void MainWindow::update()
             QString col = QString::number(j);
             lab = this->findChild<MyLabel*>(row + " " + col);
 
+            //fill color
             if(game.board[i][j].canMove)
             {
                 lab->setStyleSheet("QLabel{background-color:rgb(255,253,85);}");
@@ -163,6 +184,7 @@ void MainWindow::update()
                 }
             }
 
+            //set icon
             if(game.board[i][j].ifHavePiece)
             {
                 if(game.board[i][j].player == 'w')
@@ -198,13 +220,16 @@ void MainWindow::update()
             }
             else
             {
+                //remove chess icon
                 lab->clear();
             }
         }
     }
 }
 
-// can ignore this temporary
+// Intent: get row and col
+// Pre: input string array, Qstring
+// Post: split Qstring
 void MainWindow::split(string Words[], QString Name)
 {
     string strName = Name.toStdString();
@@ -217,15 +242,20 @@ void MainWindow::split(string Words[], QString Name)
     }
 }
 
-//if new game button clicked, put images and call gamestart function
+// Intent: set new game
+// Pre: no input
+// Post: set new game
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
     whiteTimer.stop();
     blackTimer.stop();
+    //chose who first
     shoeWhoFirst();
+    //reset game
     resetGame();
 
+    //reset all information
     for(int i =0;i<8;i++)
     {
         for(int j=0;j<8;j++)
@@ -252,6 +282,7 @@ void MainWindow::on_newGame_clicked()
     newRook->ifMove = false;
     Pawn *newPawn = new Pawn;
 
+    //set pawn
     for(int i = 0; i < 8; i++)
     {
         newPawn = new Pawn;
@@ -498,7 +529,9 @@ void MainWindow::on_newGame_clicked()
     printInformation();
 }
 
-//just to set images
+// Intent: set images
+// Pre: no input
+// Post: set images
 void MainWindow::initIcon()
 {
     iconWKing = new QPixmap("./images/WKing.png");
@@ -527,6 +560,9 @@ void MainWindow::initIcon()
     *iconBPawn = iconBPawn->scaled(60,60);
 }
 
+// Intent: print information to debug
+// Pre: no input
+// Post: print information
 void MainWindow::printInformation()
 {
     //system("cls");
@@ -554,7 +590,7 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 
-    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    cout << game.curStep<<" "<<game.steps.size()<<endl;
     cout << game.fen<<endl;
     cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
     cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
@@ -605,14 +641,36 @@ void MainWindow::printInformation()
         cout << "Black.king.ifMove = false";
     }
     cout << endl;
+    if(game.steps[game.curStep].ifWhiteKingMove)
+    {
+        cout << "White.king.ifMove: true";
+    }
+    else
+    {
+        cout << "White.king.ifMove: false";
+    }
+    cout << endl;
+    if(game.steps[game.curStep].ifBlackKingMove)
+    {
+        cout << "Black.king.ifMove: true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove: false";
+    }
+    cout << endl;
 }
 
+// Intent: undo
+// Pre: no input
+// Post: undo
 void MainWindow::on_undo_clicked()
 {
     clickSound->play();
 
     if(game.curStep != 0)
     {
+        //move to previous
         game.curStep--;
         loadBoard();
         update();
@@ -621,13 +679,18 @@ void MainWindow::on_undo_clicked()
     }
 }
 
+// Intent: redo
+// Pre: no input
+// Post: redo
 void MainWindow::on_redo_clicked()
 {
     clickSound->play();
 
+    //game not start
     if(game.curStep == 0)
         return;
 
+    //move to after
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;
@@ -638,8 +701,12 @@ void MainWindow::on_redo_clicked()
     }
 }
 
+// Intent: load board form steps
+// Pre: no input
+// Post: load board form steps
 void MainWindow::loadBoard()
 {
+    //load all information
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -653,6 +720,7 @@ void MainWindow::loadBoard()
             game.playerTurn = game.steps[game.curStep].playerTurn;
             game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
 
+            //laod special information
             if(game.board[i][j].ifHavePiece)
             {
                 if(game.board[i][j].player == 'w')
@@ -663,11 +731,6 @@ void MainWindow::loadBoard()
                         game.White.pawns[game.board[i][j].index].x = j;
                         game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
                         game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
-
-                        if(game.White.pawns[game.board[i][j].index].ifPromoting)
-                        {
-
-                        }
                     }
                     else if(game.board[i][j].chessType == "Rook")
                     {
@@ -694,7 +757,7 @@ void MainWindow::loadBoard()
                     {
                         game.White.king.y = i;
                         game.White.king.x = j;
-                        game.White.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifWhiteKingMove;
+                        game.White.king.ifMove = game.steps[game.curStep].ifWhiteKingMove;
                     }
                 }
                 else//game.board[i][j].player == 'b'
@@ -731,7 +794,7 @@ void MainWindow::loadBoard()
                     {
                         game.Black.king.y = i;
                         game.Black.king.x = j;
-                        game.Black.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifBlackKingMove;
+                        game.Black.king.ifMove = game.steps[game.curStep].ifBlackKingMove;
                     }
                 }
             }
@@ -739,8 +802,12 @@ void MainWindow::loadBoard()
     }
 }
 
+// Intent: set time
+// Pre: no input
+// Post: set time
 void MainWindow::setTime()
 {
+    //set 1 second
     whiteTimer.start(1000);
     blackTimer.start(1000);
     whiteCounter = 10 * 60;
@@ -751,6 +818,9 @@ void MainWindow::setTime()
     ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
 }
 
+// Intent: update time
+// Pre: no input
+// Post: update time
 void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
@@ -768,6 +838,7 @@ void MainWindow::updateTimer()
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
+    //if time up
     if(whiteCounter == 0)
     {
         whiteTimer.stop();
@@ -782,12 +853,18 @@ void MainWindow::updateTimer()
     }
 }
 
+// Intent: set sound
+// Pre: no input
+// Post: set sound
 void MainWindow::setSound()
 {
     startSound = new QSound("./sounds/RoadtoDazir.wav",this);
     clickSound = new QSound("./sounds/OpenCell.wav",this);
 }
 
+// Intent: show result
+// Pre: game over
+// Post: show result
 void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
@@ -816,6 +893,7 @@ void MainWindow::showResultWindow(int whoWin)
     QVBoxLayout *layout = new QVBoxLayout(dialog);
     layout->addWidget(label);
 
+    //set replay
     QPushButton *replayBtn = new QPushButton("Replay", dialog);
     connect(replayBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
@@ -826,6 +904,7 @@ void MainWindow::showResultWindow(int whoWin)
 
     layout->addWidget(replayBtn);
 
+    //set quit
     QPushButton *quitBtn = new QPushButton("Quit", dialog);
     connect(quitBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
@@ -839,6 +918,9 @@ void MainWindow::showResultWindow(int whoWin)
     dialog->exec();//display
 }
 
+// Intent: reset game
+// Pre: new game clicked
+// Post: reset game
 void MainWindow::resetGame()
 {
     game.Black.pawns.clear();
@@ -872,11 +954,15 @@ void MainWindow::resetGame()
     setTime();
 }
 
+// Intent: Promoting
+// Pre: pwan walk to last line
+// Post: Promoting
 void MainWindow::Promoting(int row, int col)
 {
     QDialog *dialogPromoting = new QDialog(this);
     dialogPromoting->setWindowTitle("Promoting");
     QHBoxLayout *layoutPromoting = new QHBoxLayout(dialogPromoting);
+    //set queen
     QPushButton *queenBtn = new QPushButton(dialogPromoting);
 
     connect(queenBtn, &QPushButton::clicked, [=](){
@@ -888,6 +974,7 @@ void MainWindow::Promoting(int row, int col)
 
     layoutPromoting->addWidget(queenBtn);
 
+    //set bishop
     QPushButton *bishopBtn = new QPushButton(dialogPromoting);
     connect(bishopBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
@@ -898,6 +985,7 @@ void MainWindow::Promoting(int row, int col)
 
     layoutPromoting->addWidget(bishopBtn);
 
+    //set knight
     QPushButton *knightBtn = new QPushButton(dialogPromoting);
     connect(knightBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
@@ -908,6 +996,7 @@ void MainWindow::Promoting(int row, int col)
 
     layoutPromoting->addWidget(knightBtn);
 
+    //set rook
     QPushButton *rookBtn = new QPushButton(dialogPromoting);
     connect(rookBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
@@ -918,6 +1007,7 @@ void MainWindow::Promoting(int row, int col)
 
     layoutPromoting->addWidget(rookBtn);
 
+    //set size
     if(game.board[row][col].player == 'w')
     {
         queenBtn->setIcon(QIcon(*iconWQueen));
@@ -953,6 +1043,9 @@ void MainWindow::Promoting(int row, int col)
     dialogPromoting->exec();//display
 }
 
+// Intent: resign
+// Pre: game start
+// Post: resign
 void MainWindow::on_Resign_clicked()
 {
     if(game.playerTurn == 'w')
@@ -965,6 +1058,9 @@ void MainWindow::on_Resign_clicked()
     }
 }
 
+// Intent: choose who first
+// Pre: game start
+// Post: choose who first
 void MainWindow::shoeWhoFirst()
 {
     QDialog *dialogWhoFirst = new QDialog(this);
@@ -976,6 +1072,7 @@ void MainWindow::shoeWhoFirst()
     QFont ft;
     ft.setPointSize(16);
 
+    //set white first
     QPushButton *whiteFirst = new QPushButton("white first", dialogWhoFirst);
     connect(whiteFirst, &QPushButton::clicked, [=](){
         dialogWhoFirst->close();//close window
@@ -987,6 +1084,7 @@ void MainWindow::shoeWhoFirst()
     whiteFirst->setFont(ft);
     layout->addWidget(whiteFirst);
 
+    //set black first
     QPushButton *blackFirst = new QPushButton("black first", dialogWhoFirst);
     connect(blackFirst, &QPushButton::clicked, [=](){
         dialogWhoFirst->close();//close window

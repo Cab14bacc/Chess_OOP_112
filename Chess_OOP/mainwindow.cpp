@@ -625,6 +625,9 @@ void MainWindow::on_redo_clicked()
 {
     clickSound->play();
 
+    if(game.curStep == 0)
+        return;
+
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;

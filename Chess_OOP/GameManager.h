@@ -67,6 +67,7 @@ public:
     void Promoting(int row, int col, string type);//Promoting
     void judgeSpecialCase(int wBishop, int bBishop);//check if have sufficient chess to checkmate(special case)
     void computeChessNumber();//compute how many chess on board, and save into their type
+    void eraseChessPiece(string chessType, char player,int index); // reset noEat
 };
 
 #endif // GAMEMANAGER_H

@@ -44,6 +44,7 @@ public:
     vector <CurBoard> steps;
     Player White;
     Player Black;
+
     ViewManager board[8][8];
     int clickTimes;
     char playerTurn;
@@ -66,6 +67,7 @@ public:
     void IfBoardRepeat3Times(string curFen);
     void ifInsufficientChess(char player);
     void Promoting(int row, int col, string type);
+    void loadBoard();
 };
 
 #endif // GAMEMANAGER_H

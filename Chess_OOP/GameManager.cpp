@@ -1,6 +1,6 @@
 #include <iostream>
 #include "GameManager.h"
-
+#include <vector>
 
 using namespace std;
 
@@ -33,6 +33,7 @@ GameManager::GameManager()
 
 void GameManager::showCanMove(int row, int col)
 {
+
     if(this->board[row][col].ifHavePiece && playerTurn == this->board[row][col].player)
     {
         clickTimes = 2;
@@ -1379,6 +1380,7 @@ void GameManager::computeTarget()
         }
     }
 }
+
 int check(int i,int j,ViewManager board[][8])
 {
     int kingAttack = 0;
@@ -2912,7 +2914,1850 @@ int GameManager::judgeWinOrLose()
             return whiteWin;
         }
     }
+    else if(board[White.king.y][White.king.x].bTarget >= 1)
+    {
+        if(ifPosInBoard(White.king.y - 1, White.king.x) && board[White.king.y - 1][White.king.x].bTarget > 0
+            //down
+            && ifPosInBoard(White.king.y + 1, White.king.x) && board[White.king.y + 1][White.king.x].bTarget > 0
+            //left
+            && ifPosInBoard(White.king.y, White.king.x - 1) && board[White.king.y][White.king.x - 1].bTarget > 0
+            //right
+            && ifPosInBoard(White.king.y, White.king.x + 1) && board[White.king.y][White.king.x + 1].bTarget > 0
+            //left up
+            && ifPosInBoard(White.king.y + 1, White.king.x - 1) && board[White.king.y + 1][White.king.x - 1].bTarget > 0
+            //right up
+            && ifPosInBoard(White.king.y + 1, White.king.x + 1) && board[White.king.y + 1][White.king.x + 1].bTarget > 0
+            //left down
+            && ifPosInBoard(White.king.y - 1, White.king.x - 1) && board[White.king.y - 1][White.king.x - 1].bTarget > 0
+            //right down
+            && ifPosInBoard(White.king.y - 1, White.king.x + 1) && board[White.king.y - 1][White.king.x + 1].bTarget > 0)
+        {
+            int attackPiecerow = whiteKingBeenAttackBy[0];
+            int attackPiececol = whiteKingBeenAttackBy[1];
+            string attackPieceName = board[attackPiecerow][attackPiececol].chessType;
+            int attackPieceIndex = board[attackPiecerow][attackPiececol].index;
+            char attackPiecePlayer = 'b';
 
+            vector<vector<int>> attackPiecePaths;
+
+            bool ifKingInPath = 0;
+            bool ifcanBlock = false;
+
+            if(attackPieceName == "Rook")
+            {
+                if(!ifKingInPath)
+                {
+                    for(int i = 1; i < 8;i++)
+                    {
+
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            else if(attackPieceName == "Bishop")
+            {
+                if(!ifKingInPath)
+                {
+                    //right up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath){
+                    //left up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+            else if(attackPieceName == "Queen")
+            {
+                if(!ifKingInPath)
+                {
+
+                    //up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    //right
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            if(attackPieceName == "Pawn" || attackPieceName == "Knight")
+            {
+                if(board[attackPiecerow][attackPiececol].wTarget == 0)
+                {
+                    return blackWin;
+                }
+
+                for (int row = 0; row < 7; ++row) {
+                    for (int col = 0; col < 7; ++col) {
+                        if(board[row][col].player == 'w')
+                        {
+                            showCanMove(row,col);
+
+                            if(board[attackPiecerow][attackPiececol].canMove == true)
+                            {
+                                board[attackPiecerow][attackPiececol].index = board[row][col].index;
+                                board[attackPiecerow][attackPiececol].chessType = board[row][col].chessType;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = 'w';
+
+                                board[row][col].index = 0;
+                                board[row][col].chessType = "0";
+                                board[row][col].ifHavePiece = false;
+                                board[row][col].player = '0';
+
+                                computeTarget();
+
+                                board[row][col].index = board[attackPiecerow][attackPiececol].index;
+                                board[row][col].chessType = board[attackPiecerow][attackPiececol].chessType;
+                                board[row][col].ifHavePiece = true;
+                                board[row][col].player =  board[attackPiecerow][attackPiececol].player;
+
+                                board[attackPiecerow][attackPiececol].index = attackPieceIndex;
+                                board[attackPiecerow][attackPiececol].chessType = attackPieceName;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = attackPiecePlayer;
+
+                                if(board[White.king.y][White.king.x].bTarget == 0)
+                                {
+                                    return gameContinue;
+                                }
+
+                            }
+
+
+                        }
+                    }
+                }
+
+                return blackWin;
+
+            }
+            else
+            {
+                for (vector<int>& iter : attackPiecePaths) {
+                    if(!(board[iter[0]][iter[1]].wTarget == 0))
+                    {
+                        ifcanBlock = true;
+                    }
+                }
+
+                if(ifcanBlock == false)
+                {
+                    return blackWin;
+                }
+
+
+                for (int row = 0; row < 7; ++row) {
+                    for (int col = 0; col < 7; ++col) {
+                        if(board[row][col].player == 'w')
+                        {
+                            showCanMove(row,col);
+                            for (vector<int>& iter : attackPiecePaths) {
+                                if(board[iter[0]][iter[1]].canMove == true)
+                                {
+                                    board[iter[0]][iter[1]].index = board[row][col].index;
+                                    board[iter[0]][iter[1]].chessType = board[row][col].chessType;
+                                    board[iter[0]][iter[1]].ifHavePiece = true;
+                                    board[iter[0]][iter[1]].player = 'w';
+
+                                    board[row][col].index = 0;
+                                    board[row][col].chessType = "0";
+                                    board[row][col].ifHavePiece = false;
+                                    board[row][col].player = '0';
+
+                                    computeTarget();
+
+                                    board[row][col].index = board[iter[0]][iter[1]].index;
+                                    board[row][col].chessType = board[iter[0]][iter[1]].chessType;
+                                    board[row][col].ifHavePiece = true;
+                                    board[row][col].player =  board[iter[0]][iter[1]].player;
+
+                                    board[iter[0]][iter[1]].index = 0;
+                                    board[iter[0]][iter[1]].chessType = "0";
+                                    board[iter[0]][iter[1]].ifHavePiece = false;
+                                    board[iter[0]][iter[1]].player = '0';
+
+                                    if(board[White.king.y][White.king.x].bTarget == 0)
+                                    {
+                                        return gameContinue;
+                                    }
+
+                                }
+
+                            }
+
+                            if(board[attackPiecerow][attackPiececol].canMove == true)
+                            {
+                                board[attackPiecerow][attackPiececol].index = board[row][col].index;
+                                board[attackPiecerow][attackPiececol].chessType = board[row][col].chessType;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = 'w';
+
+                                board[row][col].index = 0;
+                                board[row][col].chessType = "0";
+                                board[row][col].ifHavePiece = false;
+                                board[row][col].player = '0';
+
+                                computeTarget();
+
+                                board[row][col].index = board[attackPiecerow][attackPiececol].index;
+                                board[row][col].chessType = board[attackPiecerow][attackPiececol].chessType;
+                                board[row][col].ifHavePiece = true;
+                                board[row][col].player =  board[attackPiecerow][attackPiececol].player;
+
+                                board[attackPiecerow][attackPiececol].index = attackPieceIndex;
+                                board[attackPiecerow][attackPiececol].chessType = attackPieceName;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = attackPiecePlayer;
+
+                                if(board[White.king.y][White.king.x].bTarget == 0)
+                                {
+                                    return gameContinue;
+                                }
+
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                return blackWin;
+
+            }
+
+
+        }
+    }
+    else if(board[Black.king.y][Black.king.x].bTarget >= 1)
+    {
+
+        if(ifPosInBoard(Black.king.y - 1, Black.king.x) && board[Black.king.y - 1][Black.king.x].wTarget > 0
+            //down
+            && ifPosInBoard(Black.king.y + 1, Black.king.x) && board[Black.king.y + 1][Black.king.x].wTarget > 0
+            //left
+            && ifPosInBoard(Black.king.y, Black.king.x - 1) && board[Black.king.y][Black.king.x - 1].wTarget > 0
+            //right
+            && ifPosInBoard(Black.king.y, Black.king.x + 1) && board[Black.king.y][Black.king.x + 1].wTarget > 0
+            //left up
+            && ifPosInBoard(Black.king.y + 1, Black.king.x - 1) && board[Black.king.y + 1][Black.king.x - 1].wTarget > 0
+            //right up
+            && ifPosInBoard(Black.king.y + 1, Black.king.x + 1) && board[Black.king.y + 1][Black.king.x + 1].wTarget > 0
+            //left down
+            && ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && board[Black.king.y - 1][Black.king.x - 1].wTarget > 0
+            //right down
+            && ifPosInBoard(Black.king.y - 1, Black.king.x + 1) && board[Black.king.y - 1][Black.king.x + 1].wTarget > 0)
+        {
+            int attackPiecerow = blackKingBeenAttackBy[0];
+            int attackPiececol = blackKingBeenAttackBy[1];
+            string attackPieceName = board[attackPiecerow][attackPiececol].chessType;
+            int attackPieceIndex = board[attackPiecerow][attackPiececol].index;
+            char attackPiecePlayer = 'w';
+            vector<vector<int>> attackPiecePaths;
+            bool ifKingInPath = 0;
+            bool ifcanBlock = false;
+
+            if(attackPieceName == "Rook")
+            {
+                if(!ifKingInPath)
+                {
+                    for(int i = 1; i < 8;i++)
+                    {
+
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                      //down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+            else if(attackPieceName == "Bishop")
+            {
+                if(!ifKingInPath)
+                {
+                    //right up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath){
+                    //left up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {   if(board[attackPiecerow + i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {   if(board[attackPiecerow - i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+            else if(attackPieceName == "Queen")
+            {
+                if(!ifKingInPath)
+                {
+
+                    //up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    //right
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                        else if(boardChessCondition(attackPiecerow, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow  ,attackPiececol - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //right down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol + i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol + i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol + i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  + i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left up
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow + i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow + i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow + i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow + i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+
+                if(!ifKingInPath)
+                {
+                    attackPiecePaths.clear();
+                }
+
+                if(!ifKingInPath)
+                {
+                    //left down
+                    for(int i = 1;i<8;i++)
+                    {
+                        if(!ifPosInBoard(attackPiecerow - i, attackPiececol - i))
+                            break;
+
+                        if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == noChess)
+                            attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                        else if(boardChessCondition(attackPiecerow - i, attackPiececol - i) == whiteChess)
+                        {
+                            if(attackPiecePlayer == 'w')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                        else//boardChessCondition == blackChess
+                        {
+                            if(attackPiecePlayer == 'b')
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                if(board[attackPiecerow - i][attackPiececol - i].chessType == "King")
+                                {
+                                    ifKingInPath = true;
+                                }
+                                attackPiecePaths.insert(attackPiecePaths.end(),{attackPiecerow - i ,attackPiececol  - i});
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            if(attackPieceName == "Pawn" || attackPieceName == "Knight")
+            {
+                if(board[attackPiecerow][attackPiececol].bTarget == 0)
+                {
+                    return whiteWin;
+                }
+
+                for (int row = 0; row < 7; ++row) {
+                    for (int col = 0; col < 7; ++col) {
+                        if(board[row][col].player == 'b')
+                        {
+                            showCanMove(row,col);
+
+                            if(board[attackPiecerow][attackPiececol].canMove == true)
+                            {
+                                board[attackPiecerow][attackPiececol].index = board[row][col].index;
+                                board[attackPiecerow][attackPiececol].chessType = board[row][col].chessType;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = 'b';
+
+                                board[row][col].index = 0;
+                                board[row][col].chessType = "0";
+                                board[row][col].ifHavePiece = false;
+                                board[row][col].player = '0';
+
+                                computeTarget();
+
+                                board[row][col].index = board[attackPiecerow][attackPiececol].index;
+                                board[row][col].chessType = board[attackPiecerow][attackPiececol].chessType;
+                                board[row][col].ifHavePiece = true;
+                                board[row][col].player =  board[attackPiecerow][attackPiececol].player;
+
+                                board[attackPiecerow][attackPiececol].index = attackPieceIndex;
+                                board[attackPiecerow][attackPiececol].chessType = attackPieceName;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = attackPiecePlayer;
+
+                                if(board[Black.king.y][Black.king.x].wTarget == 0)
+                                {
+                                    return gameContinue;
+                                }
+
+                            }
+
+
+                        }
+                    }
+                }
+
+                return whiteWin;
+
+            }
+            else
+            {
+                for (vector<int>& iter : attackPiecePaths) {
+                    if(!(board[iter[0]][iter[1]].wTarget == 0))
+                    {
+                        ifcanBlock = true;
+                    }
+                }
+
+                if(ifcanBlock == false)
+                {
+                    return whiteWin;
+                }
+
+
+                for (int row = 0; row < 7; ++row) {
+                    for (int col = 0; col < 7; ++col) {
+                        if(board[row][col].player == 'b')
+                        {
+                            showCanMove(row,col);
+                            for (vector<int>& iter : attackPiecePaths) {
+                                if(board[iter[0]][iter[1]].canMove == true)
+                                {
+                                    board[iter[0]][iter[1]].index = board[row][col].index;
+                                    board[iter[0]][iter[1]].chessType = board[row][col].chessType;
+                                    board[iter[0]][iter[1]].ifHavePiece = true;
+                                    board[iter[0]][iter[1]].player = 'b';
+
+                                    board[row][col].index = 0;
+                                    board[row][col].chessType = "0";
+                                    board[row][col].ifHavePiece = false;
+                                    board[row][col].player = '0';
+
+                                    computeTarget();
+
+                                    board[row][col].index = board[iter[0]][iter[1]].index;
+                                    board[row][col].chessType = board[iter[0]][iter[1]].chessType;
+                                    board[row][col].ifHavePiece = true;
+                                    board[row][col].player =  board[iter[0]][iter[1]].player;
+
+                                    board[iter[0]][iter[1]].index = 0;
+                                    board[iter[0]][iter[1]].chessType = "0";
+                                    board[iter[0]][iter[1]].ifHavePiece = false;
+                                    board[iter[0]][iter[1]].player = '0';
+
+                                    if(board[Black.king.y][Black.king.x].wTarget == 0)
+                                    {
+                                        return gameContinue;
+                                    }
+
+                                }
+
+                            }
+
+                            if(board[attackPiecerow][attackPiececol].canMove == true)
+                            {
+                                board[attackPiecerow][attackPiececol].index = board[row][col].index;
+                                board[attackPiecerow][attackPiececol].chessType = board[row][col].chessType;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = 'b';
+
+                                board[row][col].index = 0;
+                                board[row][col].chessType = "0";
+                                board[row][col].ifHavePiece = false;
+                                board[row][col].player = '0';
+
+                                computeTarget();
+
+                                board[row][col].index = board[attackPiecerow][attackPiececol].index;
+                                board[row][col].chessType = board[attackPiecerow][attackPiececol].chessType;
+                                board[row][col].ifHavePiece = true;
+                                board[row][col].player =  board[attackPiecerow][attackPiececol].player;
+
+                                board[attackPiecerow][attackPiececol].index = attackPieceIndex;
+                                board[attackPiecerow][attackPiececol].chessType = attackPieceName;
+                                board[attackPiecerow][attackPiececol].ifHavePiece = true;
+                                board[attackPiecerow][attackPiececol].player = attackPiecePlayer;
+
+                                if(board[Black.king.y][Black.king.x].wTarget == 0)
+                                {
+                                    return gameContinue;
+                                }
+
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                return blackWin;
+
+            }
+
+        }
+    }
 
 
     return gameContinue;
@@ -4037,4 +5882,100 @@ void GameManager::Promoting(int row, int col, string type)
     }
 
     board[row][col].chessType = type;
+}
+
+void GameManager::loadBoard()
+{
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            board[i][j].wTarget =  steps[ curStep].curBoard[i][j].wTarget;
+            board[i][j].bTarget =  steps[ curStep].curBoard[i][j].bTarget;
+            board[i][j].player =  steps[ curStep].curBoard[i][j].player;
+            board[i][j].chessType =  steps[ curStep].curBoard[i][j].chessType;
+            board[i][j].index =  steps[ curStep].curBoard[i][j].index;
+            board[i][j].canMove =  steps[ curStep].curBoard[i][j].canMove;
+            playerTurn =  steps[ curStep].playerTurn;
+            board[i][j].ifHavePiece =  steps[ curStep].curBoard[i][j].ifHavePiece;
+
+            if( board[i][j].ifHavePiece)
+            {
+                if( board[i][j].player == 'w')
+                {
+                    if( board[i][j].chessType == "Pawn")
+                    {
+                        White.pawns[ board[i][j].index].y = i;
+                        White.pawns[ board[i][j].index].x = j;
+                        White.pawns[ board[i][j].index].ifmove2Step =  steps[ curStep].curBoard[i][j].ifPawnMove2Step;
+                        White.pawns[ board[i][j].index].inNextTurn =  steps[ curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if( board[i][j].chessType == "Rook")
+                    {
+                        White.rooks[ board[i][j].index].y = i;
+                        White.rooks[ board[i][j].index].x = j;
+                        White.rooks[ board[i][j].index].ifMove =  steps[ curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if( board[i][j].chessType == "Knight")
+                    {
+                        White.knights[ board[i][j].index].y = i;
+                        White.knights[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "Bishop")
+                    {
+                        White.bishops[ board[i][j].index].y = i;
+                        White.bishops[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "Queen")
+                    {
+                        White.queens[ board[i][j].index].y = i;
+                        White.queens[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "King")
+                    {
+                        White.king.y = i;
+                        White.king.x = j;
+                        White.king.ifMove =  steps[ curStep].curBoard[i][j].ifWhiteKingMove;
+                    }
+                }
+                else// board[i][j].player == 'b'
+                {
+                    if( board[i][j].chessType == "Pawn")
+                    {
+                        Black.pawns[ board[i][j].index].y = i;
+                        Black.pawns[ board[i][j].index].x = j;
+                        Black.pawns[ board[i][j].index].ifmove2Step =  steps[ curStep].curBoard[i][j].ifPawnMove2Step;
+                        Black.pawns[ board[i][j].index].inNextTurn =  steps[ curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if( board[i][j].chessType == "Rook")
+                    {
+                        Black.rooks[ board[i][j].index].y = i;
+                        Black.rooks[ board[i][j].index].x = j;
+                        Black.rooks[ board[i][j].index].ifMove =  steps[ curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if( board[i][j].chessType == "Knight")
+                    {
+                        Black.knights[ board[i][j].index].y = i;
+                        Black.knights[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "Bishop")
+                    {
+                        Black.bishops[ board[i][j].index].y = i;
+                        Black.bishops[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "Queen")
+                    {
+                        Black.queens[ board[i][j].index].y = i;
+                        Black.queens[ board[i][j].index].x = j;
+                    }
+                    else if( board[i][j].chessType == "King")
+                    {
+                        Black.king.y = i;
+                        Black.king.x = j;
+                        Black.king.ifMove =  steps[ curStep].curBoard[i][j].ifBlackKingMove;
+                    }
+                }
+            }
+        }
+    }
 }

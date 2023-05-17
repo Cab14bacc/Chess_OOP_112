@@ -597,7 +597,7 @@ void MainWindow::on_undo_clicked()
     if(game.curStep != 0)
     {
         game.curStep--;
-        loadBoard();
+        game.loadBoard();
         update();
         printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
@@ -611,108 +611,14 @@ void MainWindow::on_redo_clicked()
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;
-        loadBoard();
+        game.loadBoard();
         update();
         printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
-void MainWindow::loadBoard()
-{
-    for(int i = 0; i < 8; i++)
-    {
-        for(int j = 0; j < 8; j++)
-        {
-            game.board[i][j].wTarget = game.steps[game.curStep].curBoard[i][j].wTarget;
-            game.board[i][j].bTarget = game.steps[game.curStep].curBoard[i][j].bTarget;
-            game.board[i][j].player = game.steps[game.curStep].curBoard[i][j].player;
-            game.board[i][j].chessType = game.steps[game.curStep].curBoard[i][j].chessType;
-            game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
-            game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
-            game.playerTurn = game.steps[game.curStep].playerTurn;
-            game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
 
-            if(game.board[i][j].ifHavePiece)
-            {
-                if(game.board[i][j].player == 'w')
-                {
-                    if(game.board[i][j].chessType == "Pawn")
-                    {
-                        game.White.pawns[game.board[i][j].index].y = i;
-                        game.White.pawns[game.board[i][j].index].x = j;
-                        game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
-                        game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
-                    }
-                    else if(game.board[i][j].chessType == "Rook")
-                    {
-                        game.White.rooks[game.board[i][j].index].y = i;
-                        game.White.rooks[game.board[i][j].index].x = j;
-                        game.White.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
-                    }
-                    else if(game.board[i][j].chessType == "Knight")
-                    {
-                        game.White.knights[game.board[i][j].index].y = i;
-                        game.White.knights[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "Bishop")
-                    {
-                        game.White.bishops[game.board[i][j].index].y = i;
-                        game.White.bishops[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "Queen")
-                    {
-                        game.White.queens[game.board[i][j].index].y = i;
-                        game.White.queens[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "King")
-                    {
-                        game.White.king.y = i;
-                        game.White.king.x = j;
-                        game.White.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifWhiteKingMove;
-                    }
-                }
-                else//game.board[i][j].player == 'b'
-                {
-                    if(game.board[i][j].chessType == "Pawn")
-                    {
-                        game.Black.pawns[game.board[i][j].index].y = i;
-                        game.Black.pawns[game.board[i][j].index].x = j;
-                        game.Black.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
-                        game.Black.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
-                    }
-                    else if(game.board[i][j].chessType == "Rook")
-                    {
-                        game.Black.rooks[game.board[i][j].index].y = i;
-                        game.Black.rooks[game.board[i][j].index].x = j;
-                        game.Black.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
-                    }
-                    else if(game.board[i][j].chessType == "Knight")
-                    {
-                        game.Black.knights[game.board[i][j].index].y = i;
-                        game.Black.knights[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "Bishop")
-                    {
-                        game.Black.bishops[game.board[i][j].index].y = i;
-                        game.Black.bishops[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "Queen")
-                    {
-                        game.Black.queens[game.board[i][j].index].y = i;
-                        game.Black.queens[game.board[i][j].index].x = j;
-                    }
-                    else if(game.board[i][j].chessType == "King")
-                    {
-                        game.Black.king.y = i;
-                        game.Black.king.x = j;
-                        game.Black.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifBlackKingMove;
-                    }
-                }
-            }
-        }
-    }
-}
 
 void MainWindow::setTime()
 {

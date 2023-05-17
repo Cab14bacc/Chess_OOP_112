@@ -1,4 +1,4 @@
-#include "saveAllInformation.h".h"
+#include "saveAllInformation.h"
 #ifndef CURBOARD_H
 #define CURBOARD_H
 class CurBoard

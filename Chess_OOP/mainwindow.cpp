@@ -90,6 +90,11 @@ void MainWindow::labelClicked()
         game.clickTimes = 1;
         update();
 
+        if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
+            on_undo_clicked();
+        else if(game.board[game.Black.king.y][game.Black.king.x].wTarget >= 1 && game.playerTurn == 'w')
+            on_undo_clicked();
+
         if(game.judgeWinOrLose() == blackWin)
         {
             showResultWindow(blackWin);

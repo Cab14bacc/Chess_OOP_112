@@ -10,7 +10,6 @@
 #include "Rook.h"
 #include "Pawn.h"
 #include <QDialog>
-#include "QWidgetAction"
 
 using namespace std;
 
@@ -19,7 +18,7 @@ GameManager game;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), promoMenuW(this,"W"), promoMenuB(this,"B")
+    , ui(new Ui::MainWindow)
 {
 
     ui->setupUi(this);
@@ -27,7 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
     initIcon();//just to set images
     setSound();
     startSound->play();//plat BGM
-    startSound->setLoops(-1);//repeat pla
+    startSound->setLoops(-1);//repeat play
+    connect(&whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    connect(&blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
 }
 
 MainWindow::~MainWindow()
@@ -85,10 +86,14 @@ void MainWindow::labelClicked()
     else
     {
         game.playerMove(curRow, curCol);
-        game.computeTarget();
         printInformation();
         game.clickTimes = 1;
         update();
+
+        if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
+            on_undo_clicked();
+        else if(game.board[game.Black.king.y][game.Black.king.x].wTarget >= 1 && game.playerTurn == 'w')
+            on_undo_clicked();
 
         if(game.judgeWinOrLose() == blackWin)
         {
@@ -98,7 +103,7 @@ void MainWindow::labelClicked()
         {
             showResultWindow(whiteWin);
         }
-        else if(game.ifDraw && game.noEat == 100)
+        else if(game.ifDraw || game.noEat == 100 || (game.playerTurn == 'w' && !game.ifWhiteCanMove) || (game.playerTurn == 'b' && !game.ifBlackCanMove))
         {
             showResultWindow(draw);
         }
@@ -107,6 +112,18 @@ void MainWindow::labelClicked()
 
 void MainWindow::update()
 {
+    for(int i = 0; i < 8; i++)
+    {
+        if(game.board[0][i].chessType == "Pawn")
+        {
+            Promoting(0, i);
+        }
+        else if(game.board[7][i].chessType == "Pawn")
+        {
+            Promoting(7, i);
+        }
+    }
+
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -171,93 +188,6 @@ void MainWindow::update()
             }
         }
     }
-
-
-    for (int var = 0; var < 7; ++var) {
-
-        if(game.board[0][var].chessType == "Pawn" && game.board[0][var].player == 'w')
-        {
-            QPoint pos = ui->gameBoard->itemAtPosition(0,var)->widget()
-                             ->mapFromGlobal(ui->gameBoard->itemAtPosition(0,var)->widget()->pos());
-            promoMenuW.move(pos);
-            promoMenuW.exec();
-            if (promoMenuW.result == 1)
-            {
-                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
-                int index = (int)game.White.queens.size();
-                game.White.queens.insert(game.White.queens.end(),{'w',var,0,index});
-                game.board[0][var].chessType = "Queen";
-                game.board[0][var].index = index;
-            }
-            else if (promoMenuW.result == 2)
-            {
-                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
-                int index = (int)game.White.knights.size();
-                game.White.knights.insert(game.White.knights.end(),{'w',var,0,index});
-                game.board[0][var].chessType = "Knight";
-                game.board[0][var].index = index;
-            }
-            else if (promoMenuW.result == 3)
-            {
-                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
-                int index = (int)game.White.bishops.size();
-                game.White.bishops.insert(game.White.bishops.end(),{'w',var,0,index});
-                game.board[0][var].chessType = "Bishop";
-                game.board[0][var].index = index;
-            }
-            else if (promoMenuW.result == 4)
-            {
-                game.eraseChessPiece("Pawn",'w',game.board[0][var].index);
-                int index = (int)game.White.rooks.size();
-                game.White.rooks.insert(game.White.rooks.end(),{'w',var,0,index});
-                game.board[0][var].chessType = "Rook";
-                game.board[0][var].index = index;
-            }
-
-            break;
-        }
-        else if(game.board[7][var].chessType == "Pawn" && game.board[7][var].player == 'b')
-        {
-
-            QPoint pos = ui->gameBoard->itemAtPosition(7,var)->widget()
-                             ->mapFromGlobal(ui->gameBoard->itemAtPosition(7,var)->widget()->pos());
-            promoMenuB.move(pos);
-            promoMenuB.exec();
-            if (promoMenuB.result == 1)
-            {
-                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
-                int index = (int)game.Black.queens.size();
-                game.Black.queens.insert(game.Black.queens.end(),{'b',var,7,index});
-                game.board[7][var].chessType = "Queen";
-                game.board[7][var].index = index;
-            }
-            else if (promoMenuB.result == 2)
-            {
-                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
-                int index = (int)game.Black.knights.size();
-                game.Black.knights.insert(game.Black.knights.end(),{'b',var,7,index});
-                game.board[7][var].chessType = "Knight";
-                game.board[7][var].index = index;
-            }
-            else if (promoMenuB.result == 3)
-            {
-                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
-                int index = (int)game.Black.bishops.size();
-                game.Black.bishops.insert(game.Black.bishops.end(),{'b',var,7,index});
-                game.board[7][var].chessType = "Bishop";
-                game.board[7][var].index = index;
-            }
-            else if (promoMenuB.result == 4)
-            {
-                game.eraseChessPiece("Pabn",'b',game.board[7][var].index);
-                int index = (int)game.Black.rooks.size();
-                game.Black.rooks.insert(game.Black.rooks.end(),{'b',var,7,index});
-                game.board[7][var].chessType = "Rook";
-                game.board[7][var].index = index;
-            }
-            break;
-        }
-    }
 }
 
 // can ignore this temporary
@@ -277,7 +207,6 @@ void MainWindow::split(string Words[], QString Name)
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
-    setTime();
     resetGame();
 
     for(int i =0;i<8;i++)
@@ -303,11 +232,12 @@ void MainWindow::on_newGame_clicked()
     Bishop *newBishop = new Bishop;
     Knight *newKnight = new Knight;
     Rook *newRook = new Rook;
+    newRook->ifMove = false;
     Pawn *newPawn = new Pawn;
 
     for(int i = 0; i < 8; i++)
     {
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(1);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -319,7 +249,7 @@ void MainWindow::on_newGame_clicked()
         game.board[1][i].chessType = "Pawn";
         game.board[1][i].ifHavePiece = true;
         game.board[1][i].index = i;
-        //newPawn = new Pawn;
+        newPawn = new Pawn;
         row = QString::number(6);
         col = QString::number(i);
         lab = this->findChild<MyLabel*>(row + " " + col);
@@ -430,6 +360,7 @@ void MainWindow::on_newGame_clicked()
     col = QString::number(4);
     lab = this->findChild<MyLabel*>(row + " " + col);
     lab->setPixmap(*iconBKing);
+    game.Black.king.ifMove = false;
     game.Black.king.x = 4;
     game.Black.king.y = 0;
     game.board[0][4].player = 'b';
@@ -536,6 +467,7 @@ void MainWindow::on_newGame_clicked()
     lab->setPixmap(*iconWKing);
     game.White.king.x = 4;
     game.White.king.y = 7;
+    game.White.king.ifMove = false;
     game.board[7][4].player = 'w';
     game.board[7][4].chessType = "King";
     game.board[7][4].ifHavePiece = true;
@@ -588,17 +520,17 @@ void MainWindow::printInformation()
             cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
-                //cout << game.board[i][j].player;
-                //cout << game.board[i][j].chessType;
+                cout << game.board[i][j].player;
+                cout << game.board[i][j].chessType;
             }
 
             if(game.board[i][j].canMove)
             {
-                cout << "c";
+                //cout << "c";
             }
             //cout << "in"<<game.board[i][j].index;
-            //cout << "bt"<<game.board[i][j].bTarget;
-            //cout << "wt"<<game.board[i][j].wTarget;
+            cout << "bt"<<game.board[i][j].bTarget;
+            cout << "wt"<<game.board[i][j].wTarget;
             cout <<" ";
         }
 
@@ -606,9 +538,56 @@ void MainWindow::printInformation()
     }
 
     //cout << game.curStep<<" "<<game.steps.size()<<endl;
-    //cout << game.fen<<endl;
-    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
-    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    cout << game.fen<<endl;
+    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    //cout << "noEat:" << game.noEat<<endl;
+
+    if(game.ifWhiteCanMove)
+    {
+        cout << "ifWhiteCanMove: true";
+    }
+    else
+    {
+        cout << "ifWhiteCanMove: false";
+    }
+    cout << endl;
+    if(game.ifBlackCanMove)
+    {
+        cout << "ifBlackCanMove: true";
+    }
+    else
+    {
+        cout << "ifBlackCanMove: false";
+    }
+    cout << endl;
+    if(game.ifDraw)
+    {
+        cout <<"ifDraw: true";
+    }
+    else
+    {
+        cout << "ifDraw: false";
+    }
+    cout << endl;
+    if(game.White.king.ifMove)
+    {
+        cout << "White.king.ifMove = true";
+    }
+    else
+    {
+        cout << "White.king.ifMove = false";
+    }
+    cout << endl;
+    if(game.Black.king.ifMove)
+    {
+        cout << "Black.king.ifMove = true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove = false";
+    }
+    cout << endl;
 }
 
 void MainWindow::on_undo_clicked()
@@ -621,6 +600,7 @@ void MainWindow::on_undo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
@@ -634,6 +614,7 @@ void MainWindow::on_redo_clicked()
         loadBoard();
         update();
         printInformation();
+        game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
@@ -643,7 +624,6 @@ void MainWindow::loadBoard()
     {
         for(int j = 0; j < 8; j++)
         {
-            game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
             game.board[i][j].wTarget = game.steps[game.curStep].curBoard[i][j].wTarget;
             game.board[i][j].bTarget = game.steps[game.curStep].curBoard[i][j].bTarget;
             game.board[i][j].player = game.steps[game.curStep].curBoard[i][j].player;
@@ -651,16 +631,93 @@ void MainWindow::loadBoard()
             game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
             game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
             game.playerTurn = game.steps[game.curStep].playerTurn;
+            game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
+
+            if(game.board[i][j].ifHavePiece)
+            {
+                if(game.board[i][j].player == 'w')
+                {
+                    if(game.board[i][j].chessType == "Pawn")
+                    {
+                        game.White.pawns[game.board[i][j].index].y = i;
+                        game.White.pawns[game.board[i][j].index].x = j;
+                        game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
+                        game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if(game.board[i][j].chessType == "Rook")
+                    {
+                        game.White.rooks[game.board[i][j].index].y = i;
+                        game.White.rooks[game.board[i][j].index].x = j;
+                        game.White.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if(game.board[i][j].chessType == "Knight")
+                    {
+                        game.White.knights[game.board[i][j].index].y = i;
+                        game.White.knights[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Bishop")
+                    {
+                        game.White.bishops[game.board[i][j].index].y = i;
+                        game.White.bishops[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Queen")
+                    {
+                        game.White.queens[game.board[i][j].index].y = i;
+                        game.White.queens[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "King")
+                    {
+                        game.White.king.y = i;
+                        game.White.king.x = j;
+                        game.White.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifWhiteKingMove;
+                    }
+                }
+                else//game.board[i][j].player == 'b'
+                {
+                    if(game.board[i][j].chessType == "Pawn")
+                    {
+                        game.Black.pawns[game.board[i][j].index].y = i;
+                        game.Black.pawns[game.board[i][j].index].x = j;
+                        game.Black.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
+                        game.Black.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if(game.board[i][j].chessType == "Rook")
+                    {
+                        game.Black.rooks[game.board[i][j].index].y = i;
+                        game.Black.rooks[game.board[i][j].index].x = j;
+                        game.Black.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if(game.board[i][j].chessType == "Knight")
+                    {
+                        game.Black.knights[game.board[i][j].index].y = i;
+                        game.Black.knights[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Bishop")
+                    {
+                        game.Black.bishops[game.board[i][j].index].y = i;
+                        game.Black.bishops[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Queen")
+                    {
+                        game.Black.queens[game.board[i][j].index].y = i;
+                        game.Black.queens[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "King")
+                    {
+                        game.Black.king.y = i;
+                        game.Black.king.x = j;
+                        game.Black.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifBlackKingMove;
+                    }
+                }
+            }
         }
     }
 }
 
 void MainWindow::setTime()
 {
-    connect(whiteTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    whiteTimer->start(1000);
-    connect(blackTimer, SIGNAL(timeout()), this, SLOT(updateTimer()));
-    blackTimer->start(1000);
+    whiteTimer.start(1000);
+    blackTimer.start(1000);
     whiteCounter = 10 * 60;
     blackCounter = 10 * 60;
     ui->whiteTime->setAlignment(Qt::AlignCenter);
@@ -673,28 +730,28 @@ void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
     {
-        whiteTimer->start();
-        blackTimer->stop();
+        whiteTimer.start();
+        blackTimer.stop();
         whiteCounter = whiteCounter - 1;
         ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
     }
-    else//game.playerTurn == 'b'
+    else if(game.playerTurn == 'b')
     {
-        whiteTimer->stop();
-        blackTimer->start();
+        whiteTimer.stop();
+        blackTimer.start();
         blackCounter = blackCounter - 1;
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
     if(whiteCounter == 0)
     {
-        whiteTimer->stop();
+        whiteTimer.stop();
         //set white lose
         showResultWindow(blackWin);
     }
     else if(blackCounter == 0)
     {
-        blackTimer->stop();
+        blackTimer.stop();
         //set black lose
         showResultWindow(whiteWin);
     }
@@ -785,4 +842,82 @@ void MainWindow::resetGame()
     game.ifBlackCanMove = true;
     game.ifDraw = false;
     game.fens.clear();
+    setTime();
+}
+
+void MainWindow::Promoting(int row, int col)
+{
+    QDialog *dialogPromoting = new QDialog(this);
+    dialogPromoting->setWindowTitle("Promoting");
+    QHBoxLayout *layoutPromoting = new QHBoxLayout(dialogPromoting);
+    QPushButton *queenBtn = new QPushButton(dialogPromoting);
+
+    connect(queenBtn, &QPushButton::clicked, [=](){
+        dialogPromoting->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Queen");
+    });
+
+    layoutPromoting->addWidget(queenBtn);
+
+    QPushButton *bishopBtn = new QPushButton(dialogPromoting);
+    connect(bishopBtn, &QPushButton::clicked, [=](){
+        dialogPromoting->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Bishop");
+    });
+
+    layoutPromoting->addWidget(bishopBtn);
+
+    QPushButton *knightBtn = new QPushButton(dialogPromoting);
+    connect(knightBtn, &QPushButton::clicked, [=](){
+        dialogPromoting->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Knight");
+    });
+
+    layoutPromoting->addWidget(knightBtn);
+
+    QPushButton *rookBtn = new QPushButton(dialogPromoting);
+    connect(rookBtn, &QPushButton::clicked, [=](){
+        dialogPromoting->close();//close window
+        //function to execute
+        game.Promoting(row, col, "Rook");
+    });
+
+    layoutPromoting->addWidget(rookBtn);
+
+    if(game.board[row][col].player == 'w')
+    {
+        queenBtn->setIcon(QIcon(*iconWQueen));
+        queenBtn->setIconSize(iconWQueen->size());
+        queenBtn->setFixedSize(70, 70);
+        bishopBtn->setIcon(QIcon(*iconWBishop));
+        bishopBtn->setIconSize(iconWBishop->size());
+        bishopBtn->setFixedSize(70, 70);
+        knightBtn->setIcon(QIcon(*iconWKnight));
+        knightBtn->setIconSize(iconWKnight->size());
+        knightBtn->setFixedSize(70, 70);
+        rookBtn->setIcon(QIcon(*iconWRook));
+        rookBtn->setIconSize(iconWRook->size());
+        rookBtn->setFixedSize(70, 70);
+    }
+    else//game.board[row][col].player == 'b'
+    {
+        queenBtn->setIcon(QIcon(*iconBQueen));
+        queenBtn->setIconSize(iconBQueen->size());
+        queenBtn->setFixedSize(70, 70);
+        bishopBtn->setIcon(QIcon(*iconBBishop));
+        bishopBtn->setIconSize(iconBBishop->size());
+        bishopBtn->setFixedSize(70, 70);
+        knightBtn->setIcon(QIcon(*iconBKnight));
+        knightBtn->setIconSize(iconBKnight->size());
+        knightBtn->setFixedSize(70, 70);
+        rookBtn->setIcon(QIcon(*iconBRook));
+        rookBtn->setIconSize(iconBRook->size());
+        rookBtn->setFixedSize(70, 70);
+    }
+
+    dialogPromoting->setLayout(layoutPromoting);
+    dialogPromoting->exec();//display
 }

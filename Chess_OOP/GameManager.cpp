@@ -2819,15 +2819,7 @@ void GameManager::recordCurBoard()
             curBoard.curBoard[i][j].index = board[i][j].index;
             curBoard.curBoard[i][j].canMove = board[i][j].canMove;
 
-            if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "king")
-            {
-                curBoard.curBoard[i][j].ifWhiteKingMove = White.king.ifMove;
-            }
-            else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "king")
-            {
-                curBoard.curBoard[i][j].ifBlackKingMove = Black.king.ifMove;
-            }
-            else if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
+            if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
             {
                 curBoard.curBoard[i][j].ifRookMove = White.rooks[board[i][j].index].ifMove;
             }
@@ -2848,6 +2840,8 @@ void GameManager::recordCurBoard()
         }
     }
 
+    curBoard.ifBlackKingMove = Black.king.ifMove;
+    curBoard.ifWhiteKingMove = White.king.ifMove;
     curBoard.playerTurn = playerTurn;
 }
 

@@ -2870,21 +2870,21 @@ int GameManager::judgeWinOrLose()
     {
         //check eight boards around
         //up
-        if(ifPosInBoard(White.king.y - 1, White.king.x) && board[White.king.y - 1][White.king.x].bTarget > 0
+        if(((ifPosInBoard(White.king.y - 1, White.king.x - 1) && (board[White.king.y - 1][White.king.x - 1].bTarget > 0)) || board[White.king.y - 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x - 1))
             //down
-            && ifPosInBoard(White.king.y + 1, White.king.x) && board[White.king.y + 1][White.king.x].bTarget > 0
+            && ((ifPosInBoard(White.king.y - 1, White.king.x + 1) && (board[White.king.y - 1][White.king.x + 1].bTarget > 0)) || board[White.king.y - 1][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x + 1))
             //left
-            && ifPosInBoard(White.king.y, White.king.x - 1) && board[White.king.y][White.king.x - 1].bTarget > 0
+            && ((ifPosInBoard(White.king.y - 1, White.king.x) && (board[White.king.y - 1][White.king.x].bTarget > 0)) || board[White.king.y - 1][White.king.x].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x))
             //right
-            && ifPosInBoard(White.king.y, White.king.x + 1) && board[White.king.y][White.king.x + 1].bTarget > 0
+            && ((ifPosInBoard(White.king.y + 1, White.king.x - 1) && (board[White.king.y + 1][White.king.x - 1].bTarget > 0)) || board[White.king.y + 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x - 1))
             //left up
-            && ifPosInBoard(White.king.y + 1, White.king.x - 1) && board[White.king.y + 1][White.king.x - 1].bTarget > 0
+            && ((ifPosInBoard(White.king.y + 1, White.king.x + 1) && (board[White.king.y + 1][White.king.x + 1].bTarget > 0)) || board[White.king.y + 1][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x + 1))
             //right up
-            && ifPosInBoard(White.king.y + 1, White.king.x + 1) && board[White.king.y + 1][White.king.x + 1].bTarget > 0
+            && ((ifPosInBoard(White.king.y + 1, White.king.x) && (board[White.king.y + 1][White.king.x].bTarget > 0)) || board[White.king.y + 1][White.king.x].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x))
             //left down
-            && ifPosInBoard(White.king.y - 1, White.king.x - 1) && board[White.king.y - 1][White.king.x - 1].bTarget > 0
+            && ((ifPosInBoard(White.king.y, White.king.x + 1) && (board[White.king.y][White.king.x + 1].bTarget > 0)) || board[White.king.y][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y, White.king.x + 1))
             //right down
-            && ifPosInBoard(White.king.y - 1, White.king.x + 1) && board[White.king.y - 1][White.king.x + 1].bTarget > 0)
+            && ((ifPosInBoard(White.king.y, White.king.x - 1) && (board[White.king.y][White.king.x - 1].bTarget > 0)) || board[White.king.y][White.king.x - 1].player == 'w' || ifPosInBoard(White.king.y, White.king.x - 1)))
         {
             return blackWin;
         }
@@ -2895,21 +2895,21 @@ int GameManager::judgeWinOrLose()
     {
         //check eight boards around
         //up
-        if(ifPosInBoard(Black.king.y - 1, Black.king.x) && board[Black.king.y - 1][Black.king.x].wTarget > 0
+        if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].bTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'w' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
             //down
-            && ifPosInBoard(Black.king.y + 1, Black.king.x) && board[Black.king.y + 1][Black.king.x].wTarget > 0
+            && ((ifPosInBoard(Black.king.y - 1, Black.king.x + 1) && (board[Black.king.y - 1][Black.king.x + 1].bTarget > 0)) || board[Black.king.y - 1][Black.king.x + 1].player == 'w' || !ifPosInBoard(Black.king.y - 1, Black.king.x + 1))
             //left
-            && ifPosInBoard(Black.king.y, Black.king.x - 1) && board[Black.king.y][Black.king.x - 1].wTarget > 0
+            && ((ifPosInBoard(Black.king.y - 1, Black.king.x) && (board[Black.king.y - 1][Black.king.x].bTarget > 0)) || board[Black.king.y - 1][Black.king.x].player == 'w' || !ifPosInBoard(Black.king.y - 1, Black.king.x))
             //right
-            && ifPosInBoard(Black.king.y, Black.king.x + 1) && board[Black.king.y][Black.king.x + 1].wTarget > 0
+            && ((ifPosInBoard(Black.king.y + 1, Black.king.x - 1) && (board[Black.king.y + 1][Black.king.x - 1].bTarget > 0)) || board[Black.king.y + 1][Black.king.x - 1].player == 'w' || !ifPosInBoard(Black.king.y + 1, Black.king.x - 1))
             //left up
-            && ifPosInBoard(Black.king.y + 1, Black.king.x - 1) && board[Black.king.y + 1][Black.king.x - 1].wTarget > 0
+            && ((ifPosInBoard(Black.king.y + 1, Black.king.x + 1) && (board[Black.king.y + 1][Black.king.x + 1].bTarget > 0)) || board[Black.king.y + 1][Black.king.x + 1].player == 'w' || !ifPosInBoard(Black.king.y + 1, Black.king.x + 1))
             //right up
-            && ifPosInBoard(Black.king.y + 1, Black.king.x + 1) && board[Black.king.y + 1][Black.king.x + 1].wTarget > 0
+            && ((ifPosInBoard(Black.king.y + 1, Black.king.x) && (board[Black.king.y + 1][Black.king.x].bTarget > 0)) || board[Black.king.y + 1][Black.king.x].player == 'w' || !ifPosInBoard(Black.king.y + 1, Black.king.x))
             //left down
-            && ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && board[Black.king.y - 1][Black.king.x - 1].wTarget > 0
+            && ((ifPosInBoard(Black.king.y, Black.king.x + 1) && (board[Black.king.y][Black.king.x + 1].bTarget > 0)) || board[Black.king.y][Black.king.x + 1].player == 'w' || !ifPosInBoard(Black.king.y, Black.king.x + 1))
             //right down
-            && ifPosInBoard(Black.king.y - 1, Black.king.x + 1) && board[Black.king.y - 1][Black.king.x + 1].wTarget > 0)
+            && ((ifPosInBoard(Black.king.y, Black.king.x - 1) && (board[Black.king.y][Black.king.x - 1].bTarget > 0)) || board[Black.king.y][Black.king.x - 1].player == 'w' || ifPosInBoard(Black.king.y, Black.king.x - 1)))
         {
             return whiteWin;
         }

@@ -1214,9 +1214,73 @@ void GameManager::playerMove(int row, int col)
 
         playerTurn = 'w';//change playerTurn
     }
-    for (int row = 0; row < 8; ++row) {
-        for (int col = 0; col < 8; ++col) {
+
+    wPawn = 0;
+    wRook = 0;
+    wKnight = 0;
+    wBishop = 0;
+    wQueen = 0;
+    bPawn = 0;
+    bRook = 0;
+    bKnight = 0;
+    bBishop = 0;
+    bQueen = 0;
+
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
             board[row][col].canMove = false;
+
+            if(board[row][col].ifHavePiece)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    if(board[row][col].chessType == "Pawn")
+                    {
+                        wPawn++;
+                    }
+                    else if(board[row][col].chessType == "Rook")
+                    {
+                        wRook++;
+                    }
+                    else if(board[row][col].chessType == "Knight")
+                    {
+                        wKnight++;
+                    }
+                    else if(board[row][col].chessType == "Bishop")
+                    {
+                        wBishop++;
+                    }
+                    else if(board[row][col].chessType == "Queen")
+                    {
+                        wQueen++;
+                    }
+                }
+                else//board[row][col].player == 'b'
+                {
+                    if(board[row][col].chessType == "Pawn")
+                    {
+                        bPawn++;
+                    }
+                    else if(board[row][col].chessType == "Rook")
+                    {
+                        bRook++;
+                    }
+                    else if(board[row][col].chessType == "Knight")
+                    {
+                        bKnight++;
+                    }
+                    else if(board[row][col].chessType == "Bishop")
+                    {
+                        bBishop++;
+                    }
+                    else if(board[row][col].chessType == "Queen")
+                    {
+                        bQueen++;
+                    }
+                }
+            }
         }
     }
 
@@ -1234,10 +1298,14 @@ void GameManager::playerMove(int row, int col)
     judgeIfPlayerCanMove(playerTurn);
 
     if(wPawn == 0 && wRook == 0 && wKnight == 0 && wBishop == 0 && wQueen == 0)
-        ifInsufficientChess('w');
+        ifInsufficientChess();
 
     if(bPawn == 0 && bRook == 0 && bKnight == 0 && bBishop == 0 && bQueen == 0)
-        ifInsufficientChess('b');
+        ifInsufficientChess();
+
+    if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 1
+       && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 1)
+        ifDraw = true;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -1248,27 +1316,22 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
     {
         if(chessType == "Pawn")
         {
-            wPawn--;
             //White.pawns.erase(White.pawns.begin() + index);
         }
         else if(chessType == "Rook")
         {
-            wRook--;
             //White.rooks.erase(White.rooks.begin() + index);
         }
         else if(chessType == "Bishop")
         {
-            wBishop--;
             //White.bishops.erase(White.bishops.begin() + index);
         }
         else if(chessType == "Knight")
         {
-            wKnight--;
             //White.knights.erase(White.knights.begin() + index);
         }
         else if(chessType == "Queen")
         {
-            wQueen--;
             //White.queens.erase(White.queens.begin() + index);
         }
         //        else if(chessType == "King")
@@ -1280,27 +1343,22 @@ void GameManager::eraseChessPiece(string chessType, char player,int index)
     {
         if(chessType == "Pawn")
         {
-            bPawn--;
             //Black.pawns.erase(Black.pawns.begin()+index);
         }
         else if(chessType == "Rook")
         {
-            bRook--;
             //Black.rooks.erase(Black.rooks.begin()+index);
         }
         else if(chessType == "Bishop")
         {
-            bBishop--;
             //Black.bishops.erase(Black.bishops.begin()+index);
         }
         else if(chessType == "Knight")
         {
-            bKnight--;
             //Black.knights.erase(Black.knights.begin()+index);
         }
         else if(chessType == "Queen")
         {
-            bQueen--;
             //Black.queens.erase(Black.queens.begin()+index);
         }
         //        else if(chessType == "King")
@@ -3724,35 +3782,35 @@ bool GameManager::ifPosCanMove(int row, int col)
         else//board[row][col].player = 'b'
         {
             //up
-            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].bTarget == 0)
+            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].wTarget == 0)
                 return true;
 
             //down
-            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].bTarget == 0)
+            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].wTarget == 0)
                 return true;
 
             //right
-            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].bTarget == 0)
+            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].wTarget == 0)
                 return true;
 
             //left
-            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].bTarget == 0)
+            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].wTarget == 0)
                 return true;
 
             //up right
-            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].bTarget == 0)
+            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].wTarget == 0)
                 return true;
 
             //up left
-            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].bTarget == 0)
+            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].wTarget == 0)
                 return true;
 
             //down right
-            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].bTarget == 0)
+            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].wTarget == 0)
                 return true;
 
             //down left
-            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].bTarget == 0)
+            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].wTarget == 0)
                 return true;
 
             //left castle
@@ -3892,7 +3950,7 @@ void GameManager::IfBoardRepeat3Times(string curFen)
     }
 }
 
-void GameManager::ifInsufficientChess(char player)//The only player left is the king
+void GameManager::ifInsufficientChess()//The only player left is the king
 {
     if(bPawn > 0 || bQueen > 0 || bRook > 0 || bBishop >= 2 || (bKnight > 0 && bBishop > 0) ||
         wPawn > 0 || wQueen > 0 || wRook > 0 || wBishop >= 2 || (wKnight > 0 && wBishop > 0))

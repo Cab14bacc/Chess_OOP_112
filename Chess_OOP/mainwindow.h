@@ -43,6 +43,8 @@ public:
 
     void Promoting(int row, int col);
 
+    void shoeWhoFirst();
+
 private slots:
     void labelClicked();
 

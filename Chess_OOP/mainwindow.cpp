@@ -547,8 +547,8 @@ void MainWindow::printInformation()
 
     //cout << game.curStep<<" "<<game.steps.size()<<endl;
     cout << game.fen<<endl;
-    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
-    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
     //cout << "noEat:" << game.noEat<<endl;
 
     if(game.ifWhiteCanMove)

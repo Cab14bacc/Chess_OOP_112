@@ -894,7 +894,7 @@ void GameManager::playerMove(int row, int col)
 
     if(board[row][col].ifHavePiece)
     {
-        eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
+        noEat = 0;
     }
 
     if(selectChessPlayer == 'w')
@@ -1240,66 +1240,6 @@ void GameManager::playerMove(int row, int col)
         ifInsufficientChess();
 }
 
-void GameManager::eraseChessPiece(string chessType, char player,int index)
-{
-    noEat = 0;
-
-    if(player == 'w')
-    {
-        if(chessType == "Pawn")
-        {
-            //White.pawns.erase(White.pawns.begin() + index);
-        }
-        else if(chessType == "Rook")
-        {
-            //White.rooks.erase(White.rooks.begin() + index);
-        }
-        else if(chessType == "Bishop")
-        {
-            //White.bishops.erase(White.bishops.begin() + index);
-        }
-        else if(chessType == "Knight")
-        {
-            //White.knights.erase(White.knights.begin() + index);
-        }
-        else if(chessType == "Queen")
-        {
-            //White.queens.erase(White.queens.begin() + index);
-        }
-        //        else if(chessType == "King")
-        //        {
-        //        }
-
-    }
-    else if(player == 'b')
-    {
-        if(chessType == "Pawn")
-        {
-            //Black.pawns.erase(Black.pawns.begin()+index);
-        }
-        else if(chessType == "Rook")
-        {
-            //Black.rooks.erase(Black.rooks.begin()+index);
-        }
-        else if(chessType == "Bishop")
-        {
-            //Black.bishops.erase(Black.bishops.begin()+index);
-        }
-        else if(chessType == "Knight")
-        {
-            //Black.knights.erase(Black.knights.begin()+index);
-        }
-        else if(chessType == "Queen")
-        {
-            //Black.queens.erase(Black.queens.begin()+index);
-        }
-        //        else if(chessType == "King")
-        //        {
-        //
-        //        }
-    }
-
-}
 
 bool GameManager::ifPosInBoard(int row, int col)
 {

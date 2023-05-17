@@ -91,9 +91,17 @@ void MainWindow::labelClicked()
         update();
 
         if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
+        {
             on_undo_clicked();
+            game.steps.resize(game.curStep + 1);
+            game.fens.resize(game.curStep + 1);
+        }
         else if(game.board[game.Black.king.y][game.Black.king.x].wTarget >= 1 && game.playerTurn == 'w')
+        {
+            game.steps.resize(game.curStep + 1);
+            game.fens.resize(game.curStep + 1);
             on_undo_clicked();
+        }
 
         if(game.judgeWinOrLose() == blackWin)
         {

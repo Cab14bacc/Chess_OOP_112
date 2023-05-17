@@ -14,11 +14,11 @@ class Player
 {
 public:
     char player;//White:'w',Black:'b'
-    vector<Pawn> pawns;
-    vector<Rook> rooks;
-    vector<Knight> knights;
-    vector<Bishop> bishops;
-    vector<Queen> queens;
+    vector<Pawn> pawns;//save pawns
+    vector<Rook> rooks;//save rooks
+    vector<Knight> knights;//save knights
+    vector<Bishop> bishops;//save bishops
+    vector<Queen> queens;//save queens
     King king;
 };
 

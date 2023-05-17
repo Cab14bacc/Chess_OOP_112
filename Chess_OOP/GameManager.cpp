@@ -3841,7 +3841,8 @@ void GameManager::transBoardToFen()
             blank = 0;
         }
 
-        fen.push_back('/');
+        if(i != 7)
+            fen.push_back('/');
     }
 }
 

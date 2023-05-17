@@ -959,6 +959,8 @@ void GameManager::playerMove(int row, int col)
         }
         else if(selectChessType == "Pawn")
         {
+            White.pawns[selectChessIndex].ifPromoting = false;
+
             if(board[row][col].chessType == "Pawn" && row == White.pawns[selectChessIndex].y)
             {
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].index = 0;
@@ -1117,6 +1119,8 @@ void GameManager::playerMove(int row, int col)
         }
         else if(selectChessType == "Pawn")
         {
+            Black.pawns[selectChessIndex].ifPromoting = false;
+
             if(board[row][col].chessType == "Pawn" && row == Black.pawns[selectChessIndex].y)
             {
                 board[Black.pawns[selectChessIndex].y][Black.pawns[selectChessIndex].x].index = 0;

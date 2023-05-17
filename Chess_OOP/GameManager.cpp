@@ -21,10 +21,10 @@ GameManager::GameManager()
     ifWhiteCanMove = true;
     ifBlackCanMove = true;
     ifDraw = false;
-    curStep = 0;
+    curStep = 1;
     White.player = 'w';
     Black.player = 'b';
-    clickTimes = 1;
+    clickTimes = 0;
     playerTurn = '0';
     selectChessPlayer = '0';
     selectChessType = "0";
@@ -1239,7 +1239,6 @@ void GameManager::playerMove(int row, int col)
     if(bPawn == 0 && bRook == 0 && bKnight == 0 && bBishop == 0 && bQueen == 0)
         ifInsufficientChess();
 }
-
 
 bool GameManager::ifPosInBoard(int row, int col)
 {

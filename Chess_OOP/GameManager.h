@@ -64,7 +64,7 @@ public:
     void judgeIfPlayerCanMove(char player);
     void transBoardToFen();
     void IfBoardRepeat3Times(string curFen);
-    void ifInsufficientChess(char player);
+    void ifInsufficientChess();
     void Promoting(int row, int col, string type);
 };
 

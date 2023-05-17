@@ -122,13 +122,19 @@ void MainWindow::update()
 {
     for(int i = 0; i < 8; i++)
     {
-        if(game.board[0][i].chessType == "Pawn" && game.White.pawns[game.board[0][i].index].ifPromoting == false)
+        if(game.board[0][i].chessType == "Pawn")
         {
-            Promoting(0, i);
+            if(game.White.pawns[game.board[0][i].index].ifPromoting == false)
+                Promoting(0, i);
+            else
+                game.Promoting(0, i, game.White.pawns[game.board[0][i].index].promotingType);
         }
-        else if(game.board[7][i].chessType == "Pawn" && game.Black.pawns[game.board[7][i].index].ifPromoting == false)
+        else if(game.board[7][i].chessType == "Pawn")
         {
-            Promoting(7, i);
+            if(game.Black.pawns[game.board[7][i].index].ifPromoting == false)
+                Promoting(7, i);
+            else
+                game.Promoting(7, i, game.Black.pawns[game.board[7][i].index].promotingType);
         }
     }
 

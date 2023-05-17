@@ -764,48 +764,77 @@ void MainWindow::resetGame()
 
 void MainWindow::Promoting(int row, int col)
 {
-     QDialog *dialog = new QDialog(this);
-    dialog->setWindowTitle("Promoting");
-    dialog->setFixedSize(200, 150);
-    QVBoxLayout *layout = new QVBoxLayout(dialog);
-    layout->addWidget(label);
+    QDialog *dialogPromoting = new QDialog(this);
+    dialogPromoting->setWindowTitle("Promoting");
+    QHBoxLayout *layoutPromoting = new QHBoxLayout(dialogPromoting);
+    QPushButton *queenBtn = new QPushButton(dialogPromoting);
 
-    QPushButton *queenBtn = new QPushButton("Queen", dialog);
     connect(queenBtn, &QPushButton::clicked, [=](){
-        dialog->close();//close window
+        dialogPromoting->close();//close window
         //function to execute
         game.Promoting(row, col, "Queen");
     });
 
-    layout->addWidget(queenBtn);
+    layoutPromoting->addWidget(queenBtn);
 
-    QPushButton *bishopBtn = new QPushButton("Bishop", dialog);
+    QPushButton *bishopBtn = new QPushButton(dialogPromoting);
     connect(bishopBtn, &QPushButton::clicked, [=](){
-        dialog->close();//close window
+        dialogPromoting->close();//close window
         //function to execute
         game.Promoting(row, col, "Bishop");
     });
 
-    layout->addWidget(bishopBtn);
+    layoutPromoting->addWidget(bishopBtn);
 
-    QPushButton *knightBtn = new QPushButton("Knight", dialog);
+    QPushButton *knightBtn = new QPushButton(dialogPromoting);
     connect(knightBtn, &QPushButton::clicked, [=](){
-        dialog->close();//close window
+        dialogPromoting->close();//close window
         //function to execute
         game.Promoting(row, col, "Knight");
     });
 
-    layout->addWidget(knightBtn);
+    layoutPromoting->addWidget(knightBtn);
 
-    QPushButton *rookBtn = new QPushButton("Rook", dialog);
+    QPushButton *rookBtn = new QPushButton(dialogPromoting);
     connect(rookBtn, &QPushButton::clicked, [=](){
-        dialog->close();//close window
+        dialogPromoting->close();//close window
         //function to execute
         game.Promoting(row, col, "Rook");
     });
 
-    layout->addWidget(rookBtn);
+    layoutPromoting->addWidget(rookBtn);
 
-    dialog->setLayout(layout);
-    dialog->exec();//display
+    if(game.board[row][col].player == 'w')
+    {
+        queenBtn->setIcon(QIcon(*iconWQueen));
+        queenBtn->setIconSize(iconWQueen->size());
+        queenBtn->setFixedSize(70, 70);
+        bishopBtn->setIcon(QIcon(*iconWBishop));
+        bishopBtn->setIconSize(iconWBishop->size());
+        bishopBtn->setFixedSize(70, 70);
+        knightBtn->setIcon(QIcon(*iconWKnight));
+        knightBtn->setIconSize(iconWKnight->size());
+        knightBtn->setFixedSize(70, 70);
+        rookBtn->setIcon(QIcon(*iconWRook));
+        rookBtn->setIconSize(iconWRook->size());
+        rookBtn->setFixedSize(70, 70);
+    }
+    else//game.board[row][col].player == 'b'
+    {
+        queenBtn->setIcon(QIcon(*iconBQueen));
+        queenBtn->setIconSize(iconBQueen->size());
+        queenBtn->setFixedSize(70, 70);
+        bishopBtn->setIcon(QIcon(*iconBBishop));
+        bishopBtn->setIconSize(iconBBishop->size());
+        bishopBtn->setFixedSize(70, 70);
+        knightBtn->setIcon(QIcon(*iconBKnight));
+        knightBtn->setIconSize(iconBKnight->size());
+        knightBtn->setFixedSize(70, 70);
+        rookBtn->setIcon(QIcon(*iconBRook));
+        rookBtn->setIconSize(iconBRook->size());
+        rookBtn->setFixedSize(70, 70);
+    }
+
+    dialogPromoting->setLayout(layoutPromoting);
+    dialogPromoting->exec();//display
 }

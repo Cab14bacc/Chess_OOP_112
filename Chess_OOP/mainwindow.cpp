@@ -220,6 +220,7 @@ void MainWindow::update()
             }
             else
             {
+                //remove chess icon
                 lab->clear();
             }
         }
@@ -685,6 +686,7 @@ void MainWindow::on_redo_clicked()
 {
     clickSound->play();
 
+    //game not start
     if(game.curStep == 0)
         return;
 
@@ -704,7 +706,7 @@ void MainWindow::on_redo_clicked()
 // Post: load board form steps
 void MainWindow::loadBoard()
 {
-    //laod all information
+    //load all information
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -718,6 +720,7 @@ void MainWindow::loadBoard()
             game.playerTurn = game.steps[game.curStep].playerTurn;
             game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
 
+            //laod special information
             if(game.board[i][j].ifHavePiece)
             {
                 if(game.board[i][j].player == 'w')
@@ -728,11 +731,6 @@ void MainWindow::loadBoard()
                         game.White.pawns[game.board[i][j].index].x = j;
                         game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
                         game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
-
-                        if(game.White.pawns[game.board[i][j].index].ifPromoting)
-                        {
-
-                        }
                     }
                     else if(game.board[i][j].chessType == "Rook")
                     {

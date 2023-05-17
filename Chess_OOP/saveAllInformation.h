@@ -19,6 +19,8 @@ public:
     bool ifPawnMove2Step = false;
     bool inPawnNextTurn = false;
     bool ifRookMove = false;
+    bool ifPawnPromoting = false;
+    string promotingType = "0";
 };
 
 #endif // SAVEALLINFORMATION_H

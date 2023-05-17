@@ -122,11 +122,11 @@ void MainWindow::update()
 {
     for(int i = 0; i < 8; i++)
     {
-        if(game.board[0][i].chessType == "Pawn")
+        if(game.board[0][i].chessType == "Pawn" && game.White.pawns[game.board[0][i].index].ifPromoting == false)
         {
             Promoting(0, i);
         }
-        else if(game.board[7][i].chessType == "Pawn")
+        else if(game.board[7][i].chessType == "Pawn" && game.Black.pawns[game.board[7][i].index].ifPromoting == false)
         {
             Promoting(7, i);
         }
@@ -651,6 +651,11 @@ void MainWindow::loadBoard()
                         game.White.pawns[game.board[i][j].index].x = j;
                         game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
                         game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
+
+                        if(game.White.pawns[game.board[i][j].index].ifPromoting)
+                        {
+
+                        }
                     }
                     else if(game.board[i][j].chessType == "Rook")
                     {
@@ -775,6 +780,7 @@ void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
     QLabel *label = new QLabel(dialog);
+    dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
 
     if (whoWin == whiteWin)
     {

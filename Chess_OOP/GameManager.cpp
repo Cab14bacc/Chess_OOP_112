@@ -1305,7 +1305,7 @@ void GameManager::playerMove(int row, int col)
 
     if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 1
        && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 1)
-        ifInsufficientChess();
+        ifDraw = true;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)

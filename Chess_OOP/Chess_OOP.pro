@@ -29,6 +29,7 @@ HEADERS += \
     Rook.h \
     mainwindow.h \
     myLabel.h \
+    saveAllInformation.h \
     viewmanager.h
 
 FORMS += \

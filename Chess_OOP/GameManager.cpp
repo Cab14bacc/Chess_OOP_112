@@ -2827,6 +2827,33 @@ void GameManager::recordCurBoard()
             curBoard.curBoard[i][j].chessType = board[i][j].chessType;
             curBoard.curBoard[i][j].index = board[i][j].index;
             curBoard.curBoard[i][j].canMove = board[i][j].canMove;
+
+            if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "king")
+            {
+                curBoard.curBoard[i][j].ifWhiteKingMove = White.king.ifMove;
+            }
+            else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "king")
+            {
+                curBoard.curBoard[i][j].ifBlackKingMove = Black.king.ifMove;
+            }
+            else if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
+            {
+                curBoard.curBoard[i][j].ifRookMove = White.rooks[board[i][j].index].ifMove;
+            }
+            else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "Rook")
+            {
+                curBoard.curBoard[i][j].ifRookMove = Black.rooks[board[i][j].index].ifMove;
+            }
+            else if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Pawn")
+            {
+                curBoard.curBoard[i][j].ifPawnMove2Step = White.pawns[board[i][j].index].ifmove2Step;
+                curBoard.curBoard[i][j].inPawnNextTurn = White.pawns[board[i][j].index].inNextTurn;
+            }
+            else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "Pawn")
+            {
+                curBoard.curBoard[i][j].ifPawnMove2Step = Black.pawns[board[i][j].index].ifmove2Step;
+                curBoard.curBoard[i][j].inPawnNextTurn = Black.pawns[board[i][j].index].inNextTurn;
+            }
         }
     }
 

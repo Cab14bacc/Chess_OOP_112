@@ -1,10 +1,10 @@
-#include "viewmanager.h"
+#include "saveAllInformation.h".h"
 #ifndef CURBOARD_H
 #define CURBOARD_H
 class CurBoard
 {
 public:
-    ViewManager curBoard[8][8];
+    SaveAllInformation curBoard[8][8];
     char playerTurn = 'w';
 };
 

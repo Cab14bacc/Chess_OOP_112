@@ -941,3 +941,16 @@ void MainWindow::Promoting(int row, int col)
     dialogPromoting->setLayout(layoutPromoting);
     dialogPromoting->exec();//display
 }
+
+void MainWindow::on_Resign_clicked()
+{
+    if(game.playerTurn == 'w')
+    {
+        showResultWindow(blackWin);
+    }
+    else if(game.playerTurn == 'b')
+    {
+        showResultWindow(whiteWin);
+    }
+}
+

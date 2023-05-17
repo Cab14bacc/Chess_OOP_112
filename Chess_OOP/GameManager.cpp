@@ -25,7 +25,7 @@ GameManager::GameManager()
     White.setPlayer('w');
     Black.setPlayer('b');
     clickTimes = 1;
-    playerTurn = 'w';
+    playerTurn = '0';
     selectChessPlayer = '0';
     selectChessType = "0";
     selectChessIndex = 0;

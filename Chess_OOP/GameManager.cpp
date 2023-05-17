@@ -3888,22 +3888,35 @@ void GameManager::ifInsufficientChess(char player)//The only player left is the 
 
 void GameManager::Promoting(int row, int col, string type)
 {
+    eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
+
     if(type == "Queen")
     {
         Queen *newQueen = new Queen;
 
         if(board[row][col].player == 'w')
         {
+            wQueen++;
             newQueen->player = 'w';
             newQueen->x = col;
             newQueen->y = row;
             White.queens.push_back(*newQueen);
+            board[row][col].chessType = "Queen";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'w';
+            board[row][col].index = White.queens.size() - 1;
         }
         else//board[row][col].player == 'b'
         {
+            bQueen++;
             newQueen->player = 'b';
             newQueen->x = col;
             newQueen->y = row;
+            Black.queens.push_back(*newQueen);
+            board[row][col].chessType = "Queen";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'b';
+            board[row][col].index = Black.queens.size() - 1;
         }
     }
     else if(type == "Bishop")
@@ -3912,15 +3925,27 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
+            wBishop++;
             newBishop->player = 'w';
             newBishop->x = col;
             newBishop->y = row;
+            White.bishops.push_back(*newBishop);
+            board[row][col].chessType = "Bishop";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'w';
+            board[row][col].index = White.bishops.size() - 1;
         }
         else//board[row][col].player == 'b'
         {
+            bBishop++;
             newBishop->player = 'b';
             newBishop->x = col;
             newBishop->y = row;
+            Black.bishops.push_back(*newBishop);
+            board[row][col].chessType = "Bishop";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'b';
+            board[row][col].index = Black.bishops.size() - 1;
         }
     }
     else if(type == "Knight")
@@ -3929,11 +3954,27 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
-
+            wKnight++;
+            newKnight->player = 'w';
+            newKnight->x = col;
+            newKnight->y = row;
+            White.knights.push_back(*newKnight);
+            board[row][col].chessType = "Knight";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'w';
+            board[row][col].index = White.knights.size() - 1;
         }
         else//board[row][col].player == 'b'
         {
-
+            bKnight++;
+            newKnight->player = 'b';
+            newKnight->x = col;
+            newKnight->y = row;
+            Black.knights.push_back(*newKnight);
+            board[row][col].chessType = "Knight";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'b';
+            board[row][col].index = Black.knights.size() - 1;
         }
     }
     else if(type == "Rook")
@@ -3942,11 +3983,27 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
-
+            wRook++;
+            newRook->player = 'w';
+            newRook->x = col;
+            newRook->y = row;
+            White.rooks.push_back(*newRook);
+            board[row][col].chessType = "Rook";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'w';
+            board[row][col].index = White.rooks.size() - 1;
         }
         else//board[row][col].player == 'b'
         {
-
+            bRook++;
+            newRook->player = 'b';
+            newRook->x = col;
+            newRook->y = row;
+            Black.rooks.push_back(*newRook);
+            board[row][col].chessType = "Rook";
+            board[row][col].ifHavePiece = true;
+            board[row][col].player = 'b';
+            board[row][col].index = Black.rooks.size() - 1;
         }
     }
 

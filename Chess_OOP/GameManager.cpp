@@ -4,8 +4,12 @@
 
 using namespace std;
 
+//intent: initialize Game
+//pre: none
+//post: game initialized
 GameManager::GameManager()
 {
+    //intialized how many of each chess piece there is
     wPawn = 8;
     wRook = 2;
     wKnight = 2;
@@ -16,32 +20,49 @@ GameManager::GameManager()
     bKnight = 2;
     bBishop = 2;
     bQueen = 1;
+
+    //how many times has a move eaten any piece
     noEat = 0;
+
     fen = "";
+
+    //if white or black can move
     ifWhiteCanMove = true;
     ifBlackCanMove = true;
+    //if game tied
     ifDraw = false;
-    curStep = 1;
+
+    //current step count
+    curStep = 0;
+    //init characters
     White.player = 'w';
     Black.player = 'b';
-    clickTimes = 0;
+    clickTimes = 1;
     playerTurn = '0';
     selectChessPlayer = '0';
     selectChessType = "0";
     selectChessIndex = 0;
 }
 
+//intent: calculate what are the valid places a piece at [row][col] can move
+//pre: game intialized
+//post: valid places are stored
 void GameManager::showCanMove(int row, int col)
 {
+    //if this block has piece and if the chess piece corresponds to the current player's turn
     if(this->board[row][col].ifHavePiece && playerTurn == this->board[row][col].player)
     {
+        //set click times
         clickTimes = 2;
+
         selectChessPlayer = this->board[row][col].player;
         selectChessType = this->board[row][col].chessType;
         selectChessIndex = this->board[row][col].index;
 
+        //if pawn
         if(selectChessType == "Pawn")
         {
+            //if white piece selected
             if(selectChessPlayer == 'w')
             {
                 //first step
@@ -866,8 +887,12 @@ void GameManager::showCanMove(int row, int col)
     }
 }
 
+//intent: player move
+//pre: showCanMove() is called
+//post: player moved
 void GameManager::playerMove(int row, int col)
 {
+    //reset canMove variables
     if(board[row][col].canMove != true)
     {
         for(int i = 0; i < 8; i++)
@@ -880,6 +905,7 @@ void GameManager::playerMove(int row, int col)
         return;
     }
 
+    //increment no eat
     noEat++;
 
     for(int i = 0;i<White.pawns.size();i++)
@@ -892,15 +918,19 @@ void GameManager::playerMove(int row, int col)
         Black.pawns[i].inNextTurn = false;
     }
 
+    //if there is a piece at the square clicked, meaning player takes will take that piece with this move
+    //erase that piece if true
     if(board[row][col].ifHavePiece)
     {
         noEat = 0;
     }
 
+    //check which chess is selected and check the chess piece on the square clicked
     if(selectChessPlayer == 'w')
     {
         if(selectChessType == "King")
         {
+            //if castle
             if(board[row][col].chessType == "Rook" && board[row][col].player == 'w')
             {
 
@@ -941,7 +971,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].player = '0';
 
             }
-            else
+            else // if not castle
             {
                 board[White.king.y][White.king.x].index = 0;
                 board[White.king.y][White.king.x].chessType = "0";
@@ -961,6 +991,7 @@ void GameManager::playerMove(int row, int col)
         {
             White.pawns[selectChessIndex].ifPromoting = false;
 
+            //en passant
             if(board[row][col].chessType == "Pawn" && row == White.pawns[selectChessIndex].y)
             {
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].index = 0;
@@ -981,7 +1012,7 @@ void GameManager::playerMove(int row, int col)
                 board[row][col].ifHavePiece = false;
                 board[row][col].player = '0';
             }
-            else
+            else // not en passant
             {
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].index = 0;
                 board[White.pawns[selectChessIndex].y][White.pawns[selectChessIndex].x].chessType = "0";
@@ -1008,9 +1039,8 @@ void GameManager::playerMove(int row, int col)
             }
 
         }
-        else
+        else //selected chess piece is not king or pawn, all normal moves
         {
-
             if(selectChessType == "Rook")
             {
                 board[White.rooks[selectChessIndex].y][White.rooks[selectChessIndex].x].index = 0;
@@ -1057,7 +1087,7 @@ void GameManager::playerMove(int row, int col)
 
         playerTurn = 'b';//change playerTurn
     }
-    else if(selectChessPlayer == 'b')
+    else if(selectChessPlayer == 'b') // same as white, but mirrored
     {
         if(selectChessType == "King")
         {
@@ -1219,20 +1249,22 @@ void GameManager::playerMove(int row, int col)
         playerTurn = 'w';//change playerTurn
     }
 
-    computeChessNumber();
-    computeTarget();
-    recordCurBoard();
-    curStep++;
-    steps.resize(curStep + 1);
-    steps[curStep] = curBoard;
-    transBoardToFen();
-    fens.resize(curStep + 1);
-    fens[curStep] = fen;
-    IfBoardRepeat3Times(fen);
-    ifWhiteCanMove = false;
-    ifBlackCanMove = false;
-    judgeIfPlayerCanMove(playerTurn);
 
+    computeChessNumber(); // compute number of each chess piece on baord
+    computeTarget(); //compute for each squares, how many white pieces and how many black pieces can move to or attack this square
+    recordCurBoard(); // record the board after each move
+    curStep++; // increment current step( current round )
+    steps.resize(curStep + 1);// resize the vector that stores the previous boards
+    steps[curStep] = curBoard; // store the board into this vector
+    transBoardToFen(); // transform board to fen encoding
+    fens.resize(curStep + 1);// resize the vector that stores fen-encoded board
+    fens[curStep] = fen; // store the fen-encoded board into vector
+    IfBoardRepeat3Times(fen); // if same board repeat 3 times
+    ifWhiteCanMove = false; // reset if white can move
+    ifBlackCanMove = false;// reset if black can move
+    judgeIfPlayerCanMove(playerTurn);// rejudge if white or black can move
+
+    //check if insufficient chess pieces left
     if(wPawn == 0 && wRook == 0 && wKnight == 0 && wBishop == 0 && wQueen == 0)
         ifInsufficientChess();
 
@@ -1240,6 +1272,9 @@ void GameManager::playerMove(int row, int col)
         ifInsufficientChess();
 }
 
+//intent: check if coordinate are in bound
+//pre: none
+//post: return if coordinate are in bound
 bool GameManager::ifPosInBoard(int row, int col)
 {
     if(row >= 0 && row < 8 && col >= 0 && col < 8)
@@ -1250,6 +1285,9 @@ bool GameManager::ifPosInBoard(int row, int col)
     return false;
 }
 
+//intent: return whether this square has no chess piece, or white chess piece or black chess piece
+//pre: none
+//post: return current state of one of the 3 situations
 int GameManager::boardChessCondition(int row, int col)
 {
     if(!board[row][col].ifHavePiece)
@@ -1266,49 +1304,10 @@ int GameManager::boardChessCondition(int row, int col)
     }
 }
 
-int check(int i,int j,ViewManager board[][8]);
-
-void GameManager::computeTarget()
-{
-    //reset wTargets and bTarget
-    for (int i = 0;i<8;i++)
-    {
-        for (int k = 0;k<8;k++)
-        {
-            board[i][k].wTarget = 0;
-            board[i][k].bTarget = 0;
-        }
-    }
-    blackKingBeenAttackBy[0]=0;
-    blackKingBeenAttackBy[1]=0;
-    whiteKingBeenAttackBy[0]=0;
-    whiteKingBeenAttackBy[1]=0;
-    //if there has piece, than count where can it attack, and record it to wTargets and bTarget
-    for (int i = 0;i<8;i++)
-    {
-        for (int j = 0;j < 8;j++)
-        {
-            if (board[i][j].ifHavePiece)
-            {
-                if(check(i,j,board))
-                {
-                    if(board[i][j].player== 'w')
-                    {
-                        blackKingBeenAttackBy[0]=i;
-                        blackKingBeenAttackBy[1]=j;
-                    }
-                    else if(board[i][j].player== 'b')
-                    {
-                        whiteKingBeenAttackBy[0]=i;
-                        whiteKingBeenAttackBy[1]=j;
-                    }
-                }
-
-            }
-        }
-    }
-}
-
+//intent: for a chess piece on the specified square, calculate
+//and increment the number of possible targeting chesspieces on all the possible paths of this specified chess piece
+//pre: board is initialized
+//post: the possible destinations are stored
 int check(int i,int j,ViewManager board[][8])
 {
     int kingAttack = 0;
@@ -2743,9 +2742,58 @@ int check(int i,int j,ViewManager board[][8])
     return kingAttack;
 }
 
+//intent: compute the number of possible chess pieces targeting each of the squares
+//pre: none
+//post: the number of targeting chess pieces are store
+void GameManager::computeTarget()
+{
+    //reset wTargets and bTarget
+    for (int i = 0;i<8;i++)
+    {
+        for (int k = 0;k<8;k++)
+        {
+            board[i][k].wTarget = 0;
+            board[i][k].bTarget = 0;
+        }
+    }
+    blackKingBeenAttackBy[0]=0;
+    blackKingBeenAttackBy[1]=0;
+    whiteKingBeenAttackBy[0]=0;
+    whiteKingBeenAttackBy[1]=0;
+    //if there has piece, than count where can it attack, and record it to wTargets and bTarget
+    for (int i = 0;i<8;i++)
+    {
+        for (int j = 0;j < 8;j++)
+        {
+
+            if (board[i][j].ifHavePiece)
+            {
+                if(check(i,j,board))
+                {
+                    if(board[i][j].player== 'w')
+                    {
+                        blackKingBeenAttackBy[0]=i;
+                        blackKingBeenAttackBy[1]=j;
+                    }
+                    else if(board[i][j].player== 'b')
+                    {
+                        whiteKingBeenAttackBy[0]=i;
+                        whiteKingBeenAttackBy[1]=j;
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+//intent: record the current board into curBoard
+//pre: none
+//post: board is stored into curBoard
 void GameManager::recordCurBoard()
 {
 
+    //store the neccessary info for each square on the chess board
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -2758,6 +2806,7 @@ void GameManager::recordCurBoard()
             curBoard.curBoard[i][j].index = board[i][j].index;
             curBoard.curBoard[i][j].canMove = board[i][j].canMove;
 
+            //if king or pawn store the special values needed for enpassant, castle,
             if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
             {
                 curBoard.curBoard[i][j].ifRookMove = White.rooks[board[i][j].index].ifMove;
@@ -2779,18 +2828,20 @@ void GameManager::recordCurBoard()
         }
     }
 
-    curBoard.ifBlackKingMove = Black.king.ifMove;
+    //store player turn
     curBoard.ifWhiteKingMove = White.king.ifMove;
+    curBoard.ifBlackKingMove = Black.king.ifMove;
     curBoard.playerTurn = playerTurn;
 }
 
+//intent: judge win or lose
 int GameManager::judgeWinOrLose()
 {
     //black win
     //king position is attacked by more than two chess
     if(board[White.king.y][White.king.x].bTarget >= 2)
     {
-        //check eight boards around
+        //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(White.king.y - 1, White.king.x - 1) && (board[White.king.y - 1][White.king.x - 1].bTarget > 0)) || board[White.king.y - 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x - 1))
             //down
@@ -2815,7 +2866,7 @@ int GameManager::judgeWinOrLose()
     //king position is attacked by more than two chess
     else if(board[Black.king.y][Black.king.x].wTarget >= 2)
     {
-        //check eight boards around
+        //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
             //down
@@ -2836,9 +2887,9 @@ int GameManager::judgeWinOrLose()
             return whiteWin;
         }
     }
-    else if(board[White.king.y][White.king.x].bTarget >= 1)
+    else if(board[White.king.y][White.king.x].bTarget >= 1)//there's 1 targeting the king
     {
-        //check eight boards around
+        //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(White.king.y - 1, White.king.x - 1) && (board[White.king.y - 1][White.king.x - 1].bTarget > 0)) || board[White.king.y - 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x - 1))
             //down
@@ -2856,19 +2907,26 @@ int GameManager::judgeWinOrLose()
             //right down
             && ((ifPosInBoard(White.king.y, White.king.x - 1) && (board[White.king.y][White.king.x - 1].bTarget > 0)) || board[White.king.y][White.king.x - 1].player == 'w' || ifPosInBoard(White.king.y, White.king.x - 1)))
         {
+            //info of the attacking piece
             int attackPiecerow = whiteKingBeenAttackBy[0];
             int attackPiececol = whiteKingBeenAttackBy[1];
             string attackPieceName = board[attackPiecerow][attackPiececol].chessType;
             int attackPieceIndex = board[attackPiecerow][attackPiececol].index;
             char attackPiecePlayer = 'b';
 
+            //store the path of the attacking piece
             vector<vector<int>> attackPiecePaths;
 
+            //if king is in this path
             bool ifKingInPath = 0;
+            //if attack path can be blocked
             bool ifcanBlock = false;
 
+            //calculating attacking paths
+            //iterate each square of each path for attacking chess piece, store the path that can attack the king
             if(attackPieceName == "Rook")
             {
+                //if the paths before can't attack the king
                 if(!ifKingInPath)
                 {
                     for(int i = 1; i < 8;i++)
@@ -2912,12 +2970,13 @@ int GameManager::judgeWinOrLose()
                     }
 
                 }
-
+                //if the path can't attack the king, reset the vector that stores the path
                 if(!ifKingInPath)
                 {
                     attackPiecePaths.clear();
                 }
 
+                //if the paths before can't attack the king
                 if(!ifKingInPath)
                 {
                     //down
@@ -2959,11 +3018,13 @@ int GameManager::judgeWinOrLose()
                         }
                     }
                 }
+                //if the path can't attack the king, reset the vector that stores the path
                 if(!ifKingInPath)
                 {
                     attackPiecePaths.clear();
                 }
 
+                //if the paths before can't attack the king
                 if(!ifKingInPath)
                 {
                     //right
@@ -3005,13 +3066,13 @@ int GameManager::judgeWinOrLose()
                         }
                     }
                 }
-
-
+                //if the path can't attack the king, reset the vector that stores the path
                 if(!ifKingInPath)
                 {
                     attackPiecePaths.clear();
                 }
 
+                //if the paths before can't attack the king, then must be this path
                 if(!ifKingInPath)
                 {
                     //left
@@ -3055,8 +3116,9 @@ int GameManager::judgeWinOrLose()
                 }
 
             }
-            else if(attackPieceName == "Bishop")
+            else if(attackPieceName == "Bishop") //same as rook, but different pattern of movement
             {
+
                 if(!ifKingInPath)
                 {
                     //right up
@@ -3239,7 +3301,7 @@ int GameManager::judgeWinOrLose()
 
 
             }
-            else if(attackPieceName == "Queen")
+            else if(attackPieceName == "Queen") //same as rook, but different pattern of movement
             {
                 if(!ifKingInPath)
                 {
@@ -3617,20 +3679,27 @@ int GameManager::judgeWinOrLose()
 
             }
 
+            //print path on to terminal
             for (vector<int> &x: attackPiecePaths)
             {
                 cout << x[0] << " " << x[1] << endl;;
             }
 
+            //check if knight or pawn, since their attack on the king can't be stopped by blocking their paths
+            //can only be stopped if they are taken
             if(attackPieceName == "Pawn" || attackPieceName == "Knight")
             {
+                //if no piece can take the attacker, then black win
                 if(board[attackPiecerow][attackPiececol].wTarget == 0)
                 {
                     return blackWin;
                 }
 
+                //check for all pieces that can take the attacker, see after taking the attacker, is the king still checked,
+                //if so for all possible chess pieces then must be check mate
                 for (int row = 0; row < 8; ++row) {
                     for (int col = 0; col < 8; ++col) {
+                        //if the chess piece on the current sauare is white, and is not the king itself
                         if(board[row][col].ifHavePiece && board[row][col].player == 'w' && board[row][col].chessType != "King")
                         {
                             for(int i = 0; i < 8; i++)
@@ -3640,8 +3709,9 @@ int GameManager::judgeWinOrLose()
                                     board[i][j].canMove = false;
                                 }
                             }
+                            //calculate the moves of this chess piece and check if it can take the attacker
+                            //if so then try to move to see if king still checked, if so, check mate
                             showCanMove(row,col);
-
                             if(board[attackPiecerow][attackPiececol].canMove == true)
                             {
                                 board[attackPiecerow][attackPiececol].index = board[row][col].index;
@@ -3689,8 +3759,9 @@ int GameManager::judgeWinOrLose()
                 return blackWin;
 
             }
-            else
+            else //not pawn or knight
             {
+                //if attacking path can't be blocked then black win
                 for (vector<int>& iter : attackPiecePaths) {
                     if(!(board[iter[0]][iter[1]].wTarget == 0))
                     {
@@ -3704,8 +3775,12 @@ int GameManager::judgeWinOrLose()
                 }
 
 
+                //check for all pieces that can take the attacker or block its path, see after blocking or taking the attacker, is the king still checked,
+                //if so for all possible chess pieces then must be check mate
                 for (int row = 0; row < 8; ++row) {
                     for (int col = 0; col < 8; ++col) {
+
+                        //if the chess piece on the current sauare is white, and is not the king itself
                         if(board[row][col].ifHavePiece && board[row][col].player == 'w' && board[row][col].chessType != "King")
                         {
                             for(int i = 0; i < 8; i++)
@@ -3716,6 +3791,8 @@ int GameManager::judgeWinOrLose()
                                 }
                             }
 
+                            //calculate the moves of this chess piece and check if it can take the attacker
+                            //if so then try to move to see if king still checked , if so, check mate
                             showCanMove(row,col);
                             for (vector<int>& iter : attackPiecePaths) {
                                 if(board[iter[0]][iter[1]].canMove == true)
@@ -3758,7 +3835,6 @@ int GameManager::judgeWinOrLose()
                                 }
 
                             }
-
                             if(board[attackPiecerow][attackPiececol].canMove == true)
                             {
                                 board[attackPiecerow][attackPiececol].index = board[row][col].index;
@@ -3785,7 +3861,6 @@ int GameManager::judgeWinOrLose()
 
                                 if(board[White.king.y][White.king.x].bTarget == 0)
                                 {
-                                    cout << "222222222";
                                     return gameContinue;
                                 }
 
@@ -3803,10 +3878,10 @@ int GameManager::judgeWinOrLose()
             }
         }
     }
-    else if(board[Black.king.y][Black.king.x].wTarget >= 1)
+    else if(board[Black.king.y][Black.king.x].wTarget >= 1) // if black king is attacked
     {
 
-        //check eight boards around
+        //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
             //down
@@ -3824,6 +3899,7 @@ int GameManager::judgeWinOrLose()
             //right down
             && ((ifPosInBoard(Black.king.y, Black.king.x - 1) && (board[Black.king.y][Black.king.x - 1].wTarget > 0)) || board[Black.king.y][Black.king.x - 1].player == 'b' || ifPosInBoard(Black.king.y, Black.king.x - 1)))
         {
+            //info of attacking chess piece
             int attackPiecerow = blackKingBeenAttackBy[0];
             int attackPiececol = blackKingBeenAttackBy[1];
             string attackPieceName = board[attackPiecerow][attackPiececol].chessType;
@@ -3833,6 +3909,7 @@ int GameManager::judgeWinOrLose()
             bool ifKingInPath = 0;
             bool ifcanBlock = false;
 
+            //calculate attack path, same as if white king is attacked, but for black king
             if(attackPieceName == "Rook")
             {
                 if(!ifKingInPath)
@@ -4569,6 +4646,9 @@ int GameManager::judgeWinOrLose()
 
             }
 
+            //same as if white king attacked
+            //check if knight or pawn, since their attack on the king can't be stopped by blocking their paths
+            //can only be stopped if they are taken
             if(attackPieceName == "Pawn" || attackPieceName == "Knight")
             {
                 if(board[attackPiecerow][attackPiececol].bTarget == 0)
@@ -4750,10 +4830,13 @@ int GameManager::judgeWinOrLose()
         }
     }
 
-
+    //return to game
     return gameContinue;
 }
 
+//intent: if player can move
+//pre: none
+//post return if player can move
 void GameManager::judgeIfPlayerCanMove(char player)
 {
     for(int i = 0; i < 8; i++)
@@ -4775,6 +4858,9 @@ void GameManager::judgeIfPlayerCanMove(char player)
     }
 }
 
+//intent: check if chess piece at position can move (is not stuck)
+//pre: none
+//post: return if can move
 bool GameManager::ifPosCanMove(int row, int col)
 {
     if(board[row][col].chessType == "Pawn")
@@ -5621,6 +5707,9 @@ bool GameManager::ifPosCanMove(int row, int col)
     }
 }
 
+//intent: transform board into fen encoding
+//pre: none
+//post: store the fen-encode board into fen vector
 void GameManager::transBoardToFen()
 {
     int blank = 0;
@@ -5710,6 +5799,9 @@ void GameManager::transBoardToFen()
     }
 }
 
+//intent: check if same board repeated 3 times
+//pre: none
+//post: return if board repeaed 3 times
 void GameManager::IfBoardRepeat3Times(string curFen)
 {
     int repeatTimes = 0;
@@ -5729,6 +5821,9 @@ void GameManager::IfBoardRepeat3Times(string curFen)
     }
 }
 
+//intent: check if insufficient chess piece
+//pre: none
+//post: game draw
 void GameManager::ifInsufficientChess()//The only player left is the king
 {
     if(bPawn > 0 || bQueen > 0 || bRook > 0 || bBishop >= 2 || (bKnight > 0 && bBishop > 0) ||
@@ -5740,8 +5835,12 @@ void GameManager::ifInsufficientChess()//The only player left is the king
     ifDraw = true;
 }
 
+//intent: promote pawn if reach other end
+//pre: pawn reach other end
+//post pawn promoted
 void GameManager::Promoting(int row, int col, string type)
 {
+    //see which type is chosen and switch the pawn into new chess piece
     if(type == "Queen")
     {
         Queen *newQueen = new Queen;
@@ -5871,6 +5970,9 @@ void GameManager::Promoting(int row, int col, string type)
     computeChessNumber();
 }
 
+//intent: judge special case of in sufficient chess piece
+//pre: none
+//post: check if draw
 void GameManager::judgeSpecialCase(int wBishop, int bBishop)
 {
     if(wBishop == 2 && bBishop == 2)
@@ -5940,6 +6042,9 @@ void GameManager::judgeSpecialCase(int wBishop, int bBishop)
     }
 }
 
+//intent: compute number of each type of chess pieces on board
+//pre: board initialized
+//post: store the computed values
 void GameManager::computeChessNumber()
 {
     wPawn = 0;

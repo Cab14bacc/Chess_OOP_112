@@ -687,7 +687,7 @@ void MainWindow::on_redo_clicked()
     clickSound->play();
 
     //game not start
-    if(game.curStep == 0)
+    if(game.playerTurn == '0')
         return;
 
     //move to after

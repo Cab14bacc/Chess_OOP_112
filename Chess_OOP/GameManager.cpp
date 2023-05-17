@@ -3894,24 +3894,13 @@ void GameManager::IfBoardRepeat3Times(string curFen)
 
 void GameManager::ifInsufficientChess(char player)//The only player left is the king
 {
-    if(player = 'w')
+    if(bPawn > 0 || bQueen > 0 || bRook > 0 || bBishop >= 2 || (bKnight > 0 && bBishop > 0) ||
+        wPawn > 0 || wQueen > 0 || wRook > 0 || wBishop >= 2 || (wKnight > 0 && wBishop > 0))
     {
-        if(bPawn > 0 || bQueen > 0 || bRook > 0 || bBishop >= 2 || (bKnight > 0 && bBishop > 0))
-        {
-            return ;
-        }
-
-        ifDraw = true;
+        return;
     }
-    else//player = 'b'
-    {
-        if(wPawn > 0 || wQueen > 0 || wRook > 0 || wBishop >= 2 || (wKnight > 0 && wBishop > 0))
-        {
-            return;
-        }
 
-        ifDraw = true;
-    }
+    ifDraw = true;
 }
 
 void GameManager::Promoting(int row, int col, string type)
@@ -3924,6 +3913,8 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
+            White.pawns[board[row][col].index].ifPromoting = true;
+            White.pawns[board[row][col].index].promotingType = "Queen";
             wQueen++;
             newQueen->player = 'w';
             newQueen->x = col;
@@ -3936,6 +3927,8 @@ void GameManager::Promoting(int row, int col, string type)
         }
         else//board[row][col].player == 'b'
         {
+            Black.pawns[board[row][col].index].ifPromoting = true;
+            Black.pawns[board[row][col].index].promotingType = "Queen";
             bQueen++;
             newQueen->player = 'b';
             newQueen->x = col;
@@ -3953,6 +3946,8 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
+            White.pawns[board[row][col].index].ifPromoting = true;
+            White.pawns[board[row][col].index].promotingType = "Bishop";
             wBishop++;
             newBishop->player = 'w';
             newBishop->x = col;
@@ -3965,6 +3960,8 @@ void GameManager::Promoting(int row, int col, string type)
         }
         else//board[row][col].player == 'b'
         {
+            Black.pawns[board[row][col].index].ifPromoting = true;
+            Black.pawns[board[row][col].index].promotingType = "Bishop";
             bBishop++;
             newBishop->player = 'b';
             newBishop->x = col;
@@ -3982,6 +3979,8 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
+            White.pawns[board[row][col].index].ifPromoting = true;
+            White.pawns[board[row][col].index].promotingType = "Knight";
             wKnight++;
             newKnight->player = 'w';
             newKnight->x = col;
@@ -3994,6 +3993,8 @@ void GameManager::Promoting(int row, int col, string type)
         }
         else//board[row][col].player == 'b'
         {
+            Black.pawns[board[row][col].index].ifPromoting = true;
+            Black.pawns[board[row][col].index].promotingType = "Knight";
             bKnight++;
             newKnight->player = 'b';
             newKnight->x = col;
@@ -4011,6 +4012,8 @@ void GameManager::Promoting(int row, int col, string type)
 
         if(board[row][col].player == 'w')
         {
+            White.pawns[board[row][col].index].ifPromoting = true;
+            White.pawns[board[row][col].index].promotingType = "Rook";
             wRook++;
             newRook->player = 'w';
             newRook->x = col;
@@ -4023,6 +4026,8 @@ void GameManager::Promoting(int row, int col, string type)
         }
         else//board[row][col].player == 'b'
         {
+            Black.pawns[board[row][col].index].ifPromoting = true;
+            Black.pawns[board[row][col].index].promotingType = "Rook";
             bRook++;
             newRook->player = 'b';
             newRook->x = col;

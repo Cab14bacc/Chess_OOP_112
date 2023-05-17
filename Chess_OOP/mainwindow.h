@@ -54,6 +54,8 @@ private slots:
 
     void updateTimer();
 
+    void on_Resign_clicked();
+
 private:
     Ui::MainWindow *ui;
     QList<MyLabel*> labelList;

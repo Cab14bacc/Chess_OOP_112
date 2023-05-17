@@ -28,8 +28,8 @@
    <widget class="QPushButton" name="newGame">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>190</y>
+      <x>610</x>
+      <y>100</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -47,8 +47,8 @@
    <widget class="QPushButton" name="undo">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>260</y>
+      <x>610</x>
+      <y>170</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -65,8 +65,8 @@
    <widget class="QPushButton" name="redo">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>330</y>
+      <x>610</x>
+      <y>240</y>
       <width>171</width>
       <height>51</height>
      </rect>
@@ -114,6 +114,24 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Resign">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>310</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Resign</string>
     </property>
    </widget>
   </widget>

@@ -32,6 +32,7 @@ public:
     QPushButton *redo;
     QLabel *blackTime;
     QLabel *whiteTime;
+    QPushButton *Resign;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -50,20 +51,20 @@ public:
         gameBoard->setContentsMargins(0, 0, 0, 0);
         newGame = new QPushButton(centralwidget);
         newGame->setObjectName(QString::fromUtf8("newGame"));
-        newGame->setGeometry(QRect(630, 190, 171, 51));
+        newGame->setGeometry(QRect(610, 100, 171, 51));
         QFont font;
         font.setFamily(QString::fromUtf8("\345\276\256\350\273\237\346\255\243\351\273\221\351\253\224"));
         font.setPointSize(12);
         newGame->setFont(font);
         undo = new QPushButton(centralwidget);
         undo->setObjectName(QString::fromUtf8("undo"));
-        undo->setGeometry(QRect(630, 260, 171, 51));
+        undo->setGeometry(QRect(610, 170, 171, 51));
         QFont font1;
         font1.setPointSize(12);
         undo->setFont(font1);
         redo = new QPushButton(centralwidget);
         redo->setObjectName(QString::fromUtf8("redo"));
-        redo->setGeometry(QRect(630, 330, 171, 51));
+        redo->setGeometry(QRect(610, 240, 171, 51));
         redo->setFont(font1);
         blackTime = new QLabel(centralwidget);
         blackTime->setObjectName(QString::fromUtf8("blackTime"));
@@ -75,6 +76,12 @@ public:
         whiteTime->setObjectName(QString::fromUtf8("whiteTime"));
         whiteTime->setGeometry(QRect(600, 480, 191, 51));
         whiteTime->setFont(font2);
+        Resign = new QPushButton(centralwidget);
+        Resign->setObjectName(QString::fromUtf8("Resign"));
+        Resign->setGeometry(QRect(610, 310, 171, 51));
+        QFont font3;
+        font3.setPointSize(14);
+        Resign->setFont(font3);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -97,6 +104,7 @@ public:
         redo->setText(QCoreApplication::translate("MainWindow", "Redo", nullptr));
         blackTime->setText(QString());
         whiteTime->setText(QString());
+        Resign->setText(QCoreApplication::translate("MainWindow", "Resign", nullptr));
     } // retranslateUi
 
 };

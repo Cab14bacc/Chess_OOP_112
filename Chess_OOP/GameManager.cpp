@@ -2887,10 +2887,9 @@ int GameManager::judgeWinOrLose()
             return blackWin;
         }
     }
-
     //white win
     //king position is attacked by more than two chess
-    if(board[Black.king.y][Black.king.x].bTarget >= 2)
+    else if(board[Black.king.y][Black.king.x].bTarget >= 2)
     {
         //check eight boards around
         //up
@@ -2913,6 +2912,8 @@ int GameManager::judgeWinOrLose()
             return whiteWin;
         }
     }
+
+
 
     return gameContinue;
 }

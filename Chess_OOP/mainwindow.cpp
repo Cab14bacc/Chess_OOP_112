@@ -80,15 +80,15 @@ void MainWindow::labelClicked()
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
-        printInformation();
         update();
+        printInformation();
     }
     else
     {
         game.playerMove(curRow, curCol);
-        printInformation();
         game.clickTimes = 1;
         update();
+        printInformation();
 
         if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
         {

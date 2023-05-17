@@ -1219,75 +1219,7 @@ void GameManager::playerMove(int row, int col)
         playerTurn = 'w';//change playerTurn
     }
 
-    wPawn = 0;
-    wRook = 0;
-    wKnight = 0;
-    wBishop = 0;
-    wQueen = 0;
-    bPawn = 0;
-    bRook = 0;
-    bKnight = 0;
-    bBishop = 0;
-    bQueen = 0;
-
-    for (int row = 0; row < 8; ++row)
-    {
-        for (int col = 0; col < 8; ++col)
-        {
-            board[row][col].canMove = false;
-
-            if(board[row][col].ifHavePiece)
-            {
-                if(board[row][col].player == 'w')
-                {
-                    if(board[row][col].chessType == "Pawn")
-                    {
-                        wPawn++;
-                    }
-                    else if(board[row][col].chessType == "Rook")
-                    {
-                        wRook++;
-                    }
-                    else if(board[row][col].chessType == "Knight")
-                    {
-                        wKnight++;
-                    }
-                    else if(board[row][col].chessType == "Bishop")
-                    {
-                        wBishop++;
-                    }
-                    else if(board[row][col].chessType == "Queen")
-                    {
-                        wQueen++;
-                    }
-                }
-                else//board[row][col].player == 'b'
-                {
-                    if(board[row][col].chessType == "Pawn")
-                    {
-                        bPawn++;
-                    }
-                    else if(board[row][col].chessType == "Rook")
-                    {
-                        bRook++;
-                    }
-                    else if(board[row][col].chessType == "Knight")
-                    {
-                        bKnight++;
-                    }
-                    else if(board[row][col].chessType == "Bishop")
-                    {
-                        bBishop++;
-                    }
-                    else if(board[row][col].chessType == "Queen")
-                    {
-                        bQueen++;
-                    }
-                }
-            }
-        }
-    }
-
+    computeChessNumber();
     computeTarget();
     recordCurBoard();
     curStep++;
@@ -1306,10 +1238,6 @@ void GameManager::playerMove(int row, int col)
 
     if(bPawn == 0 && bRook == 0 && bKnight == 0 && bBishop == 0 && bQueen == 0)
         ifInsufficientChess();
-
-    if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 1
-       && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 1)
-        ifDraw = true;
 }
 
 void GameManager::eraseChessPiece(string chessType, char player,int index)
@@ -1441,6 +1369,7 @@ void GameManager::computeTarget()
         }
     }
 }
+
 int check(int i,int j,ViewManager board[][8])
 {
     int kingAttack = 0;
@@ -3967,8 +3896,6 @@ void GameManager::ifInsufficientChess()//The only player left is the king
 
 void GameManager::Promoting(int row, int col, string type)
 {
-    eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
-
     if(type == "Queen")
     {
         Queen *newQueen = new Queen;
@@ -3977,7 +3904,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             White.pawns[board[row][col].index].ifPromoting = true;
             White.pawns[board[row][col].index].promotingType = "Queen";
-            wQueen++;
             newQueen->player = 'w';
             newQueen->x = col;
             newQueen->y = row;
@@ -3991,7 +3917,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             Black.pawns[board[row][col].index].ifPromoting = true;
             Black.pawns[board[row][col].index].promotingType = "Queen";
-            bQueen++;
             newQueen->player = 'b';
             newQueen->x = col;
             newQueen->y = row;
@@ -4010,7 +3935,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             White.pawns[board[row][col].index].ifPromoting = true;
             White.pawns[board[row][col].index].promotingType = "Bishop";
-            wBishop++;
             newBishop->player = 'w';
             newBishop->x = col;
             newBishop->y = row;
@@ -4024,7 +3948,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             Black.pawns[board[row][col].index].ifPromoting = true;
             Black.pawns[board[row][col].index].promotingType = "Bishop";
-            bBishop++;
             newBishop->player = 'b';
             newBishop->x = col;
             newBishop->y = row;
@@ -4043,7 +3966,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             White.pawns[board[row][col].index].ifPromoting = true;
             White.pawns[board[row][col].index].promotingType = "Knight";
-            wKnight++;
             newKnight->player = 'w';
             newKnight->x = col;
             newKnight->y = row;
@@ -4057,7 +3979,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             Black.pawns[board[row][col].index].ifPromoting = true;
             Black.pawns[board[row][col].index].promotingType = "Knight";
-            bKnight++;
             newKnight->player = 'b';
             newKnight->x = col;
             newKnight->y = row;
@@ -4076,7 +3997,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             White.pawns[board[row][col].index].ifPromoting = true;
             White.pawns[board[row][col].index].promotingType = "Rook";
-            wRook++;
             newRook->player = 'w';
             newRook->x = col;
             newRook->y = row;
@@ -4090,7 +4010,6 @@ void GameManager::Promoting(int row, int col, string type)
         {
             Black.pawns[board[row][col].index].ifPromoting = true;
             Black.pawns[board[row][col].index].promotingType = "Rook";
-            bRook++;
             newRook->player = 'b';
             newRook->x = col;
             newRook->y = row;
@@ -4103,4 +4022,159 @@ void GameManager::Promoting(int row, int col, string type)
     }
 
     board[row][col].chessType = type;
+    computeChessNumber();
+}
+
+void GameManager::judgeSpecialCase(int wBishop, int bBishop)
+{
+    if(wBishop == 2 && bBishop == 2)
+    {
+        int wFirstBishop = -1, wSecondBishop = -1, bFirstBishop = -1, bSecondBishop = -1;
+
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Bishop")
+                {
+                    if(wFirstBishop == -1)
+                    {
+                        wFirstBishop = i + j;
+                    }
+                    else
+                    {
+                        wSecondBishop = i + j;
+                    }
+                }
+                else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "Bishop")
+                {
+                    if(bFirstBishop == -1)
+                    {
+                        bFirstBishop = i + j;
+                    }
+                    else
+                    {
+                        bSecondBishop = i + j;
+                    }
+                }
+            }
+        }
+
+        if(wFirstBishop % 2 == wSecondBishop % 2 && bFirstBishop % 2 == bSecondBishop % 2)
+        {
+            ifDraw = true;
+        }
+    }
+    else
+    {
+        int FirstBishop = -1, SecondBishop = -1;
+
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if(board[i][j].ifHavePiece && board[i][j].chessType == "Bishop")
+                {
+                    if(FirstBishop == -1)
+                    {
+                        FirstBishop = i + j;
+                    }
+                    else
+                    {
+                        SecondBishop = i + j;
+                    }
+                }
+            }
+        }
+
+        if(FirstBishop % 2 == SecondBishop % 2)
+        {
+            ifDraw = true;
+        }
+    }
+}
+
+void GameManager::computeChessNumber()
+{
+    wPawn = 0;
+    wRook = 0;
+    wKnight = 0;
+    wBishop = 0;
+    wQueen = 0;
+    bPawn = 0;
+    bRook = 0;
+    bKnight = 0;
+    bBishop = 0;
+    bQueen = 0;
+
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            board[row][col].canMove = false;
+
+            if(board[row][col].ifHavePiece)
+            {
+                if(board[row][col].player == 'w')
+                {
+                    if(board[row][col].chessType == "Pawn")
+                    {
+                        wPawn++;
+                    }
+                    else if(board[row][col].chessType == "Rook")
+                    {
+                        wRook++;
+                    }
+                    else if(board[row][col].chessType == "Knight")
+                    {
+                        wKnight++;
+                    }
+                    else if(board[row][col].chessType == "Bishop")
+                    {
+                        wBishop++;
+                    }
+                    else if(board[row][col].chessType == "Queen")
+                    {
+                        wQueen++;
+                    }
+                }
+                else//board[row][col].player == 'b'
+                {
+                    if(board[row][col].chessType == "Pawn")
+                    {
+                        bPawn++;
+                    }
+                    else if(board[row][col].chessType == "Rook")
+                    {
+                        bRook++;
+                    }
+                    else if(board[row][col].chessType == "Knight")
+                    {
+                        bKnight++;
+                    }
+                    else if(board[row][col].chessType == "Bishop")
+                    {
+                        bBishop++;
+                    }
+                    else if(board[row][col].chessType == "Queen")
+                    {
+                        bQueen++;
+                    }
+                }
+            }
+        }
+    }
+
+    if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 1
+        && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 1)
+        ifDraw = true;
+    else if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 2
+             && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 2)
+        judgeSpecialCase(2, 2);
+    else if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 0
+             && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 2)
+        judgeSpecialCase(2, 0);
+    else if(wPawn == 0 && wRook == 0 && wKnight == 0 && wQueen == 0 && bBishop == 2
+             && bPawn == 0 && bRook == 0 && bKnight == 0 && bQueen == 0 && wBishop == 0)
+        judgeSpecialCase(0, 2);
 }

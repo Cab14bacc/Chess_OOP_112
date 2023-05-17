@@ -22,8 +22,8 @@ GameManager::GameManager()
     ifBlackCanMove = true;
     ifDraw = false;
     curStep = 0;
-    White.setPlayer('w');
-    Black.setPlayer('b');
+    White.player = 'w';
+    Black.player = 'b';
     clickTimes = 1;
     playerTurn = '0';
     selectChessPlayer = '0';

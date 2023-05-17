@@ -5,8 +5,8 @@ class Knight
 {
 public:
     char player;//while:w, black:b
-    int x;
-    int y;
-    int index;
+    int x;//save pos x
+    int y;//save pos y
+    int index;//save index
 };
 #endif // KNIGHT_H

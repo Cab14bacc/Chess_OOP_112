@@ -4,7 +4,7 @@
 class CurBoard
 {
 public:
-    SaveAllInformation curBoard[8][8];
+    SaveAllInformation curBoard[8][8];//
     char playerTurn = 'w';
 };
 

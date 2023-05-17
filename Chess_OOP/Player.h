@@ -13,16 +13,13 @@ using namespace std;
 class Player
 {
 public:
-    Player();
-    char player;
-    void setPlayer(char play);
+    char player;//White:'w',Black:'b'
     vector<Pawn> pawns;
     vector<Rook> rooks;
     vector<Knight> knights;
     vector<Bishop> bishops;
     vector<Queen> queens;
     King king;
-    void setNewGame();
 };
 
 #endif // PLAYER_H

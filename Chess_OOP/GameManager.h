@@ -66,6 +66,8 @@ public:
     void IfBoardRepeat3Times(string curFen);
     void ifInsufficientChess();
     void Promoting(int row, int col, string type);
+    void judgeSpecialCase(int wBishop, int bBishop);
+    void computeChessNumber();
 };
 
 #endif // GAMEMANAGER_H

@@ -922,7 +922,7 @@ void GameManager::playerMove(int row, int col)
     //erase that piece if true
     if(board[row][col].ifHavePiece)
     {
-        eraseChessPiece(board[row][col].chessType, board[row][col].player, board[row][col].index);
+        noEat = 0;
     }
 
     //check which chess is selected and check the chess piece on the square clicked
@@ -1270,70 +1270,6 @@ void GameManager::playerMove(int row, int col)
 
     if(bPawn == 0 && bRook == 0 && bKnight == 0 && bBishop == 0 && bQueen == 0)
         ifInsufficientChess();
-}
-
-//intent: reset noEat, original code obsolete
-//pre: chess piece taken
-//post: no Eat resets
-void GameManager::eraseChessPiece(string chessType, char player,int index)
-{
-    noEat = 0;
-
-//    if(player == 'w')
-//    {
-//        if(chessType == "Pawn")
-//        {
-//            //White.pawns.erase(White.pawns.begin() + index);
-//        }
-//        else if(chessType == "Rook")
-//        {
-//            //White.rooks.erase(White.rooks.begin() + index);
-//        }
-//        else if(chessType == "Bishop")
-//        {
-//            //White.bishops.erase(White.bishops.begin() + index);
-//        }
-//        else if(chessType == "Knight")
-//        {
-//            //White.knights.erase(White.knights.begin() + index);
-//        }
-//        else if(chessType == "Queen")
-//        {
-//            //White.queens.erase(White.queens.begin() + index);
-//        }
-//        //        else if(chessType == "King")
-//        //        {
-//        //        }
-
-//    }
-//    else if(player == 'b')
-//    {
-//        if(chessType == "Pawn")
-//        {
-//            //Black.pawns.erase(Black.pawns.begin()+index);
-//        }
-//        else if(chessType == "Rook")
-//        {
-//            //Black.rooks.erase(Black.rooks.begin()+index);
-//        }
-//        else if(chessType == "Bishop")
-//        {
-//            //Black.bishops.erase(Black.bishops.begin()+index);
-//        }
-//        else if(chessType == "Knight")
-//        {
-//            //Black.knights.erase(Black.knights.begin()+index);
-//        }
-//        else if(chessType == "Queen")
-//        {
-//            //Black.queens.erase(Black.queens.begin()+index);
-//        }
-//        //        else if(chessType == "King")
-//        //        {
-//        //
-//        //        }
-//    }
-
 }
 
 //intent: check if coordinate are in bound
@@ -2871,15 +2807,7 @@ void GameManager::recordCurBoard()
             curBoard.curBoard[i][j].canMove = board[i][j].canMove;
 
             //if king or pawn store the special values needed for enpassant, castle,
-            if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "king")
-            {
-                curBoard.curBoard[i][j].ifWhiteKingMove = White.king.ifMove;
-            }
-            else if(board[i][j].ifHavePiece && board[i][j].player == 'b' && board[i][j].chessType == "king")
-            {
-                curBoard.curBoard[i][j].ifBlackKingMove = Black.king.ifMove;
-            }
-            else if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
+            if(board[i][j].ifHavePiece && board[i][j].player == 'w' && board[i][j].chessType == "Rook")
             {
                 curBoard.curBoard[i][j].ifRookMove = White.rooks[board[i][j].index].ifMove;
             }
@@ -2901,6 +2829,8 @@ void GameManager::recordCurBoard()
     }
 
     //store player turn
+    curBoard.ifWhiteKingMove = White.king.ifMove;
+    curBoard.ifBlackKingMove = Black.king.ifMove;
     curBoard.playerTurn = playerTurn;
 }
 

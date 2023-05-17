@@ -15,6 +15,7 @@ signals:
     void signalclicked();
 
 protected:
+
     void mousePressEvent(QMouseEvent* event)
     {
         if(event->button() == Qt::LeftButton)

@@ -5,9 +5,9 @@ class Rook
 {
 public:
     char player;//while:w, black:b
-    int x;
-    int y;
-    int index;
-    bool ifMove = false;
+    int x;//save pos x
+    int y;//save pos y
+    int index;//save index
+    bool ifMove = false;//if rook have been moved
 };
 #endif // ROOK_H

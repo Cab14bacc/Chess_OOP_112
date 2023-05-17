@@ -12,7 +12,6 @@ CONFIG +=console
 
 SOURCES += \
     GameManager.cpp \
-    Player.cpp \
     main.cpp \
     mainwindow.cpp \
     viewmanager.cpp

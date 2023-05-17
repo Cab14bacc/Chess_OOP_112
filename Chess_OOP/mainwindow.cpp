@@ -221,6 +221,9 @@ void MainWindow::split(string Words[], QString Name)
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
+    whiteTimer.stop();
+    blackTimer.stop();
+    shoeWhoFirst();
     resetGame();
 
     for(int i =0;i<8;i++)
@@ -814,6 +817,7 @@ void MainWindow::showResultWindow(int whoWin)
     connect(replayBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
         //function to execute
+        clickSound->play();
         on_newGame_clicked();
     });
 
@@ -823,6 +827,7 @@ void MainWindow::showResultWindow(int whoWin)
     connect(quitBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
         //function to execute
+        clickSound->play();
         qApp->quit();
     });
     layout->addWidget(quitBtn);
@@ -833,7 +838,6 @@ void MainWindow::showResultWindow(int whoWin)
 
 void MainWindow::resetGame()
 {
-    game.playerTurn = 'w';
     game.Black.pawns.clear();
     game.Black.rooks.clear();
     game.Black.knights.clear();
@@ -875,6 +879,7 @@ void MainWindow::Promoting(int row, int col)
     connect(queenBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Queen");
     });
 
@@ -884,6 +889,7 @@ void MainWindow::Promoting(int row, int col)
     connect(bishopBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Bishop");
     });
 
@@ -893,6 +899,7 @@ void MainWindow::Promoting(int row, int col)
     connect(knightBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Knight");
     });
 
@@ -902,6 +909,7 @@ void MainWindow::Promoting(int row, int col)
     connect(rookBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Rook");
     });
 
@@ -954,3 +962,38 @@ void MainWindow::on_Resign_clicked()
     }
 }
 
+void MainWindow::shoeWhoFirst()
+{
+    QDialog *dialogWhoFirst = new QDialog(this);
+    dialogWhoFirst->setWindowTitle("Who First");
+    dialogWhoFirst->setFixedSize(300, 100);
+    dialogWhoFirst->setWindowFlags(dialogWhoFirst->windowFlags() & ~Qt::WindowCloseButtonHint);
+    QVBoxLayout *layout = new QVBoxLayout(dialogWhoFirst);
+
+    QFont ft;
+    ft.setPointSize(16);
+
+    QPushButton *whiteFirst = new QPushButton("white first", dialogWhoFirst);
+    connect(whiteFirst, &QPushButton::clicked, [=](){
+        dialogWhoFirst->close();//close window
+        //function to execute
+        clickSound->play();
+        game.playerTurn = 'w';
+    });
+
+    whiteFirst->setFont(ft);
+    layout->addWidget(whiteFirst);
+
+    QPushButton *blackFirst = new QPushButton("black first", dialogWhoFirst);
+    connect(blackFirst, &QPushButton::clicked, [=](){
+        dialogWhoFirst->close();//close window
+        //function to execute
+        clickSound->play();
+        game.playerTurn = 'b';
+    });
+
+    blackFirst->setFont(ft);
+    layout->addWidget(blackFirst);
+    dialogWhoFirst->setLayout(layout);
+    dialogWhoFirst->exec();//display
+}

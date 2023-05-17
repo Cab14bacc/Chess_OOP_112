@@ -554,7 +554,7 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 
-    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    cout << game.curStep<<" "<<game.steps.size()<<endl;
     cout << game.fen<<endl;
     cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
     cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
@@ -603,6 +603,24 @@ void MainWindow::printInformation()
     else
     {
         cout << "Black.king.ifMove = false";
+    }
+    cout << endl;
+    if(game.steps[game.curStep].ifWhiteKingMove)
+    {
+        cout << "White.king.ifMove: true";
+    }
+    else
+    {
+        cout << "White.king.ifMove: false";
+    }
+    cout << endl;
+    if(game.steps[game.curStep].ifBlackKingMove)
+    {
+        cout << "Black.king.ifMove: true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove: false";
     }
     cout << endl;
 }
@@ -694,7 +712,7 @@ void MainWindow::loadBoard()
                     {
                         game.White.king.y = i;
                         game.White.king.x = j;
-                        game.White.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifWhiteKingMove;
+                        game.White.king.ifMove = game.steps[game.curStep].ifWhiteKingMove;
                     }
                 }
                 else//game.board[i][j].player == 'b'
@@ -731,7 +749,7 @@ void MainWindow::loadBoard()
                     {
                         game.Black.king.y = i;
                         game.Black.king.x = j;
-                        game.Black.king.ifMove = game.steps[game.curStep].curBoard[i][j].ifBlackKingMove;
+                        game.Black.king.ifMove = game.steps[game.curStep].ifBlackKingMove;
                     }
                 }
             }

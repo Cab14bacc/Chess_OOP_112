@@ -99,9 +99,7 @@ void MainWindow::labelClicked()
     else
     {
         game.playerMove(curRow, curCol);
-        game.clickTimes = 1;
         update();
-        printInformation();
 
         //if kill self
         if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
@@ -130,6 +128,9 @@ void MainWindow::labelClicked()
         {
             showResultWindow(draw);
         }
+
+        game.clickTimes = 1;
+        printInformation();
     }
 }
 
@@ -182,6 +183,15 @@ void MainWindow::update()
                 {
                     lab->setStyleSheet("QLabel{background-color:rgb(118,150,86);}");
                 }
+            }
+
+            //check
+            if(game.board[i][j].ifHavePiece && game.board[i][j].chessType == "King")
+            {
+                if(game.board[i][j].player == 'w' && game.board[i][j].bTarget >= 1)
+                    lab->setStyleSheet("QLabel{background-color:rgb(237,28,36);}");
+                else if(game.board[i][j].player == 'b' && game.board[i][j].wTarget >= 1)
+                    lab->setStyleSheet("QLabel{background-color:rgb(237,28,36);}");
             }
 
             //set icon
@@ -1048,6 +1058,8 @@ void MainWindow::Promoting(int row, int col)
 // Post: resign
 void MainWindow::on_Resign_clicked()
 {
+    clickSound->play();
+
     if(game.playerTurn == 'w')
     {
         showResultWindow(blackWin);

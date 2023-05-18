@@ -49,6 +49,14 @@ GameManager::GameManager()
 //post: valid places are stored
 void GameManager::showCanMove(int row, int col)
 {
+    for(int i = 0;i < 8; i++)
+    {
+        for(int j = 0; j < 8 ;j++)
+        {
+            board[i][j].canMove = false;
+        }
+    }
+
     //if this block has piece and if the chess piece corresponds to the current player's turn
     if(this->board[row][col].ifHavePiece && playerTurn == this->board[row][col].player)
     {
@@ -892,6 +900,7 @@ void GameManager::showCanMove(int row, int col)
 //post: player moved
 void GameManager::playerMove(int row, int col)
 {
+
     //reset canMove variables
     if(board[row][col].canMove != true)
     {
@@ -3702,16 +3711,10 @@ int GameManager::judgeWinOrLose()
                         //if the chess piece on the current sauare is white, and is not the king itself
                         if(board[row][col].ifHavePiece && board[row][col].player == 'w' && board[row][col].chessType != "King")
                         {
-                            for(int i = 0; i < 8; i++)
-                            {
-                                for(int j = 0; j < 8; j++)
-                                {
-                                    board[i][j].canMove = false;
-                                }
-                            }
                             //calculate the moves of this chess piece and check if it can take the attacker
                             //if so then try to move to see if king still checked, if so, check mate
                             showCanMove(row,col);
+
                             if(board[attackPiecerow][attackPiececol].canMove == true)
                             {
                                 board[attackPiecerow][attackPiececol].index = board[row][col].index;
@@ -3783,17 +3786,11 @@ int GameManager::judgeWinOrLose()
                         //if the chess piece on the current sauare is white, and is not the king itself
                         if(board[row][col].ifHavePiece && board[row][col].player == 'w' && board[row][col].chessType != "King")
                         {
-                            for(int i = 0; i < 8; i++)
-                            {
-                                for(int j = 0; j < 8; j++)
-                                {
-                                    board[i][j].canMove = false;
-                                }
-                            }
 
                             //calculate the moves of this chess piece and check if it can take the attacker
                             //if so then try to move to see if king still checked , if so, check mate
                             showCanMove(row,col);
+
                             for (vector<int>& iter : attackPiecePaths) {
                                 if(board[iter[0]][iter[1]].canMove == true)
                                 {
@@ -4660,13 +4657,6 @@ int GameManager::judgeWinOrLose()
                     for (int col = 0; col < 8; ++col) {
                         if(board[row][col].player == 'b' && board[row][col].chessType != "King" && board[row][col].ifHavePiece)
                         {
-                            for(int i = 0; i < 8; i++)
-                            {
-                                for(int j = 0; j < 8; j++)
-                                {
-                                    board[i][j].canMove = false;
-                                }
-                            }
                             showCanMove(row,col);
 
                             if(board[attackPiecerow][attackPiececol].canMove == true)
@@ -4735,14 +4725,8 @@ int GameManager::judgeWinOrLose()
                     for (int col = 0; col < 8; ++col) {
                         if(board[row][col].player == 'b'&& board[row][col].chessType != "King" && board[row][col].ifHavePiece)
                         {
-                            for(int i = 0; i < 8; i++)
-                            {
-                                for(int j = 0; j < 8; j++)
-                                {
-                                    board[i][j].canMove = false;
-                                }
-                            }
                             showCanMove(row,col);
+
                             for (vector<int>& iter : attackPiecePaths) {
                                 if(board[iter[0]][iter[1]].canMove == true)
                                 {
@@ -4830,6 +4814,7 @@ int GameManager::judgeWinOrLose()
         }
     }
 
+    computeTarget();
     //return to game
     return gameContinue;
 }

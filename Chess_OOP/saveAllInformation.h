@@ -19,6 +19,8 @@ public:
     bool ifRookMove = false;//if rook have been moved
     bool ifPawnPromoting = false;//if pawn promoted
     string promotingType = "0";// if pawn have been promoted, save promoting type
+    bool ifWhiteKingMove = false;//save if white king have been moved
+    bool ifBlackKingMove = false;//save if black king have been moved
 };
 
 #endif // SAVEALLINFORMATION_H

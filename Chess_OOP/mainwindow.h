@@ -79,7 +79,7 @@ private:
     int whiteCounter;//white have second
     int blackCounter;//black have second
     QSound *startSound;//BGM
-    QSound *clickSound;
+    QSound *clickSound;//click sound
 };
 
 #endif // MAINWINDOW_H

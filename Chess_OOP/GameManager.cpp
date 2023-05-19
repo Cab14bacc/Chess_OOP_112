@@ -965,6 +965,9 @@ void GameManager::playerMove(int row, int col)
                     board[White.king.y][White.king.x - 1].index = board[row][col].index;
                     board[White.king.y][White.king.x - 1].ifHavePiece = true;
                     board[White.king.y][White.king.x - 1].player = selectChessPlayer;
+
+                    White.rooks[board[row][col].index].x = White.king.x - 1;
+                    White.king.x = White.king.x - 2;
                 }
                 else
                 {
@@ -979,6 +982,8 @@ void GameManager::playerMove(int row, int col)
                     board[White.king.y][White.king.x + 1].ifHavePiece = true;
                     board[White.king.y][White.king.x + 1].player = selectChessPlayer;
 
+                    White.rooks[board[row][col].index].x = White.king.x + 1;
+                    White.king.x = White.king.x + 2;
                 }
                 board[row][col].chessType = "0";
                 board[row][col].index = 0;
@@ -1149,6 +1154,9 @@ void GameManager::playerMove(int row, int col)
                     board[Black.king.y][Black.king.x - 1].index = board[row][col].index;
                     board[Black.king.y][Black.king.x - 1].ifHavePiece = true;
                     board[Black.king.y][Black.king.x - 1].player = selectChessPlayer;
+
+                    Black.rooks[board[row][col].index].x = Black.king.x - 1;
+                    Black.king.x = Black.king.x - 2;
                 }
                 else
                 {
@@ -1163,6 +1171,8 @@ void GameManager::playerMove(int row, int col)
                     board[Black.king.y][Black.king.x + 1].ifHavePiece = true;
                     board[Black.king.y][Black.king.x + 1].player = selectChessPlayer;
 
+                    Black.rooks[board[row][col].index].x = Black.king.x + 1;
+                    Black.king.x = Black.king.x + 2;
                 }
                 board[row][col].chessType = "0";
                 board[row][col].index = 0;

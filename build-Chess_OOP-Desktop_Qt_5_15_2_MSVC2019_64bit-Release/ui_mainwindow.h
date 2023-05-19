@@ -49,6 +49,7 @@ public:
     QLabel *label_14;
     QLabel *label_15;
     QLabel *label_16;
+    QLabel *displayMove;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -167,6 +168,10 @@ public:
         label_16->setObjectName(QString::fromUtf8("label_16"));
         label_16->setGeometry(QRect(560, 530, 31, 51));
         label_16->setFont(font3);
+        displayMove = new QLabel(centralwidget);
+        displayMove->setObjectName(QString::fromUtf8("displayMove"));
+        displayMove->setGeometry(QRect(620, 370, 201, 61));
+        displayMove->setFont(font3);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -206,6 +211,7 @@ public:
         label_14->setText(QCoreApplication::translate("MainWindow", "f", nullptr));
         label_15->setText(QCoreApplication::translate("MainWindow", "g", nullptr));
         label_16->setText(QCoreApplication::translate("MainWindow", "h", nullptr));
+        displayMove->setText(QString());
     } // retranslateUi
 
 };

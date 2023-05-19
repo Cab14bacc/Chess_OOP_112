@@ -158,7 +158,7 @@ void MainWindow::update()
         }
     }
 
-    //update
+    //update board
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -235,6 +235,186 @@ void MainWindow::update()
             }
         }
     }
+
+    //update move
+    //new game
+    if(game.moves[game.curStep].chessPlayer == '0')
+        ui->displayMove->setText("");
+    else
+    {
+        QString originalRow, originalCol, afterRow, afterCol;
+
+        //set originalRow
+        switch(game.moves[game.curStep].originalPos[0])
+        {
+        case 0:
+            originalRow = "8";
+            break;
+        case 1:
+            originalRow = "7";
+            break;
+        case 2:
+            originalRow = "6";
+            break;
+        case 3:
+            originalRow = "5";
+            break;
+        case 4:
+            originalRow = "4";
+            break;
+        case 5:
+            originalRow = "3";
+            break;
+        case 6:
+            originalRow = "2";
+            break;
+        case 7:
+            originalRow = "1";
+            break;
+        }
+
+        //set originalCol
+        switch(game.moves[game.curStep].originalPos[1])
+        {
+        case 0:
+            originalCol = "a";
+            break;
+        case 1:
+            originalCol = "b";
+            break;
+        case 2:
+            originalCol = "c";
+            break;
+        case 3:
+            originalCol = "d";
+            break;
+        case 4:
+            originalCol = "e";
+            break;
+        case 5:
+            originalCol = "f";
+            break;
+        case 6:
+            originalCol = "g";
+            break;
+        case 7:
+            originalCol = "h";
+            break;
+        }
+
+        //set afterRow
+        switch(game.moves[game.curStep].afterPos[0])
+        {
+        case 0:
+            afterRow = "8";
+            break;
+        case 1:
+            afterRow = "7";
+            break;
+        case 2:
+            afterRow = "6";
+            break;
+        case 3:
+            afterRow = "5";
+            break;
+        case 4:
+            afterRow = "4";
+            break;
+        case 5:
+            afterRow = "3";
+            break;
+        case 6:
+            afterRow = "2";
+            break;
+        case 7:
+            afterRow = "1";
+            break;
+        }
+
+        //set afterCol
+        switch(game.moves[game.curStep].afterPos[1])
+        {
+        case 0:
+            afterCol = "a";
+            break;
+        case 1:
+            afterCol = "b";
+            break;
+        case 2:
+            afterCol = "c";
+            break;
+        case 3:
+            afterCol = "d";
+            break;
+        case 4:
+            afterCol = "e";
+            break;
+        case 5:
+            afterCol = "f";
+            break;
+        case 6:
+            afterCol = "g";
+            break;
+        case 7:
+            afterCol = "h";
+            break;
+        }
+
+        if(game.moves[game.curStep].chessPlayer == 'w')
+        {
+            if(game.moves[game.curStep].chessType == "Pawn")
+            {
+                ui->displayMove->setText("White Pawn " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Rook")
+            {
+                ui->displayMove->setText("White Rook " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Knight")
+            {
+                ui->displayMove->setText("White Knight " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Bishop")
+            {
+                ui->displayMove->setText("White Bishop " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Queen")
+            {
+                ui->displayMove->setText("White Queen " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "King")
+            {
+                ui->displayMove->setText("White King " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+        }
+        else//game.moves[game.curStep].chessPlayer == 'b'
+        {
+            if(game.moves[game.curStep].chessType == "Pawn")
+            {
+                ui->displayMove->setText("Black Pawn " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Rook")
+            {
+                ui->displayMove->setText("Black Rook " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Knight")
+            {
+                ui->displayMove->setText("Black Knight " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Bishop")
+            {
+                ui->displayMove->setText("Black Bishop " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Queen")
+            {
+                ui->displayMove->setText("Black Queen " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "King")
+            {
+                ui->displayMove->setText("Black King " + originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+        }
+    }
 }
 
 // Intent: get row and col
@@ -279,8 +459,6 @@ void MainWindow::on_newGame_clicked()
             game.board[i][j].canMove = false;
         }
     }
-
-    update();
 
     QString row;
     QString col;
@@ -536,6 +714,8 @@ void MainWindow::on_newGame_clicked()
     game.steps.push_back(game.curBoard);
     game.transBoardToFen();
     game.fens.push_back(game.fen);
+    game.moves.push_back(game.curMove);
+    update();
     printInformation();
 }
 

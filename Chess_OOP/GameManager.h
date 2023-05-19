@@ -6,6 +6,7 @@
 #include "Bishop.h"
 #include "Knight.h"
 #include "Rook.h"
+#include "PlayerMove.h"
 
 using namespace std;
 
@@ -42,6 +43,8 @@ public:
     int curStep;//save current step
     CurBoard curBoard;//save current board
     vector <CurBoard> steps;//save all board
+    PlayerMove curMove;//save current move
+    vector<PlayerMove> moves;//save all move
     Player White;
     Player Black;
     ViewManager board[8][8];//save board information

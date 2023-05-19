@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>850</width>
-    <height>667</height>
+    <width>899</width>
+    <height>663</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -431,9 +431,9 @@
    <widget class="QLabel" name="displayMove">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>370</y>
-      <width>201</width>
+      <x>700</x>
+      <y>390</y>
+      <width>151</width>
       <height>61</height>
      </rect>
     </property>
@@ -446,13 +446,26 @@
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="displayIcon">
+    <property name="geometry">
+     <rect>
+      <x>640</x>
+      <y>390</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>850</width>
+     <width>899</width>
      <height>26</height>
     </rect>
    </property>

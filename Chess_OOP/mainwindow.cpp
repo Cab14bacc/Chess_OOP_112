@@ -239,7 +239,10 @@ void MainWindow::update()
     //update move
     //new game
     if(game.moves[game.curStep].chessPlayer == '0')
+    {
+        ui->displayIcon->setPixmap(QPixmap());
         ui->displayMove->setText("");
+    }
     else
     {
         QString originalRow, originalCol, afterRow, afterCol;
@@ -364,54 +367,78 @@ void MainWindow::update()
         {
             if(game.moves[game.curStep].chessType == "Pawn")
             {
-                ui->displayMove->setText("White Pawn " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWPawn);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Rook")
             {
-                ui->displayMove->setText("White Rook " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWRook);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Knight")
             {
-                ui->displayMove->setText("White Knight " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWKnight);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Bishop")
             {
-                ui->displayMove->setText("White Bishop " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWBishop);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Queen")
             {
-                ui->displayMove->setText("White Queen " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWPawn);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "King")
             {
-                ui->displayMove->setText("White King " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconWKing);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
         }
         else//game.moves[game.curStep].chessPlayer == 'b'
         {
             if(game.moves[game.curStep].chessType == "Pawn")
             {
-                ui->displayMove->setText("Black Pawn " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBPawn);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Rook")
             {
-                ui->displayMove->setText("Black Rook " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBRook);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Knight")
             {
-                ui->displayMove->setText("Black Knight " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBKnight);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Bishop")
             {
-                ui->displayMove->setText("Black Bishop " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBBishop);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "Queen")
             {
-                ui->displayMove->setText("Black Queen " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBQueen);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
             else if(game.moves[game.curStep].chessType == "King")
             {
-                ui->displayMove->setText("Black King " + originalCol + originalRow + " to " + afterCol + afterRow);
+                ui->displayIcon->setPixmap(*iconBKing);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
         }
     }
@@ -1059,7 +1086,7 @@ void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
     QLabel *label = new QLabel(dialog);
-    //dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
+    dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
 
     if (whoWin == whiteWin)
     {

@@ -50,6 +50,7 @@ public:
     QLabel *label_15;
     QLabel *label_16;
     QLabel *displayMove;
+    QLabel *displayIcon;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -57,7 +58,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(850, 667);
+        MainWindow->resize(899, 663);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -170,12 +171,15 @@ public:
         label_16->setFont(font3);
         displayMove = new QLabel(centralwidget);
         displayMove->setObjectName(QString::fromUtf8("displayMove"));
-        displayMove->setGeometry(QRect(620, 370, 201, 61));
+        displayMove->setGeometry(QRect(700, 390, 151, 61));
         displayMove->setFont(font3);
+        displayIcon = new QLabel(centralwidget);
+        displayIcon->setObjectName(QString::fromUtf8("displayIcon"));
+        displayIcon->setGeometry(QRect(640, 390, 51, 51));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 850, 26));
+        menubar->setGeometry(QRect(0, 0, 899, 26));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -212,6 +216,7 @@ public:
         label_15->setText(QCoreApplication::translate("MainWindow", "g", nullptr));
         label_16->setText(QCoreApplication::translate("MainWindow", "h", nullptr));
         displayMove->setText(QString());
+        displayIcon->setText(QString());
     } // retranslateUi
 
 };

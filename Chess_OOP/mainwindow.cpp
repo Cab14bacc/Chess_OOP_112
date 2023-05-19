@@ -391,7 +391,7 @@ void MainWindow::update()
             }
             else if(game.moves[game.curStep].chessType == "Queen")
             {
-                ui->displayIcon->setPixmap(*iconWPawn);
+                ui->displayIcon->setPixmap(*iconWQueen);
                 ui->displayIcon->setScaledContents(true);
                 ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
@@ -1168,6 +1168,7 @@ void MainWindow::resetGame()
     game.ifBlackCanMove = true;
     game.ifDraw = false;
     game.fens.clear();
+    game.moves.clear();
     setTime();
 }
 

@@ -24,6 +24,7 @@ HEADERS += \
     Knight.h \
     Pawn.h \
     Player.h \
+    PlayerMove.h \
     Queen.h \
     Rook.h \
     mainwindow.h \

@@ -275,6 +275,7 @@ Makefile: ..\Chess_OOP\Chess_OOP.pro C:\QT\5.15.2\msvc2019_64\mkspecs\win32-msvc
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\default_post.prf \
+		C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\console.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\qml_debug.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf \
@@ -286,7 +287,6 @@ Makefile: ..\Chess_OOP\Chess_OOP.pro C:\QT\5.15.2\msvc2019_64\mkspecs\win32-msvc
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\uic.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf \
-		C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\windows.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\yacc.prf \
@@ -297,14 +297,12 @@ Makefile: ..\Chess_OOP\Chess_OOP.pro C:\QT\5.15.2\msvc2019_64\mkspecs\win32-msvc
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Gui.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Network.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Core.prl \
-		C:\QT\5.15.2\msvc2019_64\lib\qtmain.prl \
 		C:\QT\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimediad.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgetsd.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Guid.prl \
 		C:\QT\5.15.2\msvc2019_64\lib\Qt5Networkd.prl \
-		C:\QT\5.15.2\msvc2019_64\lib\Qt5Cored.prl \
-		C:\QT\5.15.2\msvc2019_64\lib\qtmaind.prl
+		C:\QT\5.15.2\msvc2019_64\lib\Qt5Cored.prl
 	$(QMAKE) -o Makefile ..\Chess_OOP\Chess_OOP.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\spec_pre.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\common\angle.conf:
@@ -497,6 +495,7 @@ C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\default_pre.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\resolve_config.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\exclusive_builds_post.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\default_post.prf:
+C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\console.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\qml_debug.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\precompile_header.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\warn_on.prf:
@@ -508,7 +507,6 @@ C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\opengl.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\uic.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\qmake_use.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\file_copies.prf:
-C:\QT\5.15.2\msvc2019_64\mkspecs\features\win32\windows.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\testcase_targets.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\exceptions.prf:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\yacc.prf:
@@ -519,14 +517,12 @@ C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgets.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Gui.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Network.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Core.prl:
-C:\QT\5.15.2\msvc2019_64\lib\qtmain.prl:
 C:\QT\5.15.2\msvc2019_64\mkspecs\features\build_pass.prf:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Multimediad.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Widgetsd.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Guid.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Networkd.prl:
 C:\QT\5.15.2\msvc2019_64\lib\Qt5Cored.prl:
-C:\QT\5.15.2\msvc2019_64\lib\qtmaind.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\Chess_OOP\Chess_OOP.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
 

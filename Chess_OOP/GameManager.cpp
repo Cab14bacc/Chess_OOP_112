@@ -2909,8 +2909,6 @@ void GameManager::recordCurBoard()
 //intent: judge win or lose
 int GameManager::judgeWinOrLose()
 {
-<<<<<<< HEAD
-=======
     bool moveStillCheck = false;
     vector<vector<int>> surroundPos = {{0,1},{0,-1},{1,0},{1,-1},{1,1},{-1,1},{-1,0},{-1,1}};
     std::string tempAttackerChessType;
@@ -3006,7 +3004,6 @@ int GameManager::judgeWinOrLose()
         }
     }
 
->>>>>>> parent of f8b6427 (judge win or lose應該好了???)
     //black win
     //king position is attacked by more than two chess
     if(board[White.king.y][White.king.x].bTarget >= 2)

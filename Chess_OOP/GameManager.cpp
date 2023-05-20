@@ -2909,6 +2909,114 @@ void GameManager::recordCurBoard()
 //intent: judge win or lose
 int GameManager::judgeWinOrLose()
 {
+    bool moveStillCheck = true;
+    vector<vector<int>> surroundPos = {{0,1},{0,-1},{1,0},{1,-1},{1,1},{-1,1},{-1,0},{-1,-1}};
+    std::string tempAttackerChessType;
+    int tempAttackerIndex = 0;
+    bool tempAttackerifHavePiece = true;
+    char tempAttackerPlayer = '0';
+
+
+    for (vector<int> &iter : surroundPos) {
+        cout << iter[0] << " " << iter[1] << endl;
+
+        if(playerTurn == 'w')
+        {
+            if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0
+                && board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece == false)
+            {
+                moveStillCheck = false;
+                computeTarget();
+                break;
+            }
+            else if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].player == 'b')
+            {
+                tempAttackerIndex = board[White.king.y + iter[0]][White.king.x + iter[1]].index;
+                tempAttackerChessType = board[White.king.y + iter[0]][White.king.x + iter[1]].chessType;
+                tempAttackerifHavePiece = board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece;
+                tempAttackerPlayer = board[White.king.y + iter[0]][White.king.x + iter[1]].player;
+
+                board[White.king.y + iter[0]][White.king.x + iter[1]].index = board[White.king.y][White.king.x].index;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].chessType = board[White.king.y][White.king.x].chessType;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece = board[White.king.y][White.king.x].ifHavePiece;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].player = board[White.king.y][White.king.x].player;
+
+                board[White.king.y][White.king.x].index = 0;
+                board[White.king.y][White.king.x].chessType = "0";
+                board[White.king.y][White.king.x].ifHavePiece = false;
+                board[White.king.y][White.king.x].player = '0';
+
+                computeTarget();
+
+                board[White.king.y][White.king.x].index = board[White.king.y + iter[0]][White.king.x + iter[1]].index;
+                board[White.king.y][White.king.x].chessType = board[White.king.y + iter[0]][White.king.x + iter[1]].chessType;
+                board[White.king.y][White.king.x].ifHavePiece = board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece;
+                board[White.king.y][White.king.x].player = board[White.king.y + iter[0]][White.king.x + iter[1]].player;
+
+                board[White.king.y + iter[0]][White.king.x + iter[1]].index = tempAttackerIndex;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].chessType = tempAttackerChessType;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece = tempAttackerifHavePiece;
+                board[White.king.y + iter[0]][White.king.x + iter[1]].player = tempAttackerPlayer;
+
+                if(board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0)
+                {
+                    moveStillCheck = false;
+                    computeTarget();
+                    break;
+                }
+
+            }
+        }
+        else
+        {
+            if(ifPosInBoard(Black.king.y + iter[0],Black.king.x + iter[1]) && board[Black.king.y + iter[0]][Black.king.x + iter[1]].wTarget == 0
+                && board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece == false)
+            {
+                moveStillCheck = false;
+                computeTarget();
+                break;
+            }
+            else if(ifPosInBoard(Black.king.y + iter[0],Black.king.x + iter[1]) && board[Black.king.y + iter[0]][Black.king.x + iter[1]].player == 'w')
+            {
+                tempAttackerIndex = board[Black.king.y + iter[0]][Black.king.x + iter[1]].index;
+                tempAttackerChessType = board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType;
+                tempAttackerifHavePiece = board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece;
+                tempAttackerPlayer = board[Black.king.y + iter[0]][Black.king.x + iter[1]].player;
+
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].index = board[Black.king.y][Black.king.x].index;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType = board[Black.king.y][Black.king.x].chessType;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece = board[Black.king.y][Black.king.x].ifHavePiece;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].player = board[Black.king.y][Black.king.x].player;
+
+                board[Black.king.y][Black.king.x].index = 0;
+                board[Black.king.y][Black.king.x].chessType = "0";
+                board[Black.king.y][Black.king.x].ifHavePiece = false;
+                board[Black.king.y][Black.king.x].player = '0';
+
+                computeTarget();
+
+                board[Black.king.y][Black.king.x].index = board[Black.king.y + iter[0]][Black.king.x + iter[1]].index;
+                board[Black.king.y][Black.king.x].chessType = board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType;
+                board[Black.king.y][Black.king.x].ifHavePiece = board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece;
+                board[Black.king.y][Black.king.x].player = board[Black.king.y + iter[0]][Black.king.x + iter[1]].player;
+
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].index = tempAttackerIndex;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType = tempAttackerChessType;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece = tempAttackerifHavePiece;
+                board[Black.king.y + iter[0]][Black.king.x + iter[1]].player = tempAttackerPlayer;
+
+                if(board[Black.king.y + iter[0]][Black.king.x + iter[1]].wTarget == 0)
+                {
+                    moveStillCheck = false;
+                    computeTarget();
+                    break;
+                }
+            }
+        }
+
+        computeTarget();
+    }
+
     //black win
     //king position is attacked by more than two chess
     if(board[White.king.y][White.king.x].bTarget >= 2)
@@ -2938,6 +3046,7 @@ int GameManager::judgeWinOrLose()
     //king position is attacked by more than two chess
     else if(board[Black.king.y][Black.king.x].wTarget >= 2)
     {
+
         //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
@@ -2959,26 +3068,8 @@ int GameManager::judgeWinOrLose()
             return whiteWin;
         }
     }
-    else if(board[White.king.y][White.king.x].bTarget >= 1)//there's 1 targeting the king
+    else if(board[White.king.y][White.king.x].bTarget >= 1 && moveStillCheck)//there's 1 targeting the king
     {
-        //check eight surrounding squares to see if king can move there
-        //up
-        if(((ifPosInBoard(White.king.y - 1, White.king.x - 1) && (board[White.king.y - 1][White.king.x - 1].bTarget > 0)) || board[White.king.y - 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x - 1))
-            //down
-            && ((ifPosInBoard(White.king.y - 1, White.king.x + 1) && (board[White.king.y - 1][White.king.x + 1].bTarget > 0)) || board[White.king.y - 1][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x + 1))
-            //left
-            && ((ifPosInBoard(White.king.y - 1, White.king.x) && (board[White.king.y - 1][White.king.x].bTarget > 0)) || board[White.king.y - 1][White.king.x].player == 'w' || !ifPosInBoard(White.king.y - 1, White.king.x))
-            //right
-            && ((ifPosInBoard(White.king.y + 1, White.king.x - 1) && (board[White.king.y + 1][White.king.x - 1].bTarget > 0)) || board[White.king.y + 1][White.king.x - 1].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x - 1))
-            //left up
-            && ((ifPosInBoard(White.king.y + 1, White.king.x + 1) && (board[White.king.y + 1][White.king.x + 1].bTarget > 0)) || board[White.king.y + 1][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x + 1))
-            //right up
-            && ((ifPosInBoard(White.king.y + 1, White.king.x) && (board[White.king.y + 1][White.king.x].bTarget > 0)) || board[White.king.y + 1][White.king.x].player == 'w' || !ifPosInBoard(White.king.y + 1, White.king.x))
-            //left down
-            && ((ifPosInBoard(White.king.y, White.king.x + 1) && (board[White.king.y][White.king.x + 1].bTarget > 0)) || board[White.king.y][White.king.x + 1].player == 'w' || !ifPosInBoard(White.king.y, White.king.x + 1))
-            //right down
-            && ((ifPosInBoard(White.king.y, White.king.x - 1) && (board[White.king.y][White.king.x - 1].bTarget > 0)) || board[White.king.y][White.king.x - 1].player == 'w' || ifPosInBoard(White.king.y, White.king.x - 1)))
-        {
             //info of the attacking piece
             int attackPiecerow = whiteKingBeenAttackBy[0];
             int attackPiececol = whiteKingBeenAttackBy[1];
@@ -3936,29 +4027,10 @@ int GameManager::judgeWinOrLose()
                 return blackWin;
 
             }
-        }
-    }
-    else if(board[Black.king.y][Black.king.x].wTarget >= 1) // if black king is attacked
-    {
 
-        //check eight surrounding squares to see if king can move there
-        //up
-        if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
-            //down
-            && ((ifPosInBoard(Black.king.y - 1, Black.king.x + 1) && (board[Black.king.y - 1][Black.king.x + 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x + 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x + 1))
-            //left
-            && ((ifPosInBoard(Black.king.y - 1, Black.king.x) && (board[Black.king.y - 1][Black.king.x].wTarget > 0)) || board[Black.king.y - 1][Black.king.x].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x))
-            //right
-            && ((ifPosInBoard(Black.king.y + 1, Black.king.x - 1) && (board[Black.king.y + 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y + 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y + 1, Black.king.x - 1))
-            //left up
-            && ((ifPosInBoard(Black.king.y + 1, Black.king.x + 1) && (board[Black.king.y + 1][Black.king.x + 1].wTarget > 0)) || board[Black.king.y + 1][Black.king.x + 1].player == 'b' || !ifPosInBoard(Black.king.y + 1, Black.king.x + 1))
-            //right up
-            && ((ifPosInBoard(Black.king.y + 1, Black.king.x) && (board[Black.king.y + 1][Black.king.x].wTarget > 0)) || board[Black.king.y + 1][Black.king.x].player == 'b' || !ifPosInBoard(Black.king.y + 1, Black.king.x))
-            //left down
-            && ((ifPosInBoard(Black.king.y, Black.king.x + 1) && (board[Black.king.y][Black.king.x + 1].wTarget > 0)) || board[Black.king.y][Black.king.x + 1].player == 'b' || !ifPosInBoard(Black.king.y, Black.king.x + 1))
-            //right down
-            && ((ifPosInBoard(Black.king.y, Black.king.x - 1) && (board[Black.king.y][Black.king.x - 1].wTarget > 0)) || board[Black.king.y][Black.king.x - 1].player == 'b' || ifPosInBoard(Black.king.y, Black.king.x - 1)))
-        {
+    }
+    else if(board[Black.king.y][Black.king.x].wTarget >= 1 && moveStillCheck) // if black king is attacked
+    {
             //info of attacking chess piece
             int attackPiecerow = blackKingBeenAttackBy[0];
             int attackPiececol = blackKingBeenAttackBy[1];
@@ -4874,7 +4946,7 @@ int GameManager::judgeWinOrLose()
 
             }
 
-        }
+
     }
 
     computeTarget();

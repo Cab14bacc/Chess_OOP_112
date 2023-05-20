@@ -15,6 +15,10 @@ signals:
     void signalclicked();
 
 protected:
+
+    // Intent: emit signalclicked();
+    // Pre: input QMouseEvent *event
+    // Post: if event = leftclick, emit signalclicked()
     void mousePressEvent(QMouseEvent* event)
     {
         if(event->button() == Qt::LeftButton)

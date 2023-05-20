@@ -36,18 +36,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//set label and put color on it
+// Intent: set label and put color on it
+// Pre: no input
+// Post: set label and put color on it
 void MainWindow::setBoard()
 {
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
         {
+            //creat label
             label = new MyLabel(this);
             label->setParent(this);
             label->setFixedSize(60,60);
             label->setText("");
 
+            //put color
             if((i + j) % 2 == 0)
             {
                 label->setStyleSheet("QLabel{background-color:rgb(224,224,198);}");
@@ -66,10 +70,17 @@ void MainWindow::setBoard()
     }
 }
 
-//if label clicled, call this function
+// Intent: if label clicled, call this function
+// Pre: need press new game first
+// Post: select chess or move chess
 void MainWindow::labelClicked()
 {
     clickSound->play();
+
+    if(game.playerTurn == '0')
+        return;
+
+    //get row and col
     MyLabel *lab = qobject_cast<MyLabel*>(sender());
     QString Name = lab->objectName();
     string words[2];
@@ -77,24 +88,34 @@ void MainWindow::labelClicked()
     int curRow = stoi(words[0]);
     int curCol = stoi(words[1]);
 
+    //select chess
     if(game.clickTimes == 1)
     {
         game.showCanMove(curRow, curCol);
-        printInformation();
         update();
+        printInformation();
     }
+    //move chess
     else
     {
         game.playerMove(curRow, curCol);
-        printInformation();
-        game.clickTimes = 1;
         update();
 
+        //if kill self
         if(game.board[game.White.king.y][game.White.king.x].bTarget >= 1 && game.playerTurn == 'b')
+        {
             on_undo_clicked();
+            game.steps.resize(game.curStep + 1);
+            game.fens.resize(game.curStep + 1);
+        }
         else if(game.board[game.Black.king.y][game.Black.king.x].wTarget >= 1 && game.playerTurn == 'w')
+        {
+            game.steps.resize(game.curStep + 1);
+            game.fens.resize(game.curStep + 1);
             on_undo_clicked();
+        }
 
+        //if game over
         if(game.judgeWinOrLose() == blackWin)
         {
             showResultWindow(blackWin);
@@ -107,23 +128,37 @@ void MainWindow::labelClicked()
         {
             showResultWindow(draw);
         }
+
+        game.clickTimes = 1;
+        printInformation();
     }
 }
 
+// Intent: update ui
+// Pre: on input
+// Post: update ui
 void MainWindow::update()
 {
+    //Promoting
     for(int i = 0; i < 8; i++)
     {
         if(game.board[0][i].chessType == "Pawn")
         {
-            Promoting(0, i);
+            if(game.White.pawns[game.board[0][i].index].ifPromoting == false)
+                Promoting(0, i);
+            else
+                game.Promoting(0, i, game.White.pawns[game.board[0][i].index].promotingType);
         }
         else if(game.board[7][i].chessType == "Pawn")
         {
-            Promoting(7, i);
+            if(game.Black.pawns[game.board[7][i].index].ifPromoting == false)
+                Promoting(7, i);
+            else
+                game.Promoting(7, i, game.Black.pawns[game.board[7][i].index].promotingType);
         }
     }
 
+    //update board
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -133,6 +168,7 @@ void MainWindow::update()
             QString col = QString::number(j);
             lab = this->findChild<MyLabel*>(row + " " + col);
 
+            //fill color
             if(game.board[i][j].canMove)
             {
                 lab->setStyleSheet("QLabel{background-color:rgb(255,253,85);}");
@@ -149,6 +185,16 @@ void MainWindow::update()
                 }
             }
 
+            //check
+            if(game.board[i][j].ifHavePiece && game.board[i][j].chessType == "King")
+            {
+                if(game.board[i][j].player == 'w' && game.board[i][j].bTarget >= 1)
+                    lab->setStyleSheet("QLabel{background-color:rgb(237,28,36);}");
+                else if(game.board[i][j].player == 'b' && game.board[i][j].wTarget >= 1)
+                    lab->setStyleSheet("QLabel{background-color:rgb(237,28,36);}");
+            }
+
+            //set icon
             if(game.board[i][j].ifHavePiece)
             {
                 if(game.board[i][j].player == 'w')
@@ -184,13 +230,223 @@ void MainWindow::update()
             }
             else
             {
+                //remove chess icon
                 lab->clear();
+            }
+        }
+    }
+
+    //update move
+    //new game
+    if(game.moves[game.curStep].chessPlayer == '0')
+    {
+        ui->displayIcon->setPixmap(QPixmap());
+        ui->displayMove->setText("");
+    }
+    else
+    {
+        QString originalRow, originalCol, afterRow, afterCol;
+
+        //set originalRow
+        switch(game.moves[game.curStep].originalPos[0])
+        {
+        case 0:
+            originalRow = "8";
+            break;
+        case 1:
+            originalRow = "7";
+            break;
+        case 2:
+            originalRow = "6";
+            break;
+        case 3:
+            originalRow = "5";
+            break;
+        case 4:
+            originalRow = "4";
+            break;
+        case 5:
+            originalRow = "3";
+            break;
+        case 6:
+            originalRow = "2";
+            break;
+        case 7:
+            originalRow = "1";
+            break;
+        }
+
+        //set originalCol
+        switch(game.moves[game.curStep].originalPos[1])
+        {
+        case 0:
+            originalCol = "a";
+            break;
+        case 1:
+            originalCol = "b";
+            break;
+        case 2:
+            originalCol = "c";
+            break;
+        case 3:
+            originalCol = "d";
+            break;
+        case 4:
+            originalCol = "e";
+            break;
+        case 5:
+            originalCol = "f";
+            break;
+        case 6:
+            originalCol = "g";
+            break;
+        case 7:
+            originalCol = "h";
+            break;
+        }
+
+        //set afterRow
+        switch(game.moves[game.curStep].afterPos[0])
+        {
+        case 0:
+            afterRow = "8";
+            break;
+        case 1:
+            afterRow = "7";
+            break;
+        case 2:
+            afterRow = "6";
+            break;
+        case 3:
+            afterRow = "5";
+            break;
+        case 4:
+            afterRow = "4";
+            break;
+        case 5:
+            afterRow = "3";
+            break;
+        case 6:
+            afterRow = "2";
+            break;
+        case 7:
+            afterRow = "1";
+            break;
+        }
+
+        //set afterCol
+        switch(game.moves[game.curStep].afterPos[1])
+        {
+        case 0:
+            afterCol = "a";
+            break;
+        case 1:
+            afterCol = "b";
+            break;
+        case 2:
+            afterCol = "c";
+            break;
+        case 3:
+            afterCol = "d";
+            break;
+        case 4:
+            afterCol = "e";
+            break;
+        case 5:
+            afterCol = "f";
+            break;
+        case 6:
+            afterCol = "g";
+            break;
+        case 7:
+            afterCol = "h";
+            break;
+        }
+
+        if(game.moves[game.curStep].chessPlayer == 'w')
+        {
+            if(game.moves[game.curStep].chessType == "Pawn")
+            {
+                ui->displayIcon->setPixmap(*iconWPawn);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Rook")
+            {
+                ui->displayIcon->setPixmap(*iconWRook);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Knight")
+            {
+                ui->displayIcon->setPixmap(*iconWKnight);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Bishop")
+            {
+                ui->displayIcon->setPixmap(*iconWBishop);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Queen")
+            {
+                ui->displayIcon->setPixmap(*iconWQueen);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "King")
+            {
+                ui->displayIcon->setPixmap(*iconWKing);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+        }
+        else//game.moves[game.curStep].chessPlayer == 'b'
+        {
+            if(game.moves[game.curStep].chessType == "Pawn")
+            {
+                ui->displayIcon->setPixmap(*iconBPawn);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Rook")
+            {
+                ui->displayIcon->setPixmap(*iconBRook);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Knight")
+            {
+                ui->displayIcon->setPixmap(*iconBKnight);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Bishop")
+            {
+                ui->displayIcon->setPixmap(*iconBBishop);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "Queen")
+            {
+                ui->displayIcon->setPixmap(*iconBQueen);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
+            }
+            else if(game.moves[game.curStep].chessType == "King")
+            {
+                ui->displayIcon->setPixmap(*iconBKing);
+                ui->displayIcon->setScaledContents(true);
+                ui->displayMove->setText(originalCol + originalRow + " to " + afterCol + afterRow);
             }
         }
     }
 }
 
-// can ignore this temporary
+// Intent: get row and col
+// Pre: input string array, Qstring
+// Post: split Qstring
 void MainWindow::split(string Words[], QString Name)
 {
     string strName = Name.toStdString();
@@ -203,12 +459,20 @@ void MainWindow::split(string Words[], QString Name)
     }
 }
 
-//if new game button clicked, put images and call gamestart function
+// Intent: set new game
+// Pre: no input
+// Post: set new game
 void MainWindow::on_newGame_clicked()
 {
     clickSound->play();
+    whiteTimer.stop();
+    blackTimer.stop();
+    //chose who first
+    shoeWhoFirst();
+    //reset game
     resetGame();
 
+    //reset all information
     for(int i =0;i<8;i++)
     {
         for(int j=0;j<8;j++)
@@ -223,8 +487,6 @@ void MainWindow::on_newGame_clicked()
         }
     }
 
-    update();
-
     QString row;
     QString col;
     MyLabel *lab;
@@ -235,6 +497,7 @@ void MainWindow::on_newGame_clicked()
     newRook->ifMove = false;
     Pawn *newPawn = new Pawn;
 
+    //set pawn
     for(int i = 0; i < 8; i++)
     {
         newPawn = new Pawn;
@@ -478,10 +741,14 @@ void MainWindow::on_newGame_clicked()
     game.steps.push_back(game.curBoard);
     game.transBoardToFen();
     game.fens.push_back(game.fen);
+    game.moves.push_back(game.curMove);
+    update();
     printInformation();
 }
 
-//just to set images
+// Intent: set images
+// Pre: no input
+// Post: set images
 void MainWindow::initIcon()
 {
     iconWKing = new QPixmap("./images/WKing.png");
@@ -510,9 +777,12 @@ void MainWindow::initIcon()
     *iconBPawn = iconBPawn->scaled(60,60);
 }
 
+// Intent: print information to debug
+// Pre: no input
+// Post: print information
 void MainWindow::printInformation()
 {
-    system("cls");
+    //system("cls");
     for(int i = 0; i < 8; i++)
     {
         for(int j = 0; j < 8; j++)
@@ -537,10 +807,10 @@ void MainWindow::printInformation()
         cout << "\n";
     }
 
-    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    cout << game.curStep<<" "<<game.steps.size()<<endl;
     cout << game.fen<<endl;
-    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
-    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
     //cout << "noEat:" << game.noEat<<endl;
 
     if(game.ifWhiteCanMove)
@@ -588,40 +858,173 @@ void MainWindow::printInformation()
         cout << "Black.king.ifMove = false";
     }
     cout << endl;
+    if(game.steps[game.curStep].ifWhiteKingMove)
+    {
+        cout << "White.king.ifMove: true";
+    }
+    else
+    {
+        cout << "White.king.ifMove: false";
+    }
+    cout << endl;
+    if(game.steps[game.curStep].ifBlackKingMove)
+    {
+        cout << "Black.king.ifMove: true";
+    }
+    else
+    {
+        cout << "Black.king.ifMove: false";
+    }
+    cout << endl;
 }
 
+// Intent: undo
+// Pre: no input
+// Post: undo
 void MainWindow::on_undo_clicked()
 {
     clickSound->play();
 
     if(game.curStep != 0)
     {
+        //move to previous
         game.curStep--;
-        game.loadBoard();
+        loadBoard();
         update();
         printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
+// Intent: redo
+// Pre: no input
+// Post: redo
 void MainWindow::on_redo_clicked()
 {
     clickSound->play();
 
+    //game not start
+    if(game.playerTurn == '0')
+        return;
+
+    //move to after
     if(game.curStep != game.steps.size() - 1)
     {
         game.curStep++;
-        game.loadBoard();
+        loadBoard();
         update();
         printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
 
+// Intent: load board form steps
+// Pre: no input
+// Post: load board form steps
+void MainWindow::loadBoard()
+{
+    //load all information
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            game.board[i][j].wTarget = game.steps[game.curStep].curBoard[i][j].wTarget;
+            game.board[i][j].bTarget = game.steps[game.curStep].curBoard[i][j].bTarget;
+            game.board[i][j].player = game.steps[game.curStep].curBoard[i][j].player;
+            game.board[i][j].chessType = game.steps[game.curStep].curBoard[i][j].chessType;
+            game.board[i][j].index = game.steps[game.curStep].curBoard[i][j].index;
+            game.board[i][j].canMove = game.steps[game.curStep].curBoard[i][j].canMove;
+            game.playerTurn = game.steps[game.curStep].playerTurn;
+            game.board[i][j].ifHavePiece = game.steps[game.curStep].curBoard[i][j].ifHavePiece;
 
+            //laod special information
+            if(game.board[i][j].ifHavePiece)
+            {
+                if(game.board[i][j].player == 'w')
+                {
+                    if(game.board[i][j].chessType == "Pawn")
+                    {
+                        game.White.pawns[game.board[i][j].index].y = i;
+                        game.White.pawns[game.board[i][j].index].x = j;
+                        game.White.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
+                        game.White.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if(game.board[i][j].chessType == "Rook")
+                    {
+                        game.White.rooks[game.board[i][j].index].y = i;
+                        game.White.rooks[game.board[i][j].index].x = j;
+                        game.White.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if(game.board[i][j].chessType == "Knight")
+                    {
+                        game.White.knights[game.board[i][j].index].y = i;
+                        game.White.knights[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Bishop")
+                    {
+                        game.White.bishops[game.board[i][j].index].y = i;
+                        game.White.bishops[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Queen")
+                    {
+                        game.White.queens[game.board[i][j].index].y = i;
+                        game.White.queens[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "King")
+                    {
+                        game.White.king.y = i;
+                        game.White.king.x = j;
+                        game.White.king.ifMove = game.steps[game.curStep].ifWhiteKingMove;
+                    }
+                }
+                else//game.board[i][j].player == 'b'
+                {
+                    if(game.board[i][j].chessType == "Pawn")
+                    {
+                        game.Black.pawns[game.board[i][j].index].y = i;
+                        game.Black.pawns[game.board[i][j].index].x = j;
+                        game.Black.pawns[game.board[i][j].index].ifmove2Step = game.steps[game.curStep].curBoard[i][j].ifPawnMove2Step;
+                        game.Black.pawns[game.board[i][j].index].inNextTurn = game.steps[game.curStep].curBoard[i][j].inPawnNextTurn;
+                    }
+                    else if(game.board[i][j].chessType == "Rook")
+                    {
+                        game.Black.rooks[game.board[i][j].index].y = i;
+                        game.Black.rooks[game.board[i][j].index].x = j;
+                        game.Black.rooks[game.board[i][j].index].ifMove = game.steps[game.curStep].curBoard[i][j].ifRookMove;
+                    }
+                    else if(game.board[i][j].chessType == "Knight")
+                    {
+                        game.Black.knights[game.board[i][j].index].y = i;
+                        game.Black.knights[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Bishop")
+                    {
+                        game.Black.bishops[game.board[i][j].index].y = i;
+                        game.Black.bishops[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "Queen")
+                    {
+                        game.Black.queens[game.board[i][j].index].y = i;
+                        game.Black.queens[game.board[i][j].index].x = j;
+                    }
+                    else if(game.board[i][j].chessType == "King")
+                    {
+                        game.Black.king.y = i;
+                        game.Black.king.x = j;
+                        game.Black.king.ifMove = game.steps[game.curStep].ifBlackKingMove;
+                    }
+                }
+            }
+        }
+    }
+}
 
+// Intent: set time
+// Pre: no input
+// Post: set time
 void MainWindow::setTime()
 {
+    //set 1 second
     whiteTimer.start(1000);
     blackTimer.start(1000);
     whiteCounter = 10 * 60;
@@ -632,6 +1035,9 @@ void MainWindow::setTime()
     ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
 }
 
+// Intent: update time
+// Pre: no input
+// Post: update time
 void MainWindow::updateTimer()
 {
     if(game.playerTurn == 'w')
@@ -649,6 +1055,7 @@ void MainWindow::updateTimer()
         ui->blackTime->setText(QString("%1:%2").arg(blackCounter / 60, 2, 10, QChar('0')).arg(blackCounter % 60, 2, 10, QChar('0')));
     }
 
+    //if time up
     if(whiteCounter == 0)
     {
         whiteTimer.stop();
@@ -663,16 +1070,23 @@ void MainWindow::updateTimer()
     }
 }
 
+// Intent: set sound
+// Pre: no input
+// Post: set sound
 void MainWindow::setSound()
 {
     startSound = new QSound("./sounds/RoadtoDazir.wav",this);
     clickSound = new QSound("./sounds/OpenCell.wav",this);
 }
 
+// Intent: show result
+// Pre: game over
+// Post: show result
 void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
     QLabel *label = new QLabel(dialog);
+    dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
 
     if (whoWin == whiteWin)
     {
@@ -696,19 +1110,23 @@ void MainWindow::showResultWindow(int whoWin)
     QVBoxLayout *layout = new QVBoxLayout(dialog);
     layout->addWidget(label);
 
+    //set replay
     QPushButton *replayBtn = new QPushButton("Replay", dialog);
     connect(replayBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
         //function to execute
+        clickSound->play();
         on_newGame_clicked();
     });
 
     layout->addWidget(replayBtn);
 
+    //set quit
     QPushButton *quitBtn = new QPushButton("Quit", dialog);
     connect(quitBtn, &QPushButton::clicked, [=](){
         dialog->close();//close window
         //function to execute
+        clickSound->play();
         qApp->quit();
     });
     layout->addWidget(quitBtn);
@@ -717,9 +1135,11 @@ void MainWindow::showResultWindow(int whoWin)
     dialog->exec();//display
 }
 
+// Intent: reset game
+// Pre: new game clicked
+// Post: reset game
 void MainWindow::resetGame()
 {
-    game.playerTurn = 'w';
     game.Black.pawns.clear();
     game.Black.rooks.clear();
     game.Black.knights.clear();
@@ -748,51 +1168,64 @@ void MainWindow::resetGame()
     game.ifBlackCanMove = true;
     game.ifDraw = false;
     game.fens.clear();
+    game.moves.clear();
     setTime();
 }
 
+// Intent: Promoting
+// Pre: pwan walk to last line
+// Post: Promoting
 void MainWindow::Promoting(int row, int col)
 {
     QDialog *dialogPromoting = new QDialog(this);
     dialogPromoting->setWindowTitle("Promoting");
     QHBoxLayout *layoutPromoting = new QHBoxLayout(dialogPromoting);
+    //set queen
     QPushButton *queenBtn = new QPushButton(dialogPromoting);
 
     connect(queenBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Queen");
     });
 
     layoutPromoting->addWidget(queenBtn);
 
+    //set bishop
     QPushButton *bishopBtn = new QPushButton(dialogPromoting);
     connect(bishopBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Bishop");
     });
 
     layoutPromoting->addWidget(bishopBtn);
 
+    //set knight
     QPushButton *knightBtn = new QPushButton(dialogPromoting);
     connect(knightBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Knight");
     });
 
     layoutPromoting->addWidget(knightBtn);
 
+    //set rook
     QPushButton *rookBtn = new QPushButton(dialogPromoting);
     connect(rookBtn, &QPushButton::clicked, [=](){
         dialogPromoting->close();//close window
         //function to execute
+        clickSound->play();
         game.Promoting(row, col, "Rook");
     });
 
     layoutPromoting->addWidget(rookBtn);
 
+    //set size
     if(game.board[row][col].player == 'w')
     {
         queenBtn->setIcon(QIcon(*iconWQueen));
@@ -826,4 +1259,62 @@ void MainWindow::Promoting(int row, int col)
 
     dialogPromoting->setLayout(layoutPromoting);
     dialogPromoting->exec();//display
+}
+
+// Intent: resign
+// Pre: game start
+// Post: resign
+void MainWindow::on_Resign_clicked()
+{
+    clickSound->play();
+
+    if(game.playerTurn == 'w')
+    {
+        showResultWindow(blackWin);
+    }
+    else if(game.playerTurn == 'b')
+    {
+        showResultWindow(whiteWin);
+    }
+}
+
+// Intent: choose who first
+// Pre: game start
+// Post: choose who first
+void MainWindow::shoeWhoFirst()
+{
+    QDialog *dialogWhoFirst = new QDialog(this);
+    dialogWhoFirst->setWindowTitle("Who First");
+    dialogWhoFirst->setFixedSize(300, 100);
+    dialogWhoFirst->setWindowFlags(dialogWhoFirst->windowFlags() & ~Qt::WindowCloseButtonHint);
+    QVBoxLayout *layout = new QVBoxLayout(dialogWhoFirst);
+
+    QFont ft;
+    ft.setPointSize(16);
+
+    //set white first
+    QPushButton *whiteFirst = new QPushButton("white first", dialogWhoFirst);
+    connect(whiteFirst, &QPushButton::clicked, [=](){
+        dialogWhoFirst->close();//close window
+        //function to execute
+        clickSound->play();
+        game.playerTurn = 'w';
+    });
+
+    whiteFirst->setFont(ft);
+    layout->addWidget(whiteFirst);
+
+    //set black first
+    QPushButton *blackFirst = new QPushButton("black first", dialogWhoFirst);
+    connect(blackFirst, &QPushButton::clicked, [=](){
+        dialogWhoFirst->close();//close window
+        //function to execute
+        clickSound->play();
+        game.playerTurn = 'b';
+    });
+
+    blackFirst->setFont(ft);
+    layout->addWidget(blackFirst);
+    dialogWhoFirst->setLayout(layout);
+    dialogWhoFirst->exec();//display
 }

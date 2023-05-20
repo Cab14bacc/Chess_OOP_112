@@ -12,9 +12,9 @@ public:
     int wTarget;//how many white piece can attack
     int bTarget;//how many black piece can attack
     char player;//this chess belong to which player
-    string chessType;
-    int index;
-    bool canMove;
+    string chessType;//save chess type
+    int index;//save chess index
+    bool canMove;//save this pos if can move
 };
 
 #endif // VIEWMANAGER_H

@@ -4,7 +4,7 @@ QT += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-CONFIG +=console
+CONFIG += console
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -12,7 +12,6 @@ CONFIG +=console
 
 SOURCES += \
     GameManager.cpp \
-    Player.cpp \
     main.cpp \
     mainwindow.cpp \
     viewmanager.cpp
@@ -25,6 +24,7 @@ HEADERS += \
     Knight.h \
     Pawn.h \
     Player.h \
+    PlayerMove.h \
     Queen.h \
     Rook.h \
     mainwindow.h \

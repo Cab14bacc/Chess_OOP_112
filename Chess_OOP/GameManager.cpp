@@ -2919,19 +2919,9 @@ int GameManager::judgeWinOrLose()
 
     for (vector<int> &iter : surroundPos) {
 
-        if(board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0
-            && board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece == false)
-        {
-            return gameContinue;
-        }
 
-        if(board[Black.king.y + iter[0]][Black.king.x + iter[1]].bTarget == 0
-            && board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece == false)
-        {
-            return gameContinue;
-        }
 
-        if(board[White.king.y + iter[0]][White.king.x + iter[1]].player == 'b')
+        if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].player == 'b')
         {
             tempAttackerIndex = board[White.king.y + iter[0]][White.king.x + iter[1]].index;
             tempAttackerChessType = board[White.king.y + iter[0]][White.king.x + iter[1]].chessType;
@@ -2963,11 +2953,12 @@ int GameManager::judgeWinOrLose()
             if(board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget >= 1)
             {
                 moveStillCheck = true;
+                computeTarget();
                 break;
             }
 
         }
-        else if(board[Black.king.y + iter[0]][Black.king.x + iter[1]].player == 'w')
+        else if(ifPosInBoard(Black.king.y + iter[0],Black.king.x + iter[1]) && board[Black.king.y + iter[0]][Black.king.x + iter[1]].player == 'w')
         {
             tempAttackerIndex = board[Black.king.y + iter[0]][Black.king.x + iter[1]].index;
             tempAttackerChessType = board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType;
@@ -2999,11 +2990,13 @@ int GameManager::judgeWinOrLose()
             if(board[Black.king.y + iter[0]][Black.king.x + iter[1]].wTarget >= 1)
             {
                 moveStillCheck = true;
+                computeTarget();
                 break;
             }
         }
-    }
 
+
+    }
     //black win
     //king position is attacked by more than two chess
     if(board[White.king.y][White.king.x].bTarget >= 2)

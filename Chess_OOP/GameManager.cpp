@@ -3033,11 +3033,7 @@ int GameManager::judgeWinOrLose()
     //king position is attacked by more than two chess
     else if(board[Black.king.y][Black.king.x].wTarget >= 2)
     {
-        bool moveStillCheck = false;
-        vector<vector<int>> surroundPos = {{0,1},{0,-1},{1,0},{1,-1},{1,1},{-1,1},{-1,0},{-1,1}};
-        for (vector<int> iter : su) {
-            
-        }
+
         //check eight surrounding squares to see if king can move there
         //up
         if(((ifPosInBoard(Black.king.y - 1, Black.king.x - 1) && (board[Black.king.y - 1][Black.king.x - 1].wTarget > 0)) || board[Black.king.y - 1][Black.king.x - 1].player == 'b' || !ifPosInBoard(Black.king.y - 1, Black.king.x - 1))
@@ -3059,7 +3055,7 @@ int GameManager::judgeWinOrLose()
             return whiteWin;
         }
     }
-    else if(board[White.king.y][White.king.x].bTarget >= 1)//there's 1 targeting the king
+    else if(board[White.king.y][White.king.x].bTarget >= 1 || moveStillCheck)//there's 1 targeting the king
     {
         //check eight surrounding squares to see if king can move there
         //up
@@ -4038,7 +4034,7 @@ int GameManager::judgeWinOrLose()
             }
         }
     }
-    else if(board[Black.king.y][Black.king.x].wTarget >= 1) // if black king is attacked
+    else if(board[Black.king.y][Black.king.x].wTarget >= 1 || moveStillCheck) // if black king is attacked
     {
 
         //check eight surrounding squares to see if king can move there

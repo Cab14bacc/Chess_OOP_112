@@ -1086,7 +1086,7 @@ void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
     QLabel *label = new QLabel(dialog);
-    dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
+    //dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
 
     if (whoWin == whiteWin)
     {

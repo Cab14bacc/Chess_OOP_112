@@ -2917,9 +2917,8 @@ int GameManager::judgeWinOrLose()
     char tempAttackerPlayer = '0';
 
 
-    for (vector<int> &iter : surroundPos) {
-        cout << iter[0] << " " << iter[1] << endl;
-
+    for (vector<int> &iter : surroundPos)
+    {
         if(playerTurn == 'w')
         {
             if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0
@@ -5703,127 +5702,105 @@ bool GameManager::ifPosCanMove(int row, int col)
     }
     else if(board[row][col].chessType == "King")
     {
-        if(board[row][col].player == 'w')
+        vector<vector<int>> surroundPos = {{0,1},{0,-1},{1,0},{1,-1},{1,1},{-1,1},{-1,0},{-1,-1}};
+        std::string tempAttackerChessType;
+        int tempAttackerIndex = 0;
+        bool tempAttackerifHavePiece = true;
+        char tempAttackerPlayer = '0';
+
+        for (vector<int> &iter : surroundPos)
         {
-
-            //up
-            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != whiteChess && board[row + 1][col].bTarget == 0)
-                return true;
-
-            //down
-            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != whiteChess && board[row - 1][col].bTarget == 0)
-                return true;
-
-            //right
-            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != whiteChess && board[row][col + 1].bTarget == 0)
-                return true;
-
-            //left
-            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != whiteChess && board[row][col - 1].bTarget == 0)
-                return true;
-
-            //up right
-            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != whiteChess && board[row + 1][col + 1].bTarget == 0)
-                return true;
-
-            //up left
-            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != whiteChess && board[row + 1][col - 1].bTarget == 0)
-                return true;
-
-            //down right
-            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != whiteChess && board[row - 1][col + 1].bTarget == 0)
-                return true;
-
-            //down left
-            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != whiteChess && board[row - 1][col - 1].bTarget == 0)
-                return true;
-
-            //left castle
-            if(White.king.ifMove == false && White.rooks[board[7][0].index].ifMove == false && board[7][0].chessType == "Rook" && board[7][0].player == 'w')
+            if(playerTurn == 'w')
             {
-                if(board[7][1].ifHavePiece == false && board[7][2].ifHavePiece == false && board[7][3].ifHavePiece == false)
+                if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0
+                    && board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece == false)
                 {
-                    if(board[7][4].bTarget == 0 && board[7][1].bTarget == 0 && board[7][2].bTarget == 0 && board[7][3].bTarget == 0)
+                    return true;
+                }
+                else if(ifPosInBoard(White.king.y + iter[0],White.king.x + iter[1]) && board[White.king.y + iter[0]][White.king.x + iter[1]].player == 'b')
+                {
+                    tempAttackerIndex = board[White.king.y + iter[0]][White.king.x + iter[1]].index;
+                    tempAttackerChessType = board[White.king.y + iter[0]][White.king.x + iter[1]].chessType;
+                    tempAttackerifHavePiece = board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece;
+                    tempAttackerPlayer = board[White.king.y + iter[0]][White.king.x + iter[1]].player;
+
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].index = board[White.king.y][White.king.x].index;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].chessType = board[White.king.y][White.king.x].chessType;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece = board[White.king.y][White.king.x].ifHavePiece;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].player = board[White.king.y][White.king.x].player;
+
+                    board[White.king.y][White.king.x].index = 0;
+                    board[White.king.y][White.king.x].chessType = "0";
+                    board[White.king.y][White.king.x].ifHavePiece = false;
+                    board[White.king.y][White.king.x].player = '0';
+
+                    computeTarget();
+
+                    board[White.king.y][White.king.x].index = board[White.king.y + iter[0]][White.king.x + iter[1]].index;
+                    board[White.king.y][White.king.x].chessType = board[White.king.y + iter[0]][White.king.x + iter[1]].chessType;
+                    board[White.king.y][White.king.x].ifHavePiece = board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece;
+                    board[White.king.y][White.king.x].player = board[White.king.y + iter[0]][White.king.x + iter[1]].player;
+
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].index = tempAttackerIndex;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].chessType = tempAttackerChessType;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].ifHavePiece = tempAttackerifHavePiece;
+                    board[White.king.y + iter[0]][White.king.x + iter[1]].player = tempAttackerPlayer;
+
+                    if(board[White.king.y + iter[0]][White.king.x + iter[1]].bTarget == 0)
                     {
+                        computeTarget();
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if(ifPosInBoard(Black.king.y + iter[0],Black.king.x + iter[1]) && board[Black.king.y + iter[0]][Black.king.x + iter[1]].wTarget == 0
+                    && board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece == false)
+                {
+                    return true;
+                }
+                else if(ifPosInBoard(Black.king.y + iter[0],Black.king.x + iter[1]) && board[Black.king.y + iter[0]][Black.king.x + iter[1]].player == 'w')
+                {
+                    tempAttackerIndex = board[Black.king.y + iter[0]][Black.king.x + iter[1]].index;
+                    tempAttackerChessType = board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType;
+                    tempAttackerifHavePiece = board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece;
+                    tempAttackerPlayer = board[Black.king.y + iter[0]][Black.king.x + iter[1]].player;
+
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].index = board[Black.king.y][Black.king.x].index;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType = board[Black.king.y][Black.king.x].chessType;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece = board[Black.king.y][Black.king.x].ifHavePiece;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].player = board[Black.king.y][Black.king.x].player;
+
+                    board[Black.king.y][Black.king.x].index = 0;
+                    board[Black.king.y][Black.king.x].chessType = "0";
+                    board[Black.king.y][Black.king.x].ifHavePiece = false;
+                    board[Black.king.y][Black.king.x].player = '0';
+
+                    computeTarget();
+
+                    board[Black.king.y][Black.king.x].index = board[Black.king.y + iter[0]][Black.king.x + iter[1]].index;
+                    board[Black.king.y][Black.king.x].chessType = board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType;
+                    board[Black.king.y][Black.king.x].ifHavePiece = board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece;
+                    board[Black.king.y][Black.king.x].player = board[Black.king.y + iter[0]][Black.king.x + iter[1]].player;
+
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].index = tempAttackerIndex;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].chessType = tempAttackerChessType;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].ifHavePiece = tempAttackerifHavePiece;
+                    board[Black.king.y + iter[0]][Black.king.x + iter[1]].player = tempAttackerPlayer;
+
+                    if(board[Black.king.y + iter[0]][Black.king.x + iter[1]].wTarget == 0)
+                    {
+                        computeTarget();
                         return true;
                     }
                 }
             }
 
-            //right castle
-            if(White.king.ifMove == false && White.rooks[board[7][7].index].ifMove == false && board[7][7].chessType == "Rook" && board[7][7].player == 'w')
-            {
-                if(board[7][5].ifHavePiece == false && board[7][6].ifHavePiece == false)
-                {
-                    if(board[7][4].bTarget == 0 && board[7][5].bTarget == 0 && board[7][6].bTarget == 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            computeTarget();
         }
-        else//board[row][col].player = 'b'
-        {
-            //up
-            if(ifPosInBoard(row + 1, col) && boardChessCondition(row + 1, col) != blackChess && board[row + 1][col].wTarget == 0)
-                return true;
 
-            //down
-            if(ifPosInBoard(row - 1, col) && boardChessCondition(row - 1, col) != blackChess && board[row - 1][col].wTarget == 0)
-                return true;
-
-            //right
-            if(ifPosInBoard(row, col + 1) && boardChessCondition(row, col + 1) != blackChess && board[row][col + 1].wTarget == 0)
-                return true;
-
-            //left
-            if(ifPosInBoard(row, col - 1) && boardChessCondition(row, col - 1) != blackChess && board[row][col - 1].wTarget == 0)
-                return true;
-
-            //up right
-            if(ifPosInBoard(row + 1, col + 1) && boardChessCondition(row + 1, col + 1) != blackChess && board[row + 1][col + 1].wTarget == 0)
-                return true;
-
-            //up left
-            if(ifPosInBoard(row + 1, col - 1) && boardChessCondition(row + 1, col - 1) != blackChess && board[row + 1][col - 1].wTarget == 0)
-                return true;
-
-            //down right
-            if(ifPosInBoard(row - 1, col + 1) && boardChessCondition(row - 1, col + 1) != blackChess && board[row - 1][col + 1].wTarget == 0)
-                return true;
-
-            //down left
-            if(ifPosInBoard(row - 1, col - 1) && boardChessCondition(row - 1, col - 1) != blackChess && board[row - 1][col - 1].wTarget == 0)
-                return true;
-
-            //left castle
-            if(Black.king.ifMove == false && Black.rooks[board[0][0].index].ifMove == false && board[0][0].chessType == "Rook" && board[0][0].player == 'b')
-            {
-                if(board[0][1].ifHavePiece == false && board[0][2].ifHavePiece == false && board[0][3].ifHavePiece == false)
-                {
-                    if(board[0][4].wTarget == 0 && board[0][1].wTarget == 0 && board[0][2].wTarget == 0 && board[0][3].wTarget == 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            //right castle
-            if(Black.king.ifMove == false && Black.rooks[board[0][7].index].ifMove == false && board[0][7].chessType == "Rook" && board[0][7].player == 'b')
-            {
-                if(board[0][5].ifHavePiece == false && board[0][6].ifHavePiece == false)
-                {
-                    if(board[0][4].wTarget == 0 && board[0][5].wTarget == 0 && board[0][6].wTarget == 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
+        return false;
     }
 }
 

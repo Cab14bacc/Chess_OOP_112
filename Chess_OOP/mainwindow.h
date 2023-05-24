@@ -43,7 +43,7 @@ public:
 
     void Promoting(int row, int col);//Promoting
 
-    void shoeWhoFirst();//let player choose who first
+    void showWhoFirst();//let player choose who first
 
 private slots:
     void labelClicked();//if board be clicked, call this function

@@ -93,7 +93,7 @@ void MainWindow::labelClicked()
     {
         game.showCanMove(curRow, curCol);
         update();
-        printInformation();
+        //printInformation();
     }
     //move chess
     else
@@ -130,7 +130,7 @@ void MainWindow::labelClicked()
         }
 
         game.clickTimes = 1;
-        printInformation();
+        //printInformation();
     }
 }
 
@@ -468,7 +468,7 @@ void MainWindow::on_newGame_clicked()
     whiteTimer.stop();
     blackTimer.stop();
     //chose who first
-    shoeWhoFirst();
+    showWhoFirst();
     //reset game
     resetGame();
 
@@ -743,7 +743,7 @@ void MainWindow::on_newGame_clicked()
     game.fens.push_back(game.fen);
     game.moves.push_back(game.curMove);
     update();
-    printInformation();
+    //printInformation();
 }
 
 // Intent: set images
@@ -787,95 +787,109 @@ void MainWindow::printInformation()
     {
         for(int j = 0; j < 8; j++)
         {
-            cout << i<<j;
+            //cout << i<<j;
             if(game.board[i][j].ifHavePiece)
             {
-                cout << game.board[i][j].player;
-                cout << game.board[i][j].chessType;
+                //cout << game.board[i][j].player;
+                //cout << game.board[i][j].chessType;
             }
 
             if(game.board[i][j].canMove)
             {
                 //cout << "c";
             }
+
             //cout << "in"<<game.board[i][j].index;
-            cout << "bt"<<game.board[i][j].bTarget;
-            cout << "wt"<<game.board[i][j].wTarget;
-            cout <<" ";
+            //cout << "bt"<<game.board[i][j].bTarget;
+            //cout << "wt"<<game.board[i][j].wTarget;
+            //cout <<" ";
         }
 
-        cout << "\n";
+        //cout << "\n";
     }
 
-    cout << game.curStep<<" "<<game.steps.size()<<endl;
-    cout << game.fen<<endl;
-    cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
-    cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
+    //cout << game.curStep<<" "<<game.steps.size()<<endl;
+    //cout << game.fen<<endl;
+    //cout << game.wPawn <<game.wRook<<game.wKnight<<game.wBishop<<game.wQueen<<endl;
+    //cout << game.bPawn <<game.bRook<<game.bKnight<<game.bBishop<<game.bQueen<<endl;
     //cout << "noEat:" << game.noEat<<endl;
 
     if(game.ifWhiteCanMove)
     {
-        cout << "ifWhiteCanMove: true";
+        //cout << "ifWhiteCanMove: true";
     }
     else
     {
-        cout << "ifWhiteCanMove: false";
+        //cout << "ifWhiteCanMove: false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.ifBlackCanMove)
     {
-        cout << "ifBlackCanMove: true";
+        //cout << "ifBlackCanMove: true";
     }
     else
     {
-        cout << "ifBlackCanMove: false";
+        //cout << "ifBlackCanMove: false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.ifDraw)
     {
-        cout <<"ifDraw: true";
+        //cout <<"ifDraw: true";
     }
     else
     {
-        cout << "ifDraw: false";
+        //cout << "ifDraw: false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.White.king.ifMove)
     {
-        cout << "White.king.ifMove = true";
+        //cout << "White.king.ifMove = true";
     }
     else
     {
-        cout << "White.king.ifMove = false";
+        //cout << "White.king.ifMove = false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.Black.king.ifMove)
     {
-        cout << "Black.king.ifMove = true";
+        //cout << "Black.king.ifMove = true";
     }
     else
     {
-        cout << "Black.king.ifMove = false";
+        //cout << "Black.king.ifMove = false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.steps[game.curStep].ifWhiteKingMove)
     {
-        cout << "White.king.ifMove: true";
+        //cout << "White.king.ifMove: true";
     }
     else
     {
-        cout << "White.king.ifMove: false";
+        //cout << "White.king.ifMove: false";
     }
-    cout << endl;
+
+    //cout << endl;
+
     if(game.steps[game.curStep].ifBlackKingMove)
     {
-        cout << "Black.king.ifMove: true";
+        //cout << "Black.king.ifMove: true";
     }
     else
     {
-        cout << "Black.king.ifMove: false";
+        //cout << "Black.king.ifMove: false";
     }
-    cout << endl;
+
+    //cout << endl;
 }
 
 // Intent: undo
@@ -891,7 +905,7 @@ void MainWindow::on_undo_clicked()
         game.curStep--;
         loadBoard();
         update();
-        printInformation();
+        //printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
@@ -913,7 +927,7 @@ void MainWindow::on_redo_clicked()
         game.curStep++;
         loadBoard();
         update();
-        printInformation();
+        //printInformation();
         game.judgeIfPlayerCanMove(game.playerTurn);
     }
 }
@@ -1027,8 +1041,8 @@ void MainWindow::setTime()
     //set 1 second
     whiteTimer.start(1000);
     blackTimer.start(1000);
-    whiteCounter = 10 * 60;
-    blackCounter = 10 * 60;
+    whiteCounter = 20 * 60;
+    blackCounter = 20 * 60;
     ui->whiteTime->setAlignment(Qt::AlignCenter);
     ui->blackTime->setAlignment(Qt::AlignCenter);
     ui->whiteTime->setText(QString("%1:%2").arg(whiteCounter / 60, 2, 10, QChar('0')).arg(whiteCounter % 60, 2, 10, QChar('0')));
@@ -1086,7 +1100,7 @@ void MainWindow::showResultWindow(int whoWin)
 {
     QDialog *dialog = new QDialog(this);
     QLabel *label = new QLabel(dialog);
-    //dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
+    dialog->setWindowFlags(dialog->windowFlags() & ~Qt::WindowCloseButtonHint);
 
     if (whoWin == whiteWin)
     {
@@ -1178,6 +1192,7 @@ void MainWindow::resetGame()
 void MainWindow::Promoting(int row, int col)
 {
     QDialog *dialogPromoting = new QDialog(this);
+    dialogPromoting->setWindowFlags(dialogPromoting->windowFlags() & ~Qt::WindowCloseButtonHint);
     dialogPromoting->setWindowTitle("Promoting");
     QHBoxLayout *layoutPromoting = new QHBoxLayout(dialogPromoting);
     //set queen
@@ -1281,7 +1296,7 @@ void MainWindow::on_Resign_clicked()
 // Intent: choose who first
 // Pre: game start
 // Post: choose who first
-void MainWindow::shoeWhoFirst()
+void MainWindow::showWhoFirst()
 {
     QDialog *dialogWhoFirst = new QDialog(this);
     dialogWhoFirst->setWindowTitle("Who First");
